@@ -1,0 +1,240 @@
+.editInformation {
+  width: 500px;
+  max-height: 700px;
+  height: 700px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  z-index: 2000;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  border-radius: 20px;
+  background-color: white;
+}
+
+.upperElement {
+  display: flex;
+  flex-direction: row;
+  background: linear-gradient(135deg, #0b2b31, #2b737e);
+  justify-content: center;
+  align-items: center;
+  padding: 15px 20px;
+  border-radius: 20px 20px 0 0;
+  position: relative;
+}
+
+.upperElementH1 {
+  font-size: 24px;
+  color: #ffffff;
+  margin: 0;
+}
+
+.exitIcon {
+  position: absolute;
+  right: 20px;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.lowerElement {
+  padding: 0 20px;
+  background-color: white;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.sectionH1 {
+  font-size: 17px;
+  color: #0c434d;
+  margin-bottom: 20px;
+}
+
+.inputWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.inputFields {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.label {
+  color: #116174;
+  margin-bottom: 5px;
+  font-size: 13px;
+}
+
+.standardInput {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid #0c434d;
+  font-size: 12px;
+  color: #0c434d;
+  background-color: #d9d9d9;
+  box-sizing: border-box;
+  height: 35px;
+}
+
+.personalInformation {
+  padding: 0 0 20px 0;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 20px;
+}
+
+.profileInformation {
+  padding: 0 0 20px 0;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 20px;
+}
+
+.customDropdown {
+  position: relative;
+  width: 100%;
+}
+
+.dropdownContainer {
+  position: relative;
+  cursor: pointer;
+}
+
+.dropdownIcon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 10px;
+  transition: transform 0.2s;
+  color: #0c434d;
+  pointer-events: none;
+}
+
+.dropdownIconOpen {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.dropdownOptions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  max-height: 200px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 0 0 10px 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.dropdownOption {
+  padding: 8px 10px;
+  cursor: pointer;
+  color: #0c434d;
+  font-size: 12px;
+}
+
+.dropdownOption:hover {
+  background-color: #f0f0f0;
+}
+
+.checkboxOptions {
+  padding: 5px;
+}
+
+.checkboxOption {
+  display: flex;
+  align-items: center;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.checkboxInput {
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+.checkboxLabel {
+  font-size: 12px;
+  color: #0c434d;
+  cursor: pointer;
+}
+
+.categorySection {
+  padding: 5px 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.categoryH4 {
+  margin: 5px 0;
+  color: #0c434d;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.bioGoalsWrapper {
+  margin-top: 20px;
+}
+
+.bioGoalsGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.fixedTextarea {
+  border-radius: 10px;
+  border: 1px solid #0c434d;
+  font-size: 12px;
+  color: #0c434d;
+  background-color: #d9d9d9;
+  padding: 8px 10px;
+  height: 70px;
+  width: 100%;
+  resize: none;
+  box-sizing: border-box;
+}
+
+.save {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px;
+  border-radius: 0 0 20px 20px;
+}
+
+.saveButton {
+  background-color: #006981;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.saveButton:hover {
+  background-color: #005670;
+}
+
+.errorMessage {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+/* Hover effects */
+.standardInput:hover,
+.fixedTextarea:hover {
+  border-color: #006981;
+}
+
+.dropdownOption:hover {
+  background-color: #f5f5f5;
+}
+
+.checkboxOption:hover {
+  background-color: #f5f5f5;
+}

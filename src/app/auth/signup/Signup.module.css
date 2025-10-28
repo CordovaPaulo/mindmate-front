@@ -1,0 +1,360 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+.signupContainer,
+.signupContainer * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.signupContainer {
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  position: relative;
+}
+
+.backBtn {
+  position: fixed;
+  top: 1.5rem;
+  left: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(44, 62, 80, 0.1);
+  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
+  color: #2c3e50;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  z-index: 100;
+}
+
+.backBtn svg {
+  width: 1.2rem;
+  height: 1.2rem;
+  transition: transform 0.3s ease;
+}
+
+.backBtn:hover {
+  background: white;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+  transform: translateX(-2px);
+}
+
+.backBtn:hover svg {
+  transform: translateX(-4px);
+}
+
+.headerText {
+  text-align: center;
+  margin: 1rem 0;
+  max-width: 800px;
+}
+
+.headerText h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+}
+
+.headerText p {
+  font-size: 1.2rem;
+  color: #7f8c8d;
+  font-weight: 400;
+}
+
+.joinSection {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  width: 100%;
+  max-width: 1200px;
+  flex-wrap: wrap;
+  margin-top: 1.5rem;
+}
+
+.joinCard {
+  width: 350px;
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.joinCard:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+.cardContent {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.roleTitle {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.roleTitle span {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #7f8c8d;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 0.5rem;
+}
+
+.roleTitle h3 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.mentorCard .roleTitle h3 {
+  color: #ff7e5f;
+}
+
+.divider {
+  border: 0;
+  height: 2px;
+  margin: 1.5rem auto;
+  width: 300px;
+  background: linear-gradient(
+    90deg,
+    rgba(44, 62, 80, 0) 0%,
+    rgba(44, 62, 80, 0.3) 50%,
+    rgba(44, 62, 80, 0) 100%
+  );
+}
+
+.mentorCard .divider {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 126, 95, 0) 0%,
+    rgba(255, 126, 95, 0.3) 50%,
+    rgba(255, 126, 95, 0) 100%
+  );
+}
+
+.cardIcon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem 0;
+}
+
+.cardIcon img {
+  width: 230px;
+  height: auto;
+  object-fit: contain;
+  transition: all 0.3s ease;
+}
+
+.joinBtn {
+  margin-top: auto;
+  background: linear-gradient(135deg, #02475e 0%, #037a96 100%);
+  color: white;
+  border: none;
+  padding: 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.mentorCard .joinBtn {
+  background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
+}
+
+.joinBtn svg {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.3s ease;
+}
+
+.joinBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.joinBtn:hover svg {
+  transform: translateX(3px);
+}
+
+/* Modal Styles */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.confirmationModal {
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  max-width: 450px;
+  width: 100%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.confirmationModal h3 {
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+}
+
+.confirmationModal p {
+  color: #7f8c8d;
+  margin-bottom: 2.5rem;
+  line-height: 1.6;
+}
+
+.modalActions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.modalActions button {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.cancelBtn {
+  background: #e8e6e6;
+  color: #7f8c8d;
+}
+
+.cancelBtn:hover {
+  background: #babbbd;
+  color: #5d6d7e;
+}
+
+.confirmBtn {
+  background: linear-gradient(135deg, #02475e 0%, #037a96 100%);
+  color: white;
+}
+
+.confirmBtn:hover {
+  background: linear-gradient(135deg, #037a96 0%, #02475e 100%);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .headerText h1 {
+    font-size: 2rem;
+  }
+
+  .headerText p {
+    font-size: 1rem;
+  }
+
+  .joinSection {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .joinCard {
+    width: 100%;
+    max-width: 350px;
+  }
+
+  .cardIcon img {
+    width: 200px;
+  }
+
+  .backBtn {
+    top: 1rem;
+    left: 1rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .confirmationModal {
+    padding: 1.75rem;
+  }
+
+  .confirmationModal h3 {
+    font-size: 1.3rem;
+  }
+
+  .confirmationModal p {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .headerText {
+    margin: 2rem 0;
+  }
+
+  .headerText h1 {
+    font-size: 1.8rem;
+  }
+
+  .confirmationModal {
+    padding: 1.5rem;
+  }
+
+  .confirmationModal h3 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+
+  .confirmationModal p {
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .modalActions {
+    flex-direction: row;
+    gap: 0.75rem;
+  }
+
+  .modalActions button {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.9rem;
+  }
+
+  .backBtn {
+    top: 0.8rem;
+    left: 0.8rem;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+  }
+}

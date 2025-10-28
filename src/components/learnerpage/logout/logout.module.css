@@ -1,0 +1,200 @@
+.logoutOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1999;
+}
+
+.logoutModal {
+  position: fixed;
+  top: 50%;
+  left: 60%;
+  transform: translate(-50%, -50%);
+  z-index: 2000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logoutWrapper {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 400px;
+  height: 200px;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  border-radius: 20px;
+  background-color: white;
+}
+
+.logoutUpperElement {
+  display: flex;
+  flex-direction: row;
+  background-color: #0c434d;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+  border-radius: 20px 20px 0 0;
+  padding: 10px 15px 10px 0;
+  overflow: hidden;
+}
+
+.logoutCloseIcon {
+  cursor: pointer;
+}
+
+.logoutLowerElement {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 0 0 20px 20px;
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+  border: 5px solid #0c434d;
+  flex-direction: column;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.logoutLowerElement h1 {
+  margin-top: 0;
+  font-size: 1.3rem;
+  color: #0c434d;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.logoutButtons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+}
+
+.confirmButton {
+  background-color: #0c434d;
+  color: white;
+  padding: 10px 25px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+  min-width: 80px;
+}
+
+.confirmButton:hover:not(:disabled) {
+  background-color: #0a363e;
+}
+
+.cancelButton {
+  background-color: #f44336;
+  color: white;
+  padding: 10px 25px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+  min-width: 80px;
+}
+
+.cancelButton:hover:not(:disabled) {
+  background-color: #d32f2f;
+}
+
+.disabledButton {
+  background-color: #666;
+  cursor: not-allowed;
+}
+
+.disabledButton:hover {
+  background-color: #666;
+}
+
+@media (max-width: 768px) {
+  .logoutWrapper {
+    width: 350px;
+    height: 180px;
+  }
+
+  .logoutUpperElement {
+    padding: 8px 12px 8px 0;
+  }
+
+  .logoutLowerElement {
+    padding: 15px;
+  }
+
+  .logoutLowerElement h1 {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+  }
+
+  .logoutButtons {
+    gap: 15px;
+  }
+
+  .confirmButton,
+  .cancelButton {
+    padding: 8px 20px;
+    font-size: 0.9rem;
+    min-width: 70px;
+  }
+}
+
+@media (max-width: 480px) {
+  .logoutWrapper {
+    width: 300px;
+    height: 160px;
+  }
+
+  .logoutUpperElement {
+    padding: 6px 10px 6px 0;
+  }
+
+  .logoutLowerElement {
+    padding: 12px;
+  }
+
+  .logoutLowerElement h1 {
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+  }
+
+  .logoutButtons {
+    gap: 12px;
+  }
+
+  .confirmButton,
+  .cancelButton {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    min-width: 60px;
+  }
+}
+
+@media (max-width: 360px) {
+  .logoutWrapper {
+    width: 280px;
+    height: 150px;
+  }
+
+  .logoutLowerElement h1 {
+    font-size: 1rem;
+  }
+
+  .confirmButton,
+  .cancelButton {
+    padding: 7px 14px;
+    font-size: 0.85rem;
+  }
+}

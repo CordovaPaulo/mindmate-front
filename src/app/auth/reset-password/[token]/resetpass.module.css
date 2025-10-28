@@ -1,0 +1,260 @@
+.resetPasswordContainer {
+  background-image: url('/bg.png');
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.logoImg {
+  height: 50px;
+  width: auto;
+  margin: 1rem;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.brandName {
+  position: fixed;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2d3748;
+  letter-spacing: 0.4px;
+  margin-top: 1.3rem;
+  margin-left: 4px;
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+.formWrapper {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(52, 158, 177, 0.5);
+  width: 380px;
+  padding: 2rem;
+  border: 1px solid rgba(230, 240, 255, 0.6);
+  border-top: 9px solid rgb(42, 60, 92);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  transition: all 0.3s ease;
+}
+
+.formWrapper:hover {
+  transform: translate(-50%, -50%) translateY(-1px);
+  box-shadow: 0 15px 30px rgba(235, 235, 235, 0.4);
+}
+
+.heading {
+  color: #2d3748;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+}
+
+.formGroup {
+  margin-bottom: 1.2rem;
+}
+
+.inputWithIcon {
+  position: relative;
+  width: 100%;
+}
+
+.input {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1.5px solid #d2d8e0;
+  border-radius: 18px;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  background-color: #f0f5fa;
+  height: 45px;
+  box-sizing: border-box;
+  font-family: "Montserrat", sans-serif;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #349eb1;
+  box-shadow: 0 0 0 3px rgba(52, 158, 177, 0.1);
+  background-color: white;
+}
+
+.input::placeholder {
+  color: #a0aec0;
+  opacity: 1;
+}
+
+.inputIcon {
+  position: absolute;
+  left: 5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-size: 1.1rem;
+}
+
+.button {
+  width: 50%;
+  padding: 0.9rem;
+  background: linear-gradient(135deg, #0b2b31, #2b737e);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: block;
+  margin: 1.5rem auto 0;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(52, 158, 177, 0.15);
+  font-family: "Montserrat", sans-serif;
+}
+
+.button:hover {
+  background: linear-gradient(135deg, #2b737e, #0b2b31);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(52, 158, 177, 0.25);
+}
+
+.button:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 8px rgba(52, 158, 177, 0.25);
+}
+
+.button::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: 0.4s;
+}
+
+.button:hover::after {
+  left: 100%;
+}
+
+.button:disabled {
+  background: #e2e8f0;
+  color: #a0aec0;
+  transform: none;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.errorMessage {
+  background-color: #fff5f5;
+  color: #e53e3e;
+  padding: 0.8rem;
+  border-radius: 8px;
+  margin-top: 1.2rem;
+  text-align: center;
+  border: 1px solid #fed7d7;
+  font-size: 0.85rem;
+  animation: shake 0.4s ease;
+}
+
+.successMessage {
+  background-color: #f0fff4;
+  color: #38a169;
+  padding: 0.8rem;
+  border-radius: 8px;
+  margin-top: 1.2rem;
+  text-align: center;
+  border: 1px solid #c6f6d5;
+  font-size: 0.85rem;
+  animation: gentleAppear 0.5s ease-out;
+}
+
+@keyframes gentleAppear {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20%,
+  60% {
+    transform: translateX(-4px);
+  }
+  40%,
+  80% {
+    transform: translateX(4px);
+  }
+}
+
+@media (max-width: 768px) {
+  .formWrapper {
+    margin: 30px 20px;
+    padding: 18px;
+    width: 90%;
+  }
+  
+  .heading {
+    font-size: 1.2rem;
+  }
+  
+  .input {
+    font-size: 0.95rem;
+    padding: 9px 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .formWrapper {
+    margin: 20px 10px;
+    padding: 16px;
+    width: 95%;
+  }
+  
+  .heading {
+    font-size: 1.1rem;
+  }
+  
+  .input {
+    font-size: 0.9rem;
+    padding: 8px;
+  }
+  
+  .button {
+    font-size: 0.8rem;
+    padding: 10px;
+    width: 55%;
+  }
+  
+  .brandName {
+    font-size: 1.7rem;
+  }
+}

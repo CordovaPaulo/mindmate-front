@@ -1,0 +1,675 @@
+.homeContainer {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.homeContainer::-webkit-scrollbar {
+  display: none;
+}
+
+.introSection {
+  width: 100%;
+  min-height: 100vh;
+  background: url("/bg.png") no-repeat center center;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 5%;
+}
+
+.introContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  text-align: center;
+}
+
+.introLogo {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+}
+
+.introText h1 {
+  font-size: 2.5rem;
+  color: #116275;
+  font-family: "Anton", sans-serif;
+  letter-spacing: 0.1em;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+.highlightEd {
+  color: #0097b2;
+  font-family: "Anton", sans-serif;
+  letter-spacing: 0.1em;
+}
+
+.introText p {
+  font-size: 1.5rem;
+  color: #116275;
+  line-height: 1.3;
+}
+
+.contentSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 5%;
+  width: 100%;
+  gap: 2rem;
+}
+
+.learnersSection {
+  width: 100%;
+  min-height: auto;
+  overflow: hidden;
+  background-color: #02475e;
+  transition: all 0.5s ease;
+  position: relative;
+}
+
+.learnersSection::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: 0.5s;
+}
+
+.learnersSection:hover::before {
+  left: 100%;
+}
+
+.learnersSection:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.learnersHeading {
+  color: #ffffff;
+}
+
+.learnersImage {
+  width: 100%;
+  max-width: 280px;
+  height: auto;
+  margin: 0 auto;
+  display: block;
+  transition: all 0.5s ease;
+}
+
+.learnersSection:hover .learnersImage {
+  transform: scale(1.08) rotate(5deg);
+}
+
+.learnerText {
+  transition: all 0.3s ease;
+  color: #ffffff;
+}
+
+.learnersSection:hover .learnerText {
+  color: #a8dadc;
+}
+
+.learnersSection .contentBox p {
+  color: #ffffff;
+}
+
+.mentorsSection {
+  width: 100%;
+  min-height: auto;
+  overflow: hidden;
+  background-color: white;
+  transition: all 0.5s ease;
+  position: relative;
+}
+
+.mentorsSection::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(1, 71, 97, 0.1), transparent);
+  transition: 0.5s;
+}
+
+.mentorsSection:hover::before {
+  left: 100%;
+}
+
+.mentorsSection:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.mentorsHeading {
+  color: #02475e;
+}
+
+.mentorsImage {
+  width: 100%;
+  max-width: 250px;
+  height: auto;
+  margin: 0 auto;
+  display: block;
+  transition: all 0.5s ease;
+}
+
+.mentorsSection:hover .mentorsImage {
+  transform: scale(1.05) rotate(-5deg);
+}
+
+.mentorsSection .contentBox p {
+  color: #02475e;
+  transition: all 0.3s ease;
+}
+
+.mentorsSection:hover .contentBox p {
+  color: #116275;
+}
+
+.contentBox {
+  width: 100%;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.mentorContentBox {
+  width: 100%;
+  padding: 1.5rem;
+  margin: 0;
+}
+
+.learnersContentBox {
+  width: 100%;
+  padding: 1.5rem;
+  margin: 0;
+}
+
+.contentBox h2 {
+  font-size: 2rem;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  font-family: "Montserrat", sans-serif;
+  letter-spacing: 0.1em;
+  line-height: 1.2;
+}
+
+.contentBox p {
+  font-size: 1rem;
+  color: rgb(73, 25, 25);
+  text-align: justify;
+  line-height: 1.6;
+}
+
+.howItWorks {
+  text-align: center;
+  padding: 2rem 5%;
+  background: #d9d9d9;
+  color: #02475e;
+}
+
+.howItWorks h2 {
+  font-size: 2rem;
+  margin-top: 1rem;
+  color: #02475e;
+  font-family: "Montserrat", sans-serif;
+}
+
+.howItWorksGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+}
+
+.step {
+  width: 100%;
+  max-width: 350px;
+  margin: 0 auto;
+  text-align: center;
+  transition: transform 0.3s ease, color 0.3s ease;
+  padding: 1rem;
+}
+
+.step:hover {
+  transform: scale(1.05);
+  color: #0097b2;
+}
+
+.step img {
+  width: 65px;
+  height: auto;
+  transition: transform 0.3s ease;
+}
+
+.step:hover img {
+  transform: scale(1.1);
+}
+
+.step h3 {
+  font-size: 1.1rem;
+  margin-top: 0.5rem;
+  color: #02475e;
+  line-height: 1.3;
+}
+
+.step p {
+  font-size: 0.85rem;
+  color: #333;
+  line-height: 1.5;
+}
+
+.learnMoreBtn {
+  margin-top: 2rem;
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  background-color: #02475e;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 25px;
+  transition: background-color 0.3s ease;
+  width: 80%;
+  max-width: 200px;
+}
+
+.learnMoreBtn:hover {
+  background-color: #15191b;
+}
+
+.joinSection {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background: url('/school_bg.png') no-repeat center center;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 5%;
+}
+
+.joinSection::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.561);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  z-index: 1;
+}
+
+.getStartedCard {
+  position: relative;
+  z-index: 2;
+  background: linear-gradient(135deg, #0b2b31, #2b737e);
+  border-radius: 30px;
+  padding: 1.5rem;
+  width: 90%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  color: white;
+  text-align: center;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 1rem 0;
+}
+
+.getStartedTitle {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  line-height: 1.3;
+}
+
+.benefitsList {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto 2rem;
+  text-align: left;
+  padding-left: 0;
+}
+
+.benefitsList li {
+  padding: 0.6rem 0;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  line-height: 1.5;
+  justify-content: center;
+}
+
+.benefitIcon {
+  margin-right: 10px;
+  color: #a5d6a7;
+  font-size: 1.1rem;
+  min-width: 24px;
+  font-weight: bold;
+}
+
+.signupBtn {
+  background-color: white;
+  color: #233e59;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  margin-top: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  width: 80%;
+  max-width: 200px;
+}
+
+.signupBtn:hover {
+  background-color: #f1f8fe;
+  transform: translateY(-3px);
+  font-weight: 600;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* Tablet Styles */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .introContent {
+    gap: 2.5rem;
+    padding: 0 8%;
+  }
+
+  .introLogo {
+    max-width: 400px;
+  }
+
+  .introText h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .introText p {
+    font-size: 2rem;
+  }
+
+  .contentSection {
+    padding: 3rem 8%;
+    gap: 2.5rem;
+  }
+
+  .contentBox {
+    padding: 2rem;
+  }
+
+  .contentBox h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .contentBox p {
+    font-size: 1.1rem;
+  }
+
+  .learnersImage {
+    max-width: 320px;
+  }
+
+  .mentorsImage {
+    max-width: 280px;
+  }
+
+  .howItWorks {
+    padding: 3rem 8%;
+  }
+
+  .howItWorks h2 {
+    font-size: 2.5rem;
+  }
+
+  .howItWorksGrid {
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+  }
+
+  .row {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+  }
+
+  .step {
+    width: 30%;
+    max-width: none;
+    padding: 1rem;
+    min-height: 280px;
+  }
+
+  .step img {
+    width: 70px;
+  }
+
+  .step h3 {
+    font-size: 1.1rem;
+    margin-top: 0.8rem;
+  }
+
+  .step p {
+    font-size: 0.85rem;
+    line-height: 1.4;
+  }
+
+  .learnMoreBtn {
+    margin-top: 2.5rem;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    max-width: 220px;
+  }
+
+  .getStartedCard {
+    padding: 2rem;
+    max-width: 500px;
+  }
+
+  .getStartedTitle {
+    font-size: 1.8rem;
+  }
+
+  .benefitsList {
+    padding-left: 2rem;
+  }
+
+  .benefitsList li {
+    font-size: 1rem;
+    padding: 0.7rem 0;
+    justify-content: flex-start;
+  }
+
+  .benefitIcon {
+    font-size: 1.2rem;
+  }
+
+  .signupBtn {
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    max-width: 220px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .introContent {
+    flex-direction: row;
+    text-align: left;
+    gap: 3rem;
+    max-width: 1200px;
+    padding: 0 5%;
+  }
+
+  .introLogo {
+    max-width: 500px;
+  }
+
+  .introText h1 {
+    font-size: 6rem;
+  }
+
+  .introText p {
+    font-size: 3rem;
+  }
+
+  .contentSection {
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: space-between;
+    padding: 40px 5% 0;
+    gap: 0;
+  }
+
+  .learnersSection,
+  .mentorsSection {
+    flex: 1;
+    min-height: 320px;
+    display: flex;
+    align-items: center;
+  }
+
+  .contentBox {
+    text-align: left;
+    max-width: 750px;
+    padding: 20px 0;
+  }
+
+  .mentorContentBox {
+    max-width: 750px;
+    padding: 40px 0;
+    margin-right: 40px;
+    margin-bottom: 30px;
+  }
+
+  .learnersContentBox {
+    max-width: 750px;
+    padding: 40px 0;
+    margin-left: 20px;
+    margin-bottom: 30px;
+  }
+
+  .contentBox h2 {
+    font-size: 3.5rem;
+  }
+
+  .contentBox p {
+    font-size: 1.2rem;
+  }
+
+  .learnersImage {
+    max-width: 320px;
+    margin-left: 150px;
+  }
+
+  .mentorsImage {
+    max-width: 290px;
+    margin-left: 40px;
+  }
+
+  .howItWorks {
+    padding: 40px 5%;
+  }
+
+  .howItWorks h2 {
+    font-size: 3rem;
+    margin-top: 50px;
+  }
+
+  .howItWorksGrid {
+    gap: 30px;
+    margin-top: 50px;
+  }
+
+  .row {
+    flex-direction: row;
+    justify-content: space-around;
+  }
+
+  .step {
+    width: 30%;
+  }
+
+  .step img {
+    width: 85px;
+  }
+
+  .step h3 {
+    font-size: 1.3rem;
+  }
+
+  .step p {
+    font-size: 0.9rem;
+  }
+
+  .learnMoreBtn {
+    margin-top: 65px;
+    padding: 10px 30px;
+    font-size: 1.2rem;
+    max-width: none;
+    width: auto;
+  }
+
+  .joinSection {
+    padding: 40px 5%;
+  }
+
+  .getStartedCard {
+    max-width: 600px;
+    padding: 2.5rem;
+    top: 2rem;
+  }
+
+  .getStartedTitle {
+    font-size: 2rem;
+  }
+
+  .benefitsList {
+    padding-left: 5rem;
+    max-width: 500px;
+  }
+
+  .benefitsList li {
+    justify-content: flex-start;
+        font-size: 17px;
+
+  }
+
+  .benefitIcon {
+    font-size: 1.4rem;
+  }
+
+  .signupBtn {
+    padding: 1rem 2.25rem;
+    font-size: 1.2rem;
+    max-width: 250px;
+  }
+}

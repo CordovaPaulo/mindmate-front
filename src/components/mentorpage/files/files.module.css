@@ -1,0 +1,753 @@
+.filesComponentWrapper {
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(26, 79, 159, 0.5);
+  width: 90%;
+  margin-top: 2rem;
+  margin-left: 2.5rem;
+  padding: 0 1rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  height: 37.4rem;
+  max-height: 37.4rem;
+  overflow-y: auto;
+}
+
+.filesComponentWrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.filesComponentWrapper {
+  -ms-overflow-style: none; 
+  scrollbar-width: none;  
+}
+
+.filesComponentTableHeader {
+  display: flex;
+  align-items: center;
+  padding: 1.5rem;
+  background: white;
+  gap: 1rem;
+  flex-wrap: wrap;
+  color: #f5f7fa;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.filesComponentTableTitle {
+  margin: 0;
+  font-size: 1.6rem;
+  color: rgb(54, 87, 105);
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.filesComponentHeaderIcon {
+  font-size: 1.4rem;
+}
+
+.filesComponentLowerElement {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  background-color: #fff;
+  overflow: hidden;
+  height: 542px;
+  padding: 1rem;
+}
+
+.filesComponentLowerGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 50px;
+  width: 100%;
+  height: 100%;
+}
+
+.filesComponentUploadFile {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 20px;
+  border-right: 1px solid #e1e4e8;
+  height: 100%;
+}
+
+.filesComponentDropZone {
+  border: 3px dashed #a6a6a6;
+  width: 90%;
+  height: 250px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  border-radius: 12px;
+  background-color: rgba(59, 154, 169, 0.05);
+  margin-top: 1rem;
+}
+
+.filesComponentDropZone > * {
+  pointer-events: none;
+}
+
+.filesComponentFileUpload {
+  pointer-events: auto;
+}
+
+.filesComponentDropZoneIcon {
+  font-size: 8rem;
+  color: #a6a6a6;
+  opacity: 0.1;
+  margin-bottom: 1rem;
+  transition: all 0.2s ease;
+}
+
+.filesComponentDropZoneActive .filesComponentDropZoneIcon {
+  color: #066678;
+  opacity: 0.3;
+}
+
+.filesComponentDropZone p {
+  color: gray;
+  font-size: 1rem;
+  font-weight: 500;
+  margin-top: 30px;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.filesComponentDropZoneActive {
+  background-color: rgba(6, 102, 120, 0.1) !important;
+  border: 3px dashed #3b9aa9 !important;
+}
+
+.filesComponentDropZone:hover {
+  background-color: rgba(6, 102, 120, 0.05);
+  border-color: #3b9aa9 !important;
+}
+
+.filesComponentCustomFileUpload {
+  background-color: rgb(40, 70, 86);
+  color: white;
+  width: 91%;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: background-color 0.2s ease;
+  border: none;
+  border-radius: 8px;
+  margin-top: 2rem;
+  font-size: 1rem;
+  gap: 0.5rem;
+}
+
+.filesComponentCustomFileUpload:hover {
+  background-color: rgb(54, 87, 105);
+}
+
+.filesComponentDisplayedFiles {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0 15px;
+  width: 100%;
+  height: 100%;
+}
+
+.filesComponentFilesHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  border-bottom: 5px solid rgb(26, 71, 112);
+  padding-bottom: 1rem;
+}
+
+.filesComponentFilesHeader h3 {
+  color: rgb(40, 70, 86);
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+}
+
+.filesComponentFileCount {
+  background-color: rgba(59, 154, 169, 0.1);
+  color: #0b3e8a;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.filesComponentDisplayedContainer {
+  height: 100%;
+  overflow-y: auto;
+  padding-right: 5px;
+}
+
+.filesComponentDisplayedContainer::-webkit-scrollbar {
+  display: none;
+}
+
+.filesComponentDisplayedContainer {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.filesComponentFileItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f9f9f9;
+  padding: 12px;
+  border-radius: 8px;
+  min-height: 60px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 8px;
+  transition: all 0.2s ease;
+  border-left: 4px solid #3b9aa9;
+}
+
+.filesComponentFileItem:hover {
+  background-color: rgba(59, 154, 169, 0.05);
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.filesComponentFileContent {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
+
+.filesComponentFileInfo {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.filesComponentFileName {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 300px;
+  font-weight: 500;
+  color: #0b2548;
+  margin: 0;
+  text-align: left;
+}
+
+.filesComponentFileType {
+  font-size: 0.75rem;
+  color: #666;
+  margin-top: 4px;
+}
+
+.filesComponentFileActions {
+  display: flex;
+  gap: 8px;
+}
+
+.filesComponentDeleteBtn {
+  background: none;
+  border: none;
+  color: #f44336;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 6px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.filesComponentDeleteBtn:hover {
+  background-color: rgba(244, 67, 54, 0.1);
+}
+
+.filesComponentNoFiles {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  color: #a6a6a6;
+  font-size: 1rem;
+}
+
+.filesComponentDisplayedFiles img {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+}
+
+.filesComponentUploadButton {
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem;
+  background-color: #f5f7fa;
+  border-top: 1px solid #e1e4e8;
+}
+
+.filesComponentUploadBtn {
+  background-color: rgb(209, 207, 207);
+  color: rgb(40, 70, 86);
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.filesComponentUploadBtn:hover {
+  background-color: #3b9aa9;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 154, 169, 0.5);
+}
+
+/* Laptop (1024px - 1439px) - Smaller text and icons */
+@media (min-width: 1024px) and (max-width: 1439px) {
+  .filesComponentWrapper {
+    width: 92%;
+    margin-left: 1.5rem;
+  }
+  
+  .filesComponentTableTitle {
+    font-size: 1.4rem;
+  }
+  
+  .filesComponentHeaderIcon {
+    font-size: 1.2rem;
+  }
+  
+  .filesComponentLowerGrid {
+    grid-gap: 30px;
+  }
+  
+  .filesComponentDropZone {
+    width: 95%;
+    height: 220px;
+  }
+  
+  .filesComponentDropZoneIcon {
+    font-size: 6rem;
+  }
+  
+  .filesComponentDropZone p {
+    font-size: 0.9rem;
+    margin-top: 20px;
+  }
+  
+  .filesComponentCustomFileUpload {
+    font-size: 0.9rem;
+    height: 45px;
+  }
+  
+  .filesComponentFilesHeader h3 {
+    font-size: 1.1rem;
+  }
+  
+  .filesComponentFileName {
+    max-width: 250px;
+    font-size: 0.9rem;
+  }
+  
+  .filesComponentFileType {
+    font-size: 0.7rem;
+  }
+  
+  .filesComponentDisplayedFiles img {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .filesComponentUploadBtn {
+    font-size: 0.9rem;
+    padding: 0.6rem 1.5rem;
+  }
+}
+
+/* Tablet (768px - 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .filesComponentWrapper {
+    width: 95%;
+    margin-left: 1rem;
+    height: auto;
+    max-height: none;
+  }
+
+  .filesComponentLowerGrid {
+    grid-template-columns: 1fr;
+    grid-gap: 25px;
+  }
+
+  .filesComponentUploadFile {
+    border-right: none;
+    border-bottom: 1px solid #e1e4e8;
+    padding-bottom: 1.5rem;
+    height: auto;
+  }
+
+  .filesComponentDropZone {
+    height: 180px;
+    width: 90%;
+    margin-top: 0.5rem;
+  }
+
+  .filesComponentDropZoneIcon {
+    font-size: 5rem;
+  }
+
+  .filesComponentDropZone p {
+    font-size: 0.9rem;
+    margin-top: 15px;
+  }
+
+  .filesComponentLowerElement {
+    height: auto;
+    min-height: 550px;
+    padding: 0.5rem;
+  }
+
+  .filesComponentDisplayedFiles {
+    padding: 0 10px;
+    height: 350px;
+  }
+
+  .filesComponentCustomFileUpload {
+    width: 90%;
+    height: 45px;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+  }
+
+  .filesComponentFileName {
+    max-width: 200px;
+  }
+
+  .filesComponentTableHeader {
+    padding: 1rem;
+  }
+
+  .filesComponentTableTitle {
+    font-size: 1.3rem;
+  }
+
+  .filesComponentHeaderIcon {
+    font-size: 1.2rem;
+  }
+}
+
+/* Mobile (below 768px) - Stacked layout like tablet */
+@media (max-width: 767px) {
+  .filesComponentWrapper {
+    width: 96%;
+    margin: 1rem auto;
+    padding: 0 0.75rem;
+    border-radius: 16px;
+    height: auto;
+    max-height: none;
+  }
+
+  .filesComponentTableHeader {
+    padding: 1rem 0.5rem;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .filesComponentTableTitle {
+    font-size: 1.2rem;
+    gap: 0.5rem;
+  }
+
+  .filesComponentHeaderIcon {
+    font-size: 1.1rem;
+  }
+
+  .filesComponentLowerElement {
+    padding: 0.75rem;
+    height: auto;
+    min-height: 500px;
+  }
+
+  /* Stacked layout like tablet */
+  .filesComponentLowerGrid {
+    grid-template-columns: 1fr;
+    grid-gap: 20px;
+  }
+
+  .filesComponentUploadFile {
+    border-right: none;
+    border-bottom: 1px solid #e1e4e8;
+    padding: 1rem 0.5rem 1.5rem 0.5rem;
+    height: auto;
+  }
+
+  .filesComponentDropZone {
+    height: 150px;
+    width: 95%;
+    margin-top: 0.5rem;
+    padding: 0.75rem;
+  }
+
+  .filesComponentDropZoneIcon {
+    font-size: 4rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .filesComponentDropZone p {
+    font-size: 0.85rem;
+    margin-top: 10px;
+    padding: 0 0.5rem;
+  }
+
+  .filesComponentCustomFileUpload {
+    width: 95%;
+    height: 42px;
+    margin-top: 1rem;
+    font-size: 0.85rem;
+  }
+
+  .filesComponentDisplayedFiles {
+    padding: 0 0.5rem;
+    height: 320px;
+  }
+
+  .filesComponentFilesHeader {
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+
+  .filesComponentFilesHeader h3 {
+    font-size: 1rem;
+    gap: 0.4rem;
+  }
+
+  .filesComponentFileCount {
+    font-size: 0.75rem;
+    padding: 0.2rem 0.6rem;
+  }
+
+  .filesComponentFileItem {
+    padding: 10px 8px;
+    min-height: 50px;
+    margin-bottom: 6px;
+  }
+
+  .filesComponentFileContent {
+    gap: 8px;
+  }
+
+  .filesComponentDisplayedFiles img {
+    width: 26px;
+    height: 26px;
+  }
+
+  .filesComponentFileName {
+    max-width: 180px;
+    font-size: 0.85rem;
+  }
+
+  .filesComponentFileType {
+    font-size: 0.7rem;
+  }
+
+  .filesComponentDeleteBtn {
+    font-size: 0.9rem;
+    padding: 4px;
+  }
+
+  .filesComponentUploadButton {
+    padding: 0.75rem 0.5rem;
+  }
+
+  .filesComponentUploadBtn {
+    padding: 0.6rem 1.5rem;
+    font-size: 0.85rem;
+  }
+}
+
+/* Small Mobile (below 576px) */
+@media (max-width: 575px) {
+  .filesComponentWrapper {
+    width: 98%;
+    margin: 0.5rem auto;
+    padding: 0 0.5rem;
+    border-radius: 12px;
+  }
+
+  .filesComponentTableHeader {
+    padding: 0.75rem 0.5rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .filesComponentTableTitle {
+    font-size: 1.1rem;
+    gap: 0.4rem;
+  }
+
+  .filesComponentHeaderIcon {
+    font-size: 1rem;
+  }
+
+  .filesComponentLowerElement {
+    padding: 0.5rem;
+    min-height: 450px;
+  }
+
+  .filesComponentLowerGrid {
+    grid-gap: 15px;
+  }
+
+  .filesComponentUploadFile {
+    padding: 0.75rem 0.25rem 1rem 0.25rem;
+  }
+
+  .filesComponentDropZone {
+    height: 130px;
+    width: 100%;
+    margin-top: 0.25rem;
+    padding: 0.5rem;
+  }
+
+  .filesComponentDropZoneIcon {
+    font-size: 3rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .filesComponentDropZone p {
+    font-size: 0.8rem;
+    margin-top: 8px;
+    padding: 0 0.25rem;
+  }
+
+  .filesComponentCustomFileUpload {
+    width: 100%;
+    height: 40px;
+    margin-top: 0.75rem;
+    font-size: 0.8rem;
+  }
+
+  .filesComponentDisplayedFiles {
+    padding: 0;
+    height: 280px;
+  }
+
+  .filesComponentFilesHeader {
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .filesComponentFilesHeader h3 {
+    font-size: 0.95rem;
+  }
+
+  .filesComponentFileCount {
+    font-size: 0.7rem;
+  }
+
+  .filesComponentFileItem {
+    padding: 8px 6px;
+    min-height: 45px;
+  }
+
+  .filesComponentDisplayedFiles img {
+    width: 22px;
+    height: 22px;
+  }
+
+  .filesComponentFileName {
+    max-width: 140px;
+    font-size: 0.8rem;
+  }
+
+  .filesComponentUploadBtn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Extra Small Mobile (below 400px) */
+@media (max-width: 400px) {
+  .filesComponentDropZone {
+    height: 120px;
+  }
+
+  .filesComponentDropZoneIcon {
+    font-size: 2.5rem;
+  }
+
+  .filesComponentDropZone p {
+    font-size: 0.75rem;
+  }
+
+  .filesComponentFileName {
+    max-width: 120px;
+    font-size: 0.75rem;
+  }
+
+  .filesComponentDisplayedFiles img {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* Height adjustments for smaller screens */
+@media (max-height: 700px) {
+  .filesComponentWrapper {
+    height: 32rem;
+    max-height: 32rem;
+  }
+
+  .filesComponentDropZone {
+    height: 200px;
+  }
+
+  .filesComponentLowerElement {
+    height: 450px;
+  }
+}
+
+@media (max-height: 600px) {
+  .filesComponentWrapper {
+    height: 28rem;
+    max-height: 28rem;
+  }
+
+  .filesComponentDropZone {
+    height: 180px;
+  }
+
+  .filesComponentLowerElement {
+    height: 400px;
+  }
+}
+
+/* Full screen (1440px and above) - maintains original form */
+@media (min-width: 1440px) {
+  /* All original styles are maintained as no overrides are needed */
+}

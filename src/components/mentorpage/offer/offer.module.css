@@ -1,0 +1,1083 @@
+.offerBooking {
+  border-bottom-width: 4px;
+  width: 1000px;
+  max-width: 910px;
+  position: fixed;
+  left: 54.2%; 
+  top: 50%;
+  transform: translate(-50%, -50%);
+  max-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(26, 79, 159, 0.5);
+  z-index: 9000;
+  background: white;
+  border-radius: 1.5rem;
+}
+
+.offerHeader {
+  background: linear-gradient(135deg, #0b2b31, #2b737e);
+  color: white;
+  padding: 0.75rem 1.25rem;
+  border-top-left-radius: 1.5rem;
+  border-top-right-radius: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  min-height: 50px;
+}
+
+.offerHeader h1 {
+  font-weight: 800;
+  font-size: 1.125rem;
+  user-select: none;
+  -webkit-user-select: none;
+  margin: 0;
+}
+
+.offerHeader button {
+  font-size: 2rem;
+  font-weight: 300;
+  line-height: 1;
+  color: white;
+  background: none;
+  border: none;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: all 0.2s;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.offerHeader button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: scale(1.1);
+}
+
+.offerProfile {
+  background-color: #f8f9fa;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.875rem 1.5rem;
+  color: #0b3b44;
+  border-bottom: 1px solid #e9ecef;
+  min-height: 70px;
+}
+
+.offerProfile img {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 9999px;
+  border: 2px solid #0b3b44;
+  object-fit: cover;
+}
+
+.offerProfile div p {
+  margin: 0.2rem 0;
+  line-height: 1.3;
+}
+
+.offerProfile div p:first-child {
+  font-weight: 700;
+  font-size: 1rem;
+  color: #0b2b31;
+}
+
+.offerProfile div p:not(:first-child) {
+  font-size: 0.8rem;
+  color: #495057;
+}
+
+.offerContent {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  background-color: white;
+  overflow-y: auto;
+  flex-grow: 1;
+  height: calc(100% - 180px);
+  align-items: start;
+}
+
+/* Left Section - Time, Mode, Location */
+.offerLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding-right: 1rem;
+  border-right: 1px solid #e9ecef;
+}
+
+.offerTimeHeader {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.offerTimeHeader h2 {
+  font-weight: 700;
+  color: #0b3b44;
+  font-size: 0.95rem;
+  user-select: none;
+  -webkit-user-select: none;
+  margin: 0;
+}
+
+.offerTimeHeader p {
+  font-style: italic;
+  font-size: 0.75rem;
+  color: #6c757d;
+  user-select: none;
+  -webkit-user-select: none;
+  margin: 0;
+}
+
+.offerTimeSlots {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.6rem;
+  max-width: 100%;
+}
+
+.offerTimeBtn {
+  background-color: #f8f9fa;
+  color: #495057;
+  font-weight: 600;
+  font-size: 0.8rem;
+  padding: 0.5rem 0.4rem;
+  border-radius: 0.4rem;
+  user-select: none;
+  -webkit-user-select: none;
+  border: 1px solid #e9ecef;
+  cursor: pointer;
+  transition: all 0.2s;
+  min-width: 0;
+}
+
+.offerTimeBtn:hover {
+  background-color: #e9ecef;
+  border-color: #0b3b44;
+  color: #0b3b44;
+}
+
+.offerTimeBtn:active {
+  transform: scale(0.98);
+}
+
+.offerTimeSelected {
+  background-color: #0b3b44;
+  color: white;
+  border-color: #0b3b44;
+}
+
+.offerTimeSelected:hover {
+  background-color: #0a2e34;
+  border-color: #0a2e34;
+  color: white;
+}
+
+.offerTimeSelected:active {
+  background-color: #083138;
+  transform: scale(0.98);
+}
+
+.offerModeHeader {
+  font-weight: 700;
+  color: #0b3b44;
+  font-size: 0.95rem;
+  margin: 0.5rem 0 0.75rem 0;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.offerModeButtons {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.offerModeBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0.5rem;
+  padding: 0.6rem 0.8rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  border: 1px solid #ced4da;
+  background-color: white;
+  transition: all 0.2s;
+  min-width: 100px;
+  flex: 1;
+  color: #495057;
+}
+
+.offerModeBtn:hover:not(:disabled) {
+  background-color: #f1f3f5;
+  border-color: #0b3b44;
+  color: #0b3b44;
+}
+
+.offerModeBtn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.offerModeBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: #f8f9fa;
+  color: #6c757d;
+  border-color: #e9ecef;
+}
+
+.offerModeBtn:disabled:hover {
+  background-color: #f8f9fa;
+  border-color: #e9ecef;
+  color: #6c757d;
+  transform: none;
+}
+
+.offerModeActive {
+  background-color: #0b3b44;
+  color: white;
+  border-color: #0b3b44;
+}
+
+.offerModeActive:hover {
+  background-color: #0a2e34;
+  border-color: #0a2e34;
+  color: white;
+}
+
+.offerModeActive:active {
+  background-color: #083138;
+  transform: scale(0.98);
+}
+
+.offerLocationInput {
+  margin-top: 0.5rem;
+}
+
+.offerLocationField {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid #ced4da;
+  border-radius: 0.4rem;
+  font-size: 0.8rem;
+  transition: all 0.2s;
+  background-color: white;
+  color: #495057;
+  max-width: 250px;
+}
+
+.offerLocationField:focus {
+  outline: none;
+  border-color: #0b3b44;
+  box-shadow: 0 0 0 2px rgba(11, 59, 68, 0.1);
+}
+
+.offerLocationField::placeholder {
+  color: #6c757d;
+}
+
+/* Right Section - Calendar, Subject, Notes */
+.offerRight {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding-left: 1rem;
+}
+
+.offerCalendar {
+  border: 1px solid #e9ecef;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  padding: 0.875rem;
+  font-family: Arial, sans-serif;
+  font-size: 0.75rem;
+  color: #495057;
+  width: 100%;
+  background: white;
+}
+
+.offerCalendarHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-size: 0.8rem;
+  color: #6c757d;
+}
+
+.offerMonthContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.offerCalendarHeader .offerMonth {
+  font-weight: 700;
+  color: #0b3b44;
+  font-size: 0.85rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.3rem 0.6rem;
+  border-radius: 0.3rem;
+  transition: background-color 0.2s;
+}
+
+.offerCalendarHeader .offerMonth:hover {
+  background-color: #f1f3f5;
+}
+
+.offerCalendarHeader .offerTodayBtn {
+  font-size: 0.75rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 0.3rem;
+  background: none;
+  border: 1px solid #0b3b44;
+  color: #0b3b44;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.offerCalendarHeader .offerTodayBtn:hover {
+  background-color: #0b3b44;
+  color: white;
+}
+
+.offerCalendarHeader .offerTodayBtn:active {
+  transform: scale(0.95);
+}
+
+.offerCalendarHeader .offerArrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0b3b44;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  background: none;
+  border: 1px solid #e9ecef;
+  font-size: 0.9rem;
+  font-weight: bold;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  transition: all 0.2s;
+}
+
+.offerCalendarHeader .offerArrow:hover {
+  background-color: #0b3b44;
+  color: white;
+  border-color: #0b3b44;
+}
+
+.offerCalendarHeader .offerArrow:active {
+  transform: scale(0.9);
+}
+
+.offerCalendarLegend {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 0.75rem 0;
+  font-size: 0.7rem;
+}
+
+.offerLegendItem {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.offerLegendDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.offerLegendDotAvailable {
+  background-color: #0b3b44;
+}
+
+.offerLegendDotUnavailable {
+  background-color: #e9ecef;
+  border: 1px solid #ced4da;
+}
+
+.offerWeekdays {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.3rem;
+  text-align: center;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #0b3b44;
+  margin-bottom: 0.3rem;
+  padding: 0.3rem 0;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.offerDays {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.3rem;
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.offerDay {
+  padding: 0.5rem 0;
+  border-radius: 0.3rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid transparent;
+  color: #212529;
+}
+
+.offerDay:hover {
+  background-color: #f1f3f5;
+  color: #0b3b44;
+}
+
+.offerDay:active {
+  transform: scale(0.95);
+}
+
+.offerDayCurrent {
+  color: #212529;
+  font-weight: 600;
+}
+
+.offerDayOther {
+  color: #adb5bd;
+  font-weight: 400;
+}
+
+.offerDayToday {
+  background-color: #349eb1;
+  color: white;
+  border-color: #349eb1;
+}
+
+.offerDayToday:hover {
+  background-color: #2d8a9c;
+  color: white;
+}
+
+.offerDaySelected {
+  background-color: #0b3b44;
+  color: white;
+  border-color: #0b3b44;
+}
+
+.offerDaySelected:hover {
+  background-color: #0a2e34;
+  color: white;
+}
+
+.offerDayAvailable {
+  color: #212529;
+  cursor: pointer;
+}
+
+.offerDayUnavailable {
+  color: #adb5bd;
+  cursor: not-allowed;
+  background-color: #f8f9fa;
+}
+
+.offerDayUnavailable:hover {
+  background-color: #f8f9fa;
+  color: #adb5bd;
+  transform: none;
+}
+
+/* Subject Selection */
+.offerSubjectSelect {
+  width: 100%;
+}
+
+.offerSubjectHeader {
+  font-weight: 700;
+  color: #0b3b44;
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.offerSubjectDropdown {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid #ced4da;
+  border-radius: 0.4rem;
+  font-size: 0.8rem;
+  background-color: white;
+  color: #495057;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230b3b44' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.6rem center;
+  background-size: 1rem;
+  transition: all 0.2s;
+}
+
+.offerSubjectDropdown:focus {
+  outline: none;
+  border-color: #0b3b44;
+  box-shadow: 0 0 0 2px rgba(11, 59, 68, 0.1);
+}
+
+.offerSubjectDropdown option {
+  white-space: normal;
+  word-wrap: break-word;
+  padding: 8px 12px;
+  font-size: 0.8rem;
+  color: #495057;
+  background-color: white;
+}
+
+/* Notes Section - Simplified */
+.offerNotes {
+  width: 100%;
+}
+
+.offerNotes textarea {
+  width: 100%;
+  min-height: 60px;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid #ced4da;
+  border-radius: 0.4rem;
+  font-size: 0.8rem;
+  font-family: inherit;
+  background-color: white;
+  color: #495057;
+  resize: vertical;
+  transition: border-color 0.2s;
+  line-height: 1.4;
+}
+
+.offerNotes textarea:focus {
+  outline: none;
+  border-color: #0b3b44;
+}
+
+.offerNotes textarea::placeholder {
+  color: #6c757d;
+}
+
+/* Footer */
+.offerFooter {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #dee2e6;
+  background-color: white;
+  border-bottom-left-radius: 1.5rem;
+  border-bottom-right-radius: 1.5rem;
+  position: sticky;
+  bottom: 0;
+  z-index: 30;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+  min-height: 60px;
+}
+
+.offerBtnCancel {
+  color: #dc3545;
+  font-weight: 600;
+  font-size: 0.85rem;
+  border: 1px solid #dc3545;
+  border-radius: 0.4rem;
+  padding: 0.5rem 1.25rem;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  background: none;
+  transition: all 0.2s;
+  min-width: 100px;
+}
+
+.offerBtnCancel:hover {
+  background-color: #dc3545;
+  color: white;
+}
+
+.offerBtnCancel:active {
+  background-color: #c82333;
+  border-color: #c82333;
+  transform: scale(0.98);
+  color: white;
+}
+
+.offerBtnProceed {
+  background: linear-gradient(135deg, #0b2b31, #2b737e);
+  color: white;
+  font-weight: 600;
+  font-size: 0.85rem;
+  border-radius: 0.4rem;
+  padding: 0.5rem 1.25rem;
+  cursor: pointer;
+  user-select: none;
+  border: none;
+  -webkit-user-select: none;
+  transition: all 0.2s;
+  min-width: 100px;
+}
+
+.offerBtnProceed:hover:not(:disabled) {
+  background: linear-gradient(135deg, #2b737e, #0b2b31);
+  color: white;
+}
+
+.offerBtnProceed:active:not(:disabled) {
+  background: linear-gradient(135deg, #083138, #1a5a65);
+  transform: scale(0.98);
+  color: white;
+}
+
+.offerBtnProceed:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: linear-gradient(135deg, #6c757d, #868e96);
+  color: #e9ecef;
+}
+
+.offerBtnProceed:disabled:hover {
+  background: linear-gradient(135deg, #6c757d, #868e96);
+  color: #e9ecef;
+  transform: none;
+}
+
+/* ========== RESPONSIVE DESIGN ========== */
+
+/* Laptop (1024px - 1200px) */
+@media (max-width: 1200px) {
+  .offerBooking {
+    width: 95%;
+    max-width: 1000px;
+    left: 50%;
+  }
+  
+  .offerContent {
+    padding: 1.25rem;
+    gap: 1.25rem;
+  }
+  
+  .offerTimeSlots {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .offerLocationField {
+    max-width: 100%;
+  }
+}
+
+/* Tablet Landscape (768px - 1024px) */
+@media (max-width: 1024px) {
+  .offerBooking {
+    width: 92%;
+    max-width: 900px;
+    max-height: 90vh;
+  }
+  
+  .offerContent {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    padding: 1.5rem;
+  }
+  
+  .offerLeft {
+    padding-right: 1rem;
+  }
+  
+  .offerRight {
+    padding-left: 1rem;
+  }
+  
+  .offerTimeSlots {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+  
+  .offerModeButtons {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .offerModeBtn {
+    min-width: auto;
+  }
+
+  .offerBtnCancel,
+  .offerBtnProceed {
+    padding: 0.1rem 1.5rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Tablet Portrait (600px - 768px) */
+@media (max-width: 768px) {
+  .offerBooking {
+    width: 94%;
+    max-width: 600px;
+    max-height: 95vh;
+    border-radius: 1rem;
+  }
+  
+  .offerHeader {
+    padding: 0.75rem 1.25rem;
+    border-radius: 1rem 1rem 0 0;
+  }
+  
+  .offerHeader h1 {
+    font-size: 1.1rem;
+  }
+  
+  .offerProfile {
+    padding: 1rem 1.25rem;
+    gap: 1rem;
+  }
+  
+  .offerProfile img {
+    width: 3.5rem;
+    height: 3.5rem;
+  }
+  
+  .offerContent {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding: 1.25rem;
+    height: calc(100% - 160px);
+  }
+  
+  .offerLeft {
+    border-right: none;
+    padding-right: 0;
+    border-bottom: 1px solid #e9ecef;
+    padding-bottom: 1.5rem;
+  }
+  
+  .offerRight {
+    padding-left: 0;
+    gap: 1.5rem;
+  }
+  
+  .offerTimeSlots {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+  }
+  
+  .offerTimeBtn {
+    padding: 0.6rem 0.5rem;
+    font-size: 0.8rem;
+  }
+  
+  .offerModeButtons {
+    flex-direction: row;
+    gap: 0.75rem;
+  }
+  
+  .offerModeBtn {
+    padding: 0.7rem 1rem;
+    font-size: 0.85rem;
+  }
+  
+  .offerCalendar {
+    padding: 1rem;
+  }
+  
+  .offerNotes textarea {
+    min-height: 70px;
+  }
+  
+  .offerFooter {
+    padding: 1rem 1.25rem;
+    gap: 0.75rem;
+  }
+  
+  .offerBtnCancel,
+  .offerBtnProceed {
+    padding: 0.1rem 1.5rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Mobile Large (425px - 600px) */
+@media (max-width: 600px) {
+  .offerBooking {
+    width: 96%;
+    max-width: 500px;
+    max-height: 94vh;
+    border-radius: 0.75rem;
+  }
+  
+  .offerHeader {
+    padding: 0.625rem 1rem;
+  }
+  
+  .offerHeader h1 {
+    font-size: 1rem;
+  }
+  
+  .offerHeader button {
+    width: 30px;
+    height: 30px;
+    font-size: 1.5rem;
+  }
+  
+  .offerProfile {
+    flex-direction: column;
+    text-align: center;
+    padding: 0.875rem 1rem;
+    gap: 0.75rem;
+  }
+  
+  .offerProfile img {
+    width: 3rem;
+    height: 3rem;
+  }
+  
+  .offerContent {
+    padding: 1rem;
+    gap: 1.25rem;
+    height: calc(100% - 150px);
+  }
+  
+  .offerLeft {
+    padding-bottom: 1.25rem;
+    gap: 1rem;
+  }
+  
+  .offerTimeSlots {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.4rem;
+  }
+  
+  .offerTimeBtn {
+    padding: 0.5rem 0.4rem;
+    font-size: 0.75rem;
+  }
+  
+  .offerModeButtons {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .offerModeBtn {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.8rem;
+  }
+  
+  .offerCalendar {
+    padding: 0.75rem;
+  }
+  
+  .offerCalendarHeader {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .offerMonthContainer {
+    order: 2;
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .offerCalendarHeader .offerArrow {
+    order: 1;
+  }
+  
+  .offerCalendarHeader .offerArrow:first-child {
+    order: 1;
+  }
+  
+  .offerCalendarHeader .offerArrow:last-child {
+    order: 3;
+  }
+  
+  .offerNotes textarea {
+    min-height: 60px;
+    font-size: 0.8rem;
+  }
+  
+  .offerFooter {
+    padding: 0.875rem 1rem;
+    gap: 0.5rem;
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+  
+  .offerBtnCancel,
+  .offerBtnProceed {
+    padding: 0.6rem 1rem;
+    font-size: 0.85rem;
+    min-width: 90px;
+    flex: 1;
+    max-width: 48%;
+  }
+}
+
+/* Mobile Small (320px - 425px) */
+@media (max-width: 425px) {
+  .offerBooking {
+    width: 90%;
+    max-width: 360px;
+    max-height: 90vh;
+    border-radius: 0.5rem;
+  }
+  
+  .offerHeader {
+    padding: 0.5rem 0.875rem;
+    border-radius: 0.5rem 0.5rem 0 0;
+  }
+  
+  .offerHeader h1 {
+    font-size: 0.9rem;
+  }
+  
+  .offerProfile {
+    padding: 0.75rem 0.875rem;
+  }
+  
+  .offerProfile img {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+  
+  .offerProfile div p:first-child {
+    font-size: 0.9rem;
+  }
+  
+  .offerProfile div p:not(:first-child) {
+    font-size: 0.75rem;
+  }
+  
+  .offerContent {
+    padding: 0.875rem;
+    gap: 1rem;
+  }
+  
+  .offerTimeHeader h2,
+  .offerModeHeader,
+  .offerSubjectHeader {
+    font-size: 0.9rem;
+  }
+  
+  .offerTimeSlots {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.3rem;
+  }
+  
+  .offerTimeBtn {
+    padding: 0.4rem 0.3rem;
+    font-size: 0.7rem;
+  }
+  
+  .offerModeBtn {
+    padding: 0.5rem 0.6rem;
+    font-size: 0.75rem;
+    min-width: auto;
+  }
+  
+  .offerCalendar {
+    padding: 0.625rem;
+  }
+  
+  .offerWeekdays,
+  .offerDays {
+    gap: 0.2rem;
+  }
+  
+  .offerDay {
+    padding: 0.4rem 0;
+    font-size: 0.7rem;
+  }
+  
+  .offerSubjectDropdown,
+  .offerNotes textarea {
+    font-size: 0.75rem;
+    padding: 0.5rem 0.625rem;
+  }
+  
+  .offerFooter {
+    flex-direction: row;
+    padding: 0.75rem 1rem;
+  }
+  
+  .offerBtnCancel,
+  .offerBtnProceed {
+    width: auto;
+    min-width: auto;
+    padding: 0.6rem 0.75rem;
+    font-size: 0.8rem;
+    flex: 1;
+    max-width: 48%;
+  }
+}
+
+/* Mobile Landscape (max-height: 500px) */
+@media (max-height: 500px) and (orientation: landscape) {
+  .offerBooking {
+    max-height: 98vh;
+    height: 98vh;
+  }
+  
+  .offerProfile {
+    padding: 0.5rem 1.5rem;
+    min-height: 50px;
+  }
+  
+  .offerProfile img {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+  
+  .offerContent {
+    height: calc(100% - 120px);
+    padding: 1rem 1.5rem;
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .offerTimeSlots {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.3rem;
+  }
+  
+  .offerTimeBtn {
+    padding: 0.3rem 0.2rem;
+    font-size: 0.7rem;
+  }
+  
+  .offerNotes textarea {
+    min-height: 50px;
+  }
+  
+  .offerFooter {
+    flex-direction: row;
+    gap: 0.75rem;
+  }
+}

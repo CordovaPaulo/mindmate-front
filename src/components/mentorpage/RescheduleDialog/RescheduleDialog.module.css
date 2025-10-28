@@ -1,0 +1,288 @@
+/* RescheduleDialog.module.css */
+
+/* Use very specific class names to prevent conflicts */
+.rescheduleModalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.rescheduleWrapper {
+  position: relative;
+  background: white;
+  border-radius: 12px;
+  width: 500px;
+  padding: 0;
+  box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
+  border: 1px solid #eaeaea;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  min-height: 250px;
+}
+
+.rescheduleUpperElement {
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #f5f5f5;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.rescheduleUpperElement h1 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0 auto;
+}
+
+.rescheduleContentElement {
+  padding: 24px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.rescheduleContentElement p {
+  color: #666;
+  font-size: 0.95rem;
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+.rescheduleDatepickerWrapper {
+  margin: 24px 0;
+  position: relative;
+  flex: 1;
+}
+
+.rescheduleDatepickerWrapper label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+  color: #555;
+  font-weight: 500;
+}
+
+.rescheduleFooterElement {
+  padding: 24px;
+  border-top: 1px solid #f5f5f5;
+  background-color: #fafafa;
+  border-radius: 0 0 12px 12px;
+  flex-shrink: 0;
+}
+
+.rescheduleButtonContainer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.rescheduleButtonContainer button {
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.rescheduleCancelButton {
+  background: transparent;
+  color: #666;
+}
+
+.rescheduleCancelButton:hover {
+  background: #f7f7f7;
+}
+
+.rescheduleConfirmButton {
+  background: #2c3e50;
+  color: white;
+  position: relative;
+}
+
+.rescheduleConfirmButton:disabled {
+  background: #e0e0e0;
+  cursor: not-allowed;
+}
+
+.rescheduleConfirmButton:not(:disabled):hover {
+  background: #1a2634;
+}
+
+.rescheduleLoader {
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+  border-top: 2px solid #fff;
+  width: 16px;
+  height: 16px;
+  animation: rescheduleSpin 0.6s linear infinite;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes rescheduleSpin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Button states */
+.rescheduleButtonContainer button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+  min-height: 40px;
+}
+
+.rescheduleButtonContainer button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.rescheduleButtonContainer button:active,
+.rescheduleButtonContainer button.active {
+  transform: translateY(0);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.rescheduleButtonContainer button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.rescheduleButtonContainer button.loading {
+  pointer-events: none;
+}
+
+/* Disabled form elements */
+.rescheduleDatepickerWrapper input:disabled,
+.rescheduleDatepickerWrapper textarea:disabled,
+.rescheduleDatepickerWrapper select:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background-color: #f5f5f5;
+}
+
+/* DatePicker Input Styles with specific names */
+.rescheduleDpInput {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  transition: border-color 0.2s;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.rescheduleDpInput:hover {
+  border-color: #ccc;
+}
+
+.rescheduleDpInput:focus {
+  border-color: #2c3e50;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(44, 62, 80, 0.1);
+}
+
+/* React DatePicker wrapper */
+.rescheduleDatepickerWrapper .react-datepicker-wrapper {
+  width: 100%;
+}
+
+.rescheduleDatepickerWrapper .react-datepicker__input-container {
+  width: 100%;
+}
+
+/* React DatePicker custom styling with increased specificity */
+.rescheduleModalOverlay .react-datepicker-popper {
+  z-index: 1001 !important;
+}
+
+.rescheduleModalOverlay .react-datepicker {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  border: 1px solid #eaeaea;
+  border-radius: 6px;
+  box-shadow: 0 5px 30px rgba(0, 0, 0, 0.1);
+}
+
+.rescheduleModalOverlay .react-datepicker__header {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.rescheduleModalOverlay .react-datepicker__current-month {
+  color: #333;
+  font-weight: 600;
+}
+
+.rescheduleModalOverlay .react-datepicker__day--selected {
+  background-color: #2c3e50;
+}
+
+.rescheduleModalOverlay .react-datepicker__day--keyboard-selected {
+  background-color: rgba(44, 62, 80, 0.1);
+}
+
+.rescheduleModalOverlay .react-datepicker__time-container {
+  border-left: 1px solid #eaeaea;
+}
+
+.rescheduleModalOverlay .react-datepicker__time-box {
+  width: 100%;
+}
+
+/* Toast styles with specific names */
+.rescheduleToast .mosha__toast__content {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.9rem;
+}
+
+.rescheduleToast .mosha__toast__content .mosha__toast__content__text {
+  padding: 0.5rem;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .rescheduleWrapper {
+    width: calc(100vw - 40px);
+  }
+  
+  .rescheduleModalOverlay .react-datepicker {
+    width: calc(100vw - 60px) !important;
+    left: 20px !important;
+    right: 20px !important;
+  }
+}
+
+@media (max-width: 400px) {
+  .rescheduleWrapper {
+    width: calc(100vw - 30px);
+  }
+  
+  .rescheduleModalOverlay .react-datepicker {
+    width: calc(100vw - 50px) !important;
+    left: 15px !important;
+    right: 15px !important;
+  }
+}

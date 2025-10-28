@@ -1,0 +1,700 @@
+/* filemanager.module.css */
+
+/* Use very specific class names to prevent conflicts */
+.fileManagerTableContainer {
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(26, 79, 159, 0.5);
+  width: 90%;
+  margin-top: 2rem;
+  margin-left: 2.5rem;
+  padding: 0 1rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  height: 37.4rem;
+  max-height: 37.4rem;
+  overflow: hidden;
+}
+
+.fileManagerTableHeader {
+  display: flex;
+  align-items: center;
+  padding: 1.5rem;
+  background: white;
+  gap: 1rem;
+  flex-wrap: wrap;
+  color: #0b2548;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  border-radius: 20px 20px 0 0;
+}
+
+.fileManagerTableTitle {
+  margin: 0;
+  font-size: 1.6rem;
+  color: #0b2548;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.fileManagerHeaderIcon {
+  font-size: 1.4rem;
+}
+
+.fileManagerSearchContainer {
+  margin-left: auto;
+}
+
+.fileManagerSearchWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.fileManagerSearchIcon {
+  position: absolute;
+  left: 12px;
+  color: #3b9aa9;
+  z-index: 1;
+}
+
+.fileManagerSearchInput {
+  padding: 0.75rem 1rem 0.75rem 2.5rem;
+  border: 1px solid rgba(134, 134, 132, 1);
+  border-radius: 8px;
+  width: 250px;
+  font-size: 0.9rem;
+  height: 40px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.fileManagerSearchInput:focus {
+  outline: none;
+  box-shadow: 0 2px 8px rgba(54, 88, 141, 0.7);
+  border-color: #3b9aa9;
+}
+
+.fileManagerTableScrollContainer {
+  overflow-y: auto;
+  flex: 1;
+}
+
+.fileManagerDataTable {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.fileManagerDataTable th {
+  position: sticky;
+  top: 0;
+  background-color: #e5e5e5;
+  color: #0b2548;
+  font-weight: 600;
+  padding: 1rem 0.75rem;
+  border-bottom: 2px solid #3b9aa9;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.fileManagerDataTable th:hover {
+  background-color: rgba(59, 154, 169, 0.1);
+}
+
+.fileManagerDataTable td {
+  padding: 0.8rem 0.75rem;
+  vertical-align: middle;
+  border-bottom: 1px solid #eee;
+  font-size: 0.9rem;
+}
+
+.fileManagerDataTable tr:hover {
+  background-color: rgba(59, 154, 169, 0.05);
+}
+
+.fileManagerSortArrow {
+  display: inline-block;
+  margin-left: 5px;
+  transition: transform 0.2s ease;
+  font-size: 0.8em;
+}
+
+.fileManagerSortArrowDesc {
+  transform: rotate(180deg);
+}
+
+.fileManagerFileIconSmall {
+  margin-right: 8px;
+  color: #3b9aa9;
+  width: 16px;
+}
+
+.fileManagerFileTypeBadge {
+  display: inline-block;
+  padding: 0.35rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background-color: rgba(59, 154, 169, 0.1);
+  color: #0b3e8a;
+}
+
+.fileManagerDetailsBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid #0b3e8a;
+  background-color: rgba(73, 152, 164, 0.103);
+  color: #0b3e8a;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.fileManagerDetailsBtn:hover {
+  background-color: rgba(59, 154, 169, 0.2);
+  transform: translateY(-1px);
+}
+
+.fileManagerNoFiles {
+  text-align: center;
+  padding: 2rem;
+  color: #0b2548;
+  font-size: 1.1rem;
+}
+
+/* Modal Styles */
+.fileManagerModalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.fileManagerFileModal {
+  background: white;
+  border-radius: 12px;
+  width: 400px;
+  max-width: 90vw;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  animation: fileManagerModalSlideIn 0.3s ease-out;
+}
+
+@keyframes fileManagerModalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.fileManagerModalHeader {
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #0b3e8a, #3b9aa9);
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.fileManagerModalTitle {
+  margin: 0;
+  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.fileManagerCloseBtn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.fileManagerCloseBtn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.fileManagerModalBody {
+  padding: 1.5rem;
+}
+
+.fileManagerFileInfo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #e1e4e8;
+}
+
+.fileManagerFileIconLarge {
+  width: 60px;
+  height: 60px;
+  border-radius: 10px;
+  background: rgba(59, 154, 169, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: #3b9aa9;
+}
+
+.fileManagerFileDetails {
+  flex: 1;
+  min-width: 0;
+}
+
+.fileManagerFileDetails h4 {
+  margin: 0 0 0.5rem 0;
+  color: #0b2548;
+  font-size: 1.1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fileManagerFileDetails p {
+  margin: 0;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.fileManagerActionButtons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.fileManagerActionBtn {
+  padding: 1rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+  transition: all 0.2s;
+  font-size: 1rem;
+  width: 100%;
+}
+
+.fileManagerActionBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.fileManagerActionBtnView {
+  background-color: rgba(59, 154, 169, 0.1);
+  color: #0b3e8a;
+}
+
+.fileManagerActionBtnView:hover {
+  background-color: rgba(59, 154, 169, 0.2);
+}
+
+.fileManagerActionBtnDownload {
+  background-color: rgba(76, 175, 80, 0.1);
+  color: #2e7d32;
+}
+
+.fileManagerActionBtnDownload:hover {
+  background-color: rgba(76, 175, 80, 0.2);
+}
+
+.fileManagerActionBtnDelete {
+  background-color: rgba(244, 67, 54, 0.1);
+  color: #d32f2f;
+}
+
+.fileManagerActionBtnDelete:hover {
+  background-color: rgba(244, 67, 54, 0.2);
+}
+
+/* Type Filter Dropdown */
+.fileManagerThContent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  position: relative;
+}
+
+.fileManagerFilterIcon {
+  cursor: pointer;
+  color: #3b9aa9;
+  font-size: 0.9em;
+  transition: transform 0.2s ease;
+  padding: 4px;
+}
+
+.fileManagerFilterIcon:hover {
+  transform: scale(1.1);
+  color: #0b3e8a;
+}
+
+.fileManagerTypeFilterDropdown {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: white;
+  border: 1px solid #e1e4e8;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  padding: 0.5rem;
+  min-width: 140px;
+}
+
+.fileManagerHeaderFilter {
+  width: 100%;
+  background: white;
+  border: 1px solid #e1e4e8;
+  color: #0b2548;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0.5rem;
+  font-size: 0.9rem;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.fileManagerHeaderFilter:hover {
+  background-color: rgba(59, 154, 169, 0.1);
+  border-color: #3b9aa9;
+}
+
+.fileManagerHeaderFilter:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(59, 154, 169, 0.2);
+}
+
+/* Laptop (1024px - 1439px) */
+@media (min-width: 1024px) and (max-width: 1439px) {
+  .fileManagerTableTitle {
+    font-size: 1.4rem;
+  }
+  
+  .fileManagerHeaderIcon {
+    font-size: 1.2rem;
+  }
+  
+  .fileManagerSearchInput {
+    width: 220px;
+    font-size: 0.85rem;
+    height: 38px;
+  }
+  
+  .fileManagerDataTable th {
+    padding: 0.9rem 0.7rem;
+    font-size: 0.85rem;
+  }
+  
+  .fileManagerDataTable td {
+    padding: 0.7rem 0.7rem;
+    font-size: 0.85rem;
+  }
+  
+  .fileManagerFileTypeBadge {
+    font-size: 0.7rem;
+    padding: 0.3rem 0.6rem;
+  }
+  
+  .fileManagerDetailsBtn {
+    font-size: 0.85rem;
+    padding: 5px 10px;
+  }
+  
+  .fileManagerFileIconSmall {
+    width: 14px;
+  }
+  
+  .fileManagerModalTitle {
+    font-size: 1.2rem;
+  }
+  
+  .fileManagerFileIconLarge {
+    width: 55px;
+    height: 55px;
+    font-size: 1.8rem;
+  }
+  
+  .fileManagerFileDetails h4 {
+    font-size: 1rem;
+  }
+  
+  .fileManagerFileDetails p {
+    font-size: 0.85rem;
+  }
+  
+  .fileManagerActionBtn {
+    font-size: 0.9rem;
+    padding: 0.9rem;
+  }
+}
+
+/* Tablet (768px - 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .fileManagerTableContainer {
+    width: 95%;
+    margin-left: 1rem;
+    height: 35rem;
+  }
+
+  .fileManagerTableTitle {
+    font-size: 1.3rem;
+  }
+  
+  .fileManagerHeaderIcon {
+    font-size: 1.1rem;
+  }
+  
+  .fileManagerSearchInput {
+    width: 200px;
+    font-size: 0.8rem;
+    height: 36px;
+    padding: 0.6rem 0.8rem 0.6rem 2.2rem;
+  }
+  
+  .fileManagerDataTable th {
+    padding: 0.8rem 0.6rem;
+    font-size: 0.8rem;
+  }
+  
+  .fileManagerDataTable td {
+    padding: 0.6rem 0.6rem;
+    font-size: 0.8rem;
+  }
+  
+  .fileManagerFileTypeBadge {
+    font-size: 0.65rem;
+    padding: 0.25rem 0.5rem;
+  }
+  
+  .fileManagerDetailsBtn {
+    font-size: 0.8rem;
+    padding: 4px 8px;
+  }
+  
+  .fileManagerFileIconSmall {
+    width: 13px;
+    margin-right: 6px;
+  }
+  
+  .fileManagerModalTitle {
+    font-size: 1.1rem;
+  }
+  
+  .fileManagerFileIconLarge {
+    width: 50px;
+    height: 50px;
+    font-size: 1.6rem;
+  }
+  
+  .fileManagerFileDetails h4 {
+    font-size: 0.95rem;
+  }
+  
+  .fileManagerFileDetails p {
+    font-size: 0.8rem;
+  }
+  
+  .fileManagerActionBtn {
+    font-size: 0.85rem;
+    padding: 0.8rem;
+  }
+}
+
+/* Mobile (below 768px) */
+@media (max-width: 767px) {
+  .fileManagerTableContainer {
+    width: 95%;
+    margin-left: 1rem;
+    height: 35rem;
+  }
+
+  .fileManagerTableHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .fileManagerTableTitle {
+    font-size: 1.2rem;
+  }
+  
+  .fileManagerHeaderIcon {
+    font-size: 1rem;
+  }
+
+  .fileManagerSearchContainer {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .fileManagerSearchInput {
+    width: 100%;
+    font-size: 0.8rem;
+    height: 36px;
+    padding: 0.6rem 0.8rem 0.6rem 2.2rem;
+  }
+  
+  .fileManagerSearchIcon {
+    left: 10px;
+    font-size: 0.9rem;
+  }
+  
+  .fileManagerDataTable th {
+    padding: 0.7rem 0.5rem;
+    font-size: 0.75rem;
+  }
+  
+  .fileManagerDataTable td {
+    padding: 0.5rem 0.5rem;
+    font-size: 0.75rem;
+  }
+  
+  .fileManagerFileTypeBadge {
+    font-size: 0.6rem;
+    padding: 0.2rem 0.4rem;
+  }
+  
+  .fileManagerDetailsBtn {
+    font-size: 0.75rem;
+    padding: 3px 6px;
+  }
+  
+  .fileManagerDetailsBtn span {
+    display: none;
+  }
+  
+  .fileManagerFileIconSmall {
+    width: 12px;
+    margin-right: 5px;
+  }
+  
+  .fileManagerModalTitle {
+    font-size: 1rem;
+  }
+  
+  .fileManagerFileIconLarge {
+    width: 45px;
+    height: 45px;
+    font-size: 1.4rem;
+  }
+  
+  .fileManagerFileDetails h4 {
+    font-size: 0.9rem;
+  }
+  
+  .fileManagerFileDetails p {
+    font-size: 0.75rem;
+  }
+  
+  .fileManagerActionBtn {
+    font-size: 0.8rem;
+    padding: 0.7rem;
+  }
+}
+
+/* Small Mobile (below 480px) */
+@media (max-width: 480px) {
+  .fileManagerTableContainer {
+    width: 100%;
+    margin-left: 0;
+    border-radius: 10px;
+    margin: 1rem 0;
+    height: 32rem;
+  }
+
+  .fileManagerTableTitle {
+    font-size: 1.1rem;
+  }
+  
+  .fileManagerHeaderIcon {
+    font-size: 0.9rem;
+  }
+  
+  .fileManagerDataTable th {
+    padding: 0.6rem 0.4rem;
+    font-size: 0.7rem;
+  }
+  
+  .fileManagerDataTable td {
+    padding: 0.4rem 0.4rem;
+    font-size: 0.7rem;
+  }
+  
+  .fileManagerFileTypeBadge {
+    font-size: 0.55rem;
+    padding: 0.15rem 0.3rem;
+  }
+  
+  .fileManagerFileIconSmall {
+    width: 10px;
+    margin-right: 4px;
+  }
+  
+  .fileManagerFileModal {
+    width: 95vw;
+  }
+  
+  .fileManagerModalTitle {
+    font-size: 0.9rem;
+  }
+  
+  .fileManagerFileIconLarge {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+  }
+  
+  .fileManagerFileDetails h4 {
+    font-size: 0.85rem;
+  }
+  
+  .fileManagerFileDetails p {
+    font-size: 0.7rem;
+  }
+  
+  .fileManagerActionBtn {
+    font-size: 0.75rem;
+    padding: 0.6rem;
+  }
+}
+
+@media (min-width: 1440px) {
+}

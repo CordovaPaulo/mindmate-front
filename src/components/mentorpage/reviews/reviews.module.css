@@ -1,0 +1,740 @@
+.reviewsTableContainer {
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(26, 79, 159, 0.5);
+  width: 90%;
+  margin-top: 2rem;
+  margin-left: 2.5rem;
+  padding: 0 1rem;
+  text-align: center;
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  height: 37.4rem;
+  max-height: 37.5rem;
+  overflow-y: auto;
+}
+
+.reviewsTableContainer::-webkit-scrollbar {
+  display: none;
+}
+
+.reviewsTableContainer {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.reviewsTableHeader {
+  display: flex;
+  align-items: center;
+  padding: 1.5rem;
+  background: white;
+  gap: 1rem;
+  flex-wrap: wrap;
+  color: #0b2548;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.reviewsTableTitle {
+  margin: 0;
+  font-size: 1.6rem;
+  color: #0b2548;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.reviewsSearchContainer {
+  margin-left: auto;
+}
+
+.reviewsSearchWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.reviewsSearchIcon {
+  position: absolute;
+  left: 10px;
+  color: #3b9aa9;
+  z-index: 1;
+  font-size: 0.9rem;
+}
+
+.reviewsSearchInput {
+  padding: 0.5rem 0.8rem 0.5rem 2rem;
+  border: 1px solid rgb(17, 17, 95);
+  border-radius: 6px;
+  width: 200px;
+  font-size: 0.85rem;
+  height: 35px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.reviewsSearchInput:focus {
+  outline: none;
+  box-shadow: 0 2px 8px rgba(54, 88, 141, 0.7);
+  border-color: #3b9aa9;
+}
+
+.reviewsTableScrollContainer {
+  overflow-y: auto;
+  max-height: calc(100vh - 200px);
+}
+
+.reviewsTableScrollContainer::-webkit-scrollbar {
+  display: none;
+}
+
+.reviewsTableScrollContainer {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.reviewsDataTable {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+.reviewsDataTable th {
+  position: sticky;
+  top: 0;
+  background-color: #e5e5e5;
+  color: #0b2548;
+  font-weight: 600;
+  padding: 0.75rem;
+  border-bottom: 2px solid #3b9aa9;
+}
+
+.reviewsDataTable td {
+  padding: 0.8rem;
+  vertical-align: middle;
+  border-bottom: 1px solid #eee;
+}
+
+.reviewsDataTable tr:hover {
+  background-color: rgba(59, 154, 169, 0.05);
+}
+
+.reviewsDataTable th:nth-child(1),
+.reviewsDataTable td:nth-child(1) {
+  width: 270px;
+  max-width: 300px;
+  min-width: 80px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.reviewsStars {
+  display: flex;
+  justify-content: center;
+  gap: 0.2rem;
+}
+
+.reviewsStar {
+  font-size: 1.2rem;
+  color: #ccc;
+}
+
+.reviewsFilled {
+  color: #ffd700;
+}
+
+.reviewsDetailsBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid #0b3e8a;
+  background-color: rgba(73, 152, 164, 0.103);
+  color: #0b3e8a;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.reviewsDetailsBtn:hover {
+  background-color: rgba(59, 154, 169, 0.2);
+}
+
+.reviewsNoUsers {
+  text-align: center;
+  padding: 1rem;
+  color: #0b2548;
+}
+
+.reviewsModalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+.reviewsModalContent {
+  background: white;
+  border-radius: 12px;
+  max-width: 700px;
+  width: 30%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  animation: reviewsModalSlideIn 0.3s ease-out;
+}
+
+.reviewsModalContent::-webkit-scrollbar {
+  display: none;
+}
+
+.reviewsModalContent {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@keyframes reviewsModalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reviewsModalHeader {
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #0c434d, #3b9aa9);
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 12px 12px 0 0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.reviewsHeaderContent {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.reviewsModalHeader h3 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.reviewsModalIcon {
+  color: white;
+}
+
+.reviewsCloseBtn {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.reviewsCloseBtn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.reviewsModalBody {
+  padding: 2rem;
+  padding-bottom: 3rem;
+  overflow-y: auto;
+}
+
+.reviewsModalBody::-webkit-scrollbar {
+  display: none;
+}
+
+.reviewsModalBody {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.reviewsUserProfile {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  align-items: flex-start;
+}
+
+.reviewsProfileImage {
+  flex-shrink: 0;
+}
+
+.reviewsProfileImage img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #e1e4e8;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.reviewsProfileInfo {
+  flex-grow: 1;
+}
+
+.reviewsProfileInfo h4 {
+  margin: 0 0 1.5rem 0;
+  font-size: 1.6rem;
+  color: #0b2548;
+  font-weight: 700;
+  text-align: left;
+}
+
+.reviewsProfileDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.reviewsDetailItem {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.reviewsLabel {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.reviewsValue {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #0b234a;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.reviewsRatingText {
+  color: #666;
+  font-size: 0.9rem;
+  margin-left: 0.5rem;
+}
+
+.reviewsFeedbackSection {
+  margin-top: 2rem;
+}
+
+.reviewsFeedbackCard {
+  background: #f8f9fa;
+  border-radius: 10px;
+  padding: 1.5rem;
+  border: 1px solid #e9ecef;
+}
+
+.reviewsFeedbackCard h5 {
+  margin: 0 0 1rem 0;
+  font-size: 1.1rem;
+  color: #0b3e8a;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.reviewsFeedbackContent p {
+  margin: 0;
+  line-height: 1.6;
+  color: #495057;
+  font-size: 0.95rem;
+  padding: 1rem;
+  background: white;
+  border-radius: 8px;
+  border-left: 4px solid #3b9aa9;
+}
+
+@media (max-width: 1200px) {
+  .reviewsTableContainer {
+    width: 95%;
+    margin-left: 1rem;
+  }
+  
+  .reviewsModalContent {
+    width: 50%;
+  }
+  
+  .reviewsSearchInput {
+    width: 180px;
+    height: 32px;
+    font-size: 0.8rem;
+    padding: 0.4rem 0.7rem 0.4rem 1.8rem;
+  }
+  
+  .reviewsSearchIcon {
+    left: 8px;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .reviewsTableContainer {
+    width: 96%;
+    margin-left: 0.5rem;
+    margin-top: 1rem;
+    height: 35rem;
+  }
+  
+  .reviewsTableHeader {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  
+  .reviewsSearchContainer {
+    margin-left: 0;
+  }
+  
+  .reviewsModalContent {
+    width: 70%;
+  }
+  
+  .reviewsUserProfile {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+  
+  .reviewsProfileInfo h4 {
+    text-align: left;
+  }
+  
+  .reviewsProfileDetails {
+    flex-direction: row;
+    gap: 2rem;
+  }
+  
+  .reviewsDetailItem {
+    text-align: left;
+  }
+  
+  .reviewsSearchInput {
+    width: 160px;
+  }
+}
+
+@media (max-width: 768px) {
+  .reviewsTableContainer {
+    width: 98%;
+    margin-left: 0;
+    padding: 0 0.5rem;
+    height: 32rem;
+    border-radius: 12px;
+  }
+
+  .reviewsTableHeader {
+    padding: 1rem;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .reviewsTableTitle {
+    font-size: 1.4rem;
+  }
+
+  .reviewsSearchContainer {
+    margin-left: 0;
+  }
+
+  .reviewsSearchInput {
+    width: 150px;
+    height: 35px;
+  }
+
+  .reviewsDataTable th,
+  .reviewsDataTable td {
+    padding: 0.6rem;
+    font-size: 0.85rem;
+  }
+
+  .reviewsDataTable th:nth-child(1),
+  .reviewsDataTable td:nth-child(1) {
+    width: 150px;
+    max-width: 200px;
+  }
+
+  .reviewsModalContent {
+    width: 85%;
+  }
+
+  .reviewsModalBody {
+    padding: 1.5rem;
+  }
+
+  .reviewsUserProfile {
+    flex-direction: row;
+    gap: 1.5rem;
+  }
+
+  .reviewsProfileInfo h4 {
+    font-size: 1.3rem;
+    text-align: left;
+  }
+  
+  .reviewsProfileDetails {
+    flex-direction: row;
+    gap: 1.5rem;
+  }
+  
+  .reviewsModalHeader {
+    padding: 1.2rem;
+  }
+  
+  .reviewsModalHeader h3 {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .reviewsTableContainer {
+    width: 100%;
+    margin: 0.5rem 0;
+    height: 30rem;
+    border-radius: 8px;
+  }
+
+  .reviewsTableHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .reviewsTableTitle {
+    font-size: 1.2rem;
+  }
+
+  .reviewsSearchContainer {
+    width: 100%;
+  }
+
+  .reviewsSearchInput {
+    width: 100%;
+    max-width: 250px;
+    font-size: 0.8rem;
+    height: 32px;
+    padding: 0.4rem 0.6rem 0.4rem 1.8rem;
+  }
+
+  .reviewsSearchIcon {
+    left: 8px;
+    font-size: 0.75rem;
+  }
+
+  .reviewsDataTable {
+    font-size: 0.8rem;
+  }
+
+  .reviewsDataTable th,
+  .reviewsDataTable td {
+    padding: 0.5rem 0.3rem;
+  }
+
+  .reviewsDataTable th:nth-child(1),
+  .reviewsDataTable td:nth-child(1) {
+    width: 120px;
+    max-width: 150px;
+  }
+
+  .reviewsStars {
+    gap: 0.1rem;
+  }
+
+  .reviewsStar {
+    font-size: 1rem;
+  }
+
+  .reviewsDetailsBtn {
+    padding: 4px 8px;
+    font-size: 0.8rem;
+  }
+
+  .reviewsDetailsBtn span {
+    display: none;
+  }
+
+  .reviewsModalContent {
+    width: 92%;
+    margin: 0.5rem;
+  }
+
+  .reviewsModalHeader {
+    padding: 1rem;
+  }
+
+  .reviewsModalHeader h3 {
+    font-size: 1.2rem;
+  }
+
+  .reviewsModalBody {
+    padding: 1rem;
+  }
+
+  .reviewsUserProfile {
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    align-items: center;
+  }
+
+  .reviewsProfileInfo h4 {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+
+  .reviewsProfileDetails {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .reviewsDetailItem {
+    text-align: center;
+    align-items: center;
+  }
+
+  .reviewsLabel,
+  .reviewsValue {
+    font-size: 0.8rem;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .reviewsFeedbackCard {
+    padding: 1rem;
+  }
+
+  .reviewsFeedbackCard h5 {
+    font-size: 1rem;
+    justify-content: center;
+  }
+
+  .reviewsFeedbackContent p {
+    font-size: 0.85rem;
+    padding: 0.8rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .reviewsTableContainer {
+    height: 28rem;
+  }
+
+  .reviewsTableTitle {
+    font-size: 1.1rem;
+  }
+
+  .reviewsSearchInput {
+    width: 100%;
+    font-size: 0.75rem;
+    height: 30px;
+  }
+
+  .reviewsDataTable {
+    font-size: 0.75rem;
+  }
+
+  .reviewsDataTable th,
+  .reviewsDataTable td {
+    padding: 0.4rem 0.2rem;
+  }
+
+  .reviewsModalContent {
+    width: 96%;
+    margin: 0.5rem;
+  }
+
+  .reviewsUserProfile {
+    gap: 0.8rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .reviewsProfileInfo h4 {
+    font-size: 1rem;
+  }
+
+  .reviewsCloseBtn {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .reviewsModalHeader {
+    padding: 0.8rem;
+  }
+  
+  .reviewsModalHeader h3 {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-height: 700px) {
+  .reviewsTableContainer {
+    height: 32rem;
+  }
+  
+  .reviewsModalContent {
+    max-height: 85vh;
+  }
+}
+
+@media (max-height: 600px) {
+  .reviewsTableContainer {
+    height: 28rem;
+  }
+  
+  .reviewsModalBody {
+    padding: 1rem;
+  }
+  
+  .reviewsUserProfile {
+    margin-bottom: 1rem;
+  }
+  
+  .reviewsProfileInfo h4 {
+    font-size: 1rem;
+    margin-bottom: 0.8rem;
+  }
+}

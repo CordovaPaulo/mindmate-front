@@ -1,0 +1,293 @@
+/* main.module.css */
+
+.mainWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 1.5rem;
+  position: relative;
+}
+
+.mainSearchContainer {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  width: 100%;
+  max-width: 1100px;
+  justify-content: flex-end;
+}
+
+.mainSearchInput {
+  padding: 0.5rem 1rem;
+  border: 1px solid #d8d5d0;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  width: 250px;
+  transition: all 0.3s ease;
+  margin-right: 0.5rem;
+}
+
+.mainSearchInput:focus {
+  outline: none;
+  border-color: #349eb1;
+  box-shadow: 0 0 0 2px rgba(52, 158, 177, 0.2);
+  width: 300px;
+}
+
+.mainSearchButton {
+  background: linear-gradient(135deg, #0c434d, #3b9aa9);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mainSearchButton:hover {
+  background: #2d8a9d;
+  transform: scale(1.05);
+}
+
+.mainUserGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.25rem;
+  width: 100%;
+  max-width: 1100px;
+}
+
+.mainUserCard {
+  background: #e3e6e7;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  border: 1px solid #e0dcd7;
+  position: relative;
+  z-index: 1;
+}
+
+.mainUserCard:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.15);
+}
+
+.mainUpperElement {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* keep transparent so the card's background shows as a single color */
+  background: transparent;
+  position: relative;
+}
+
+/* restore the divider between upper and lower card sections */
+.mainUpperElement::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #d8d5d0, transparent);
+  pointer-events: none;
+}
+
+.mainUserCard img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #f5f3f0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: opacity 0.3s ease;
+}
+
+.mainUserCard img[src="https://placehold.co/600x400"] {
+  opacity: 0.7;
+}
+
+.mainUserCard h1 {
+  color: #3a3631;
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0.75rem 0 0.4rem;
+  text-align: center;
+}
+
+.mainLowerElement {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* use transparent so the card's background shows as a single color */
+  background: transparent;
+}
+
+.mainLowerElement p {
+  color: #5a5651;
+  font-size: 0.8rem;
+  text-align: center;
+  margin: 0.15rem 0;
+  line-height: 1.4;
+}
+
+.mainButtonGroup {
+  display: flex;
+  width: 70%;
+  margin-top: 1rem;
+}
+
+.mainSeeMoreBtn {
+  background: linear-gradient(135deg, #0c434d, #3b9aa9);
+  color: white;
+  border: none;
+  padding: 0.5rem 1.25rem;
+  border-radius: 18px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.8rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  width: 100%;
+}
+
+.mainSeeMoreBtn:hover {
+  background: linear-gradient(135deg, #3b9aa9, #0c434d);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+.mainViewPopupOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.mainViewPopup {
+  max-width: 90%;
+  max-height: 90vh;
+  overflow: auto;
+}
+
+.mainStars {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.25rem;
+  margin: 0.5rem 0;
+}
+
+.mainFilledStar {
+  font-size: 1.5rem;
+}
+
+/* Tablet Responsive Design */
+@media (max-width: 1024px) {
+  .mainSearchContainer {
+    /* keep search on the right */
+    justify-content: flex-end !important;
+    margin-bottom: 1.25rem;
+    padding: 0 1rem;
+  }
+
+  .mainSearchInput {
+    /* don't stretch full width so container can right-align it */
+    width: auto;
+    max-width: 320px;
+    margin-right: 0.75rem;
+    flex: 0 0 auto;
+  }
+
+  .mainSearchInput:focus {
+    width: auto;
+    max-width: 360px;
+  }
+
+  .mainUserGrid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.25rem;
+    padding: 0 1rem;
+  }
+}
+
+/* Mobile Responsive Design */
+@media (max-width: 768px) {
+  .mainSearchContainer {
+    /* keep search on the right */
+    justify-content: flex-end !important;
+    margin-bottom: 1rem;
+    padding: 0 0.5rem;
+  }
+
+  .mainSearchInput {
+    width: auto;
+    max-width: 280px;
+    margin-right: 0.75rem;
+    flex: 0 0 auto;
+  }
+
+  .mainSearchInput:focus {
+    width: auto;
+    max-width: 300px;
+  }
+
+  .mainUserGrid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 1rem;
+    padding: 0 0.5rem;
+  }
+}
+
+/* Small Mobile Responsive Design */
+@media (max-width: 480px) {
+  .mainSearchContainer {
+    /* keep search on the right */
+    justify-content: flex-end !important;
+    margin-bottom: 1rem;
+    padding: 0 0.25rem;
+  }
+
+  .mainSearchInput {
+    width: auto;
+    max-width: 240px;
+    margin-right: 0.5rem;
+    font-size: 0.85rem;
+    padding: 0.4rem 0.875rem;
+    flex: 0 0 auto;
+  }
+
+  .mainSearchInput:focus {
+    width: auto;
+    max-width: 260px;
+  }
+}
+
+/* Extra Small Mobile Responsive Design */
+@media (max-width: 360px) {
+  .mainSearchContainer {
+    justify-content: flex-end !important;
+  }
+
+  .mainSearchInput {
+    max-width: 220px;
+  }
+
+  .mainSearchInput:focus {
+    max-width: 240px;
+  }
+}

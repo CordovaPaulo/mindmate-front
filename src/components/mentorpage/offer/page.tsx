@@ -1,4 +1,3 @@
-// src/components/mentorpage/offer/page.tsx
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
@@ -268,14 +267,12 @@ export default function Offer({ info, mentorId, onClose, onConfirm }: OfferProps
           <div className={styles.offerSubjectSelect}>
             <h3 className={styles.offerSubjectHeader}>Select Subject</h3>
             <select value={selectedSubject} onChange={(e) => setSelectedSubject(e.target.value)}
-              className={styles.offerSubjectDropdown} required>
+              className={styles.offerSubjectDropdown} required
+              aria-label='Dropdown for Subjects'
+              >
               <option value="" disabled>Choose a subject</option>
               {subjectOptions.map((s) => (<option key={s} value={s}>{s}</option>))}
             </select>
-          </div>
-
-          <div className={styles.offerNotes}>
-            <textarea placeholder="Notes or message (optional)" value={notes} onChange={(e)=>setNotes(e.target.value)} />
           </div>
         </div>
       </div>

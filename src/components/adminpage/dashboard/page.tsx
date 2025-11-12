@@ -108,9 +108,11 @@ const Dashboard: React.FC<DashboardProps> = ({ stats, chartData }) => {
   const yearChartRef = useRef<HTMLCanvasElement>(null);
 
   // Chart instances
-  const userDistributionChartInstance = useRef<ChartJS | null>(null);
-  const courseChartInstance = useRef<ChartJS | null>(null);
-  const yearChartInstance = useRef<ChartJS | null>(null);
+  // Use relaxed typing for Chart instances to avoid generic mismatch errors during build
+  // These are actual Chart.js instances at runtime; using `any` prevents TS generic incompatibilities.
+  const userDistributionChartInstance = useRef<any>(null);
+  const courseChartInstance = useRef<any>(null);
+  const yearChartInstance = useRef<any>(null);
 
   // Use sample data if no chartData is provided
   const effectiveChartData = chartData && Object.values(chartData).some(data => data !== null) 
@@ -186,38 +188,40 @@ const Dashboard: React.FC<DashboardProps> = ({ stats, chartData }) => {
   };
 
   // ensure you destroy previous instance before creating new
-  const createCourseChart = (courseData) => {
-    const canvas = courseChartRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
+  const createCourseChart = (courseData: any): void => {
+     const canvas = courseChartRef.current;
+     if (!canvas) return;
+     const ctx = canvas.getContext('2d');
+     if (!ctx) return;
 
-    if (courseChartInstance.current) {
-      try { courseChartInstance.current.destroy(); } catch (e) { /* ignore */ }
-    }
+     if (courseChartInstance.current) {
+       try { courseChartInstance.current.destroy(); } catch (e) { /* ignore */ }
+     }
 
-    // Normalize breakdown shape: support { data: {...} } or plain {...}
-    const breakdown = (courseData && (courseData.data || courseData)) || {};
-    const labels = Object.keys(breakdown);
-    const values = Object.values(breakdown);
+     // Normalize breakdown shape: support { data: {...} } or plain {...}
+     const breakdown = (courseData && (courseData.data || courseData)) || {};
+     const labels = Object.keys(breakdown);
+     const values = Object.values(breakdown);
 
-    // fallback to sample if nothing available
-    const finalLabels = labels.length ? labels : Object.keys(effectiveChartData.courseBreakdown?.data || {});
-    const finalValues = values.length ? values : Object.values(effectiveChartData.courseBreakdown?.data || {});
-
-    courseChartInstance.current = new ChartJS(ctx, {
-      type: 'bar',
-      data: {
-        labels: finalLabels,
-        datasets: [
-          {
-            label: 'Users',
-            data: finalValues,
-            backgroundColor: 'rgba(67,97,238,0.8)',
-          },
-        ],
-      },
-      options: {
+     // fallback to sample if nothing available
+     const finalLabels = labels.length ? labels : Object.keys(effectiveChartData.courseBreakdown?.data || {});
+     const finalValues = values.length ? values : Object.values(effectiveChartData.courseBreakdown?.data || {});
+    // Ensure numeric dataset for Chart.js typing/runtime
+    const numericValues: number[] = finalValues.map(v => (typeof v === 'number' ? v : Number(v) || 0));
+ 
+     courseChartInstance.current = new ChartJS(ctx, {
+       type: 'bar',
+       data: {
+         labels: finalLabels,
+         datasets: [
+           {
+             label: 'Users',
+             data: numericValues,
+             backgroundColor: 'rgba(67,97,238,0.8)',
+           },
+         ],
+       },
+       options: {
         responsive: true,
         plugins: { title: { display: true, text: 'Course breakdown' }, legend: { display: false } },
         scales: { x: { beginAtZero: true }, y: { beginAtZero: true } },

@@ -1,0 +1,656 @@
+/* analytics.module.css */
+.analyticsContainer {
+  padding: 24px;
+  min-height: 100vh;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Header Styles */
+.analyticsHeader {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 24px;
+  margin-bottom: 32px;
+  align-items: start;
+}
+
+.headerMain {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.headerTitle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.headerTitle h1 {
+  color: #1e3a8a; /* Dark blue color */
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.headerIcon {
+  color: #2563eb; /* Blue color */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.headerSubtitle {
+  color: #666;
+  font-size: 14px;
+  margin: 0;
+  font-weight: 500;
+}
+
+/* Controls */
+.analyticsControls {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.customSelect {
+  position: relative;
+  min-width: 160px;
+}
+
+.timeRangeSelect {
+  width: 100%;
+  padding: 12px 16px;
+  padding-right: 40px;
+  border: 1.5px solid #e1e5e9;
+  border-radius: 12px;
+  background: white;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  cursor: pointer;
+  appearance: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.timeRangeSelect:focus {
+  outline: none;
+  border-color: #2563eb; /* Blue color */
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); /* Blue color */
+}
+
+.selectArrow {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #666;
+  pointer-events: none;
+}
+
+.refreshBtn {
+  background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%); /* Blue gradient */
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2); /* Blue color */
+}
+
+.refreshBtn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); /* Blue color */
+}
+
+.refreshBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.refreshing {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Stats Grid - Updated for 4 cards in one line */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-bottom: 32px;
+}
+
+.statCard {
+  background: white;
+  border: 1px solid #f0f0f0;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.statCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  border-color: #e0e0e0;
+}
+
+.statContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.statMain h3 {
+  font-size: 32px;
+  font-weight: 800;
+  color: #1a1a1a;
+  margin: 0 0 4px 0;
+  line-height: 1;
+}
+
+.statMain p {
+  color: #666;
+  margin: 0;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.statIcon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  opacity: 0.9;
+}
+
+.statFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.statSubtitle {
+  color: #888;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.statTrend {
+  background: #fed7aa; /* Orange background */
+  color: #9a3412; /* Dark orange text */
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* Charts Section */
+.chartsSection {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.chartCard {
+  background: white;
+  border: 1px solid #f0f0f0;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+}
+
+.chartCard:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.chartHeader {
+  margin-bottom: 20px;
+}
+
+.chartTitle {
+  color: #1a1a1a;
+  font-size: 18px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Progress Lists */
+.subjectsList,
+.learningStylesList {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.subjectItem,
+.learningStyleItem {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.subjectInfo,
+.learningStyleInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.subjectName,
+.learningStyleName {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.subjectCount,
+.learningStyleCount {
+  font-size: 12px;
+  color: #666;
+  font-weight: 500;
+}
+
+.progressBar {
+  background: #f5f5f5;
+  border-radius: 10px;
+  height: 8px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progressFill {
+  height: 100%;
+  border-radius: 10px;
+  transition: width 0.8s ease;
+  position: relative;
+}
+
+/* Table Section */
+.tableSection {
+  background: white;
+  border: 1px solid #f0f0f0;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.tableHeader {
+  padding: 24px;
+  border-bottom: 1px solid #f0f0f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.tableTitleSection {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.tableTitle {
+  color: #1a1a1a;
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tableInfo {
+  color: #666;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Table Filters */
+.tableFilters {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.filterGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f8f9fa;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #e1e5e9;
+}
+
+.filterSelect {
+  border: none;
+  background: transparent;
+  font-size: 12px;
+  font-weight: 500;
+  color: #555;
+  cursor: pointer;
+  appearance: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  min-width: 100px;
+}
+
+.filterSelect:focus {
+  outline: none;
+  background: white;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1); /* Blue color */
+}
+
+.tableScrollContainer {
+  overflow-x: auto;
+}
+
+.dataTable {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 800px;
+}
+
+.dataTable th {
+  background: #f8f9fa;
+  padding: 16px 20px;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 700;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid #e1e5e9;
+}
+
+.headerContent {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sortableHeader {
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  transition: background 0.3s ease;
+  position: relative;
+}
+
+.sortableHeader:hover {
+  background: #f0f0f0;
+}
+
+.sortArrow {
+  margin-left: 4px;
+  font-size: 10px;
+  color: #2563eb; /* Blue color */
+  transition: transform 0.3s ease;
+}
+
+.sortArrowDesc {
+  transform: rotate(180deg);
+}
+
+.dataTable td {
+  padding: 16px 20px;
+  border-bottom: 1px solid #f5f5f5;
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
+}
+
+.tableRow {
+  transition: background 0.3s ease;
+}
+
+.tableRow:hover {
+  background: #f8f9fa;
+}
+
+.dateCell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #666;
+  font-weight: 500;
+}
+
+.subjectCell {
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.durationCell {
+  font-weight: 600;
+  color: #555;
+}
+
+/* Badges - Table colors remain unchanged */
+.statusBadge,
+.typeBadge,
+.learningStyleBadge {
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: inline-block;
+}
+
+.statusCompleted {
+  background: #f0fdf4;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+}
+
+.statusScheduled {
+  background: #eff6ff;
+  color: #1e40af;
+  border: 1px solid #bfdbfe;
+}
+
+.statusCancelled {
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+.typeGroup {
+  background: #f0f9ff;
+  color: #0369a1;
+  border: 1px solid #bae6fd;
+}
+
+.typeOneOnOne {
+  background: #fdf2f8;
+  color: #be185d;
+  border: 1px solid #fbcfe8;
+}
+
+.learningStyleBadge {
+  background: #fffbeb;
+  color: #92400e;
+  border: 1px solid #fed7aa;
+}
+
+/* Empty States */
+.noSessions {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.noSessionsContent {
+  color: #888;
+  font-style: italic;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+}
+
+.noData {
+  text-align: center;
+  padding: 40px 20px;
+  color: #888;
+  font-style: italic;
+  font-size: 14px;
+}
+
+.analyticsLoading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
+}
+
+.loadingSpinner {
+  color: #666;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .analyticsContainer {
+    padding: 20px;
+  }
+  
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  
+  .chartsSection {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .analyticsContainer {
+    padding: 16px;
+  }
+  
+  .analyticsHeader {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .headerTitle h1 {
+    font-size: 24px;
+  }
+  
+  .analyticsControls {
+    justify-content: stretch;
+  }
+  
+  .customSelect {
+    flex: 1;
+  }
+  
+  .refreshBtn {
+    flex: 1;
+    justify-content: center;
+  }
+  
+  .statsGrid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .statCard {
+    padding: 20px;
+  }
+  
+  .statMain h3 {
+    font-size: 28px;
+  }
+  
+  .tableHeader {
+    flex-direction: column;
+    gap: 16px;
+    padding: 20px;
+  }
+  
+  .tableFilters {
+    width: 100%;
+    justify-content: stretch;
+  }
+  
+  .filterGroup {
+    flex: 1;
+    min-width: 120px;
+  }
+}
+
+@media (max-width: 480px) {
+  .analyticsContainer {
+    padding: 12px;
+  }
+  
+  .headerTitle h1 {
+    font-size: 20px;
+  }
+  
+  .statCard {
+    padding: 16px;
+  }
+  
+  .statMain h3 {
+    font-size: 24px;
+  }
+  
+  .chartCard {
+    padding: 20px;
+  }
+  
+  .chartsSection {
+    grid-template-columns: 1fr;
+  }
+  
+  .tableHeader {
+    padding: 16px;
+  }
+  
+  .tableFilters {
+    flex-direction: column;
+  }
+  
+  .filterGroup {
+    min-width: auto;
+  }
+}

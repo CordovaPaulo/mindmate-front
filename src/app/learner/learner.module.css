@@ -1,4 +1,3 @@
-/* Loading Overlay */
 .loading-overlay {
   position: fixed;
   top: 0;
@@ -28,20 +27,19 @@
 
 .loading-backdrop {
   background-color: rgba(255, 255, 255, 0.6) !important;
-  backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
 }
 
-/* Sidebar Styling */
 .sidebar {
   position: fixed;
   top: 0;
   left: 0;
   height: 100vh;
-  width: 300px;
+  width: 310px;
   background: linear-gradient(135deg, #0b2b31, #2b737e);
   color: white;
-  padding: 20px 15px;
+  padding: 18px 15px;
   box-shadow: 5px 0 15px rgba(0, 0, 0, 0.3);
   z-index: 1000;
   overflow-y: auto;
@@ -53,15 +51,15 @@
 .logo-container {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding-bottom: 15px;
-  margin-bottom: 20px;
+  gap: 9px;
+  padding-bottom: 14px;
+  margin-bottom: 18px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .logo {
-  width: 45px;
-  height: 30px;
+  width: 42px;
+  height: 26px;
 }
 
 .logo-text {
@@ -70,56 +68,161 @@
   letter-spacing: 0.5px;
 }
 
-/* Profile Section */
 .upper-element {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
-  padding-bottom: 20px;
-  margin-bottom: 13px;
+  gap: 10px;
+  padding-bottom: 10px;
+  margin-bottom: 6px;
   text-align: center;
 }
 
 .upper-element h1 {
   color: rgba(255, 255, 255, 0.9);
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 400;
   font-style: italic;
+  margin-bottom: 4px;
 }
 
 .upper-element img {
-  width: 100px;
-  height: 100px;
+  width: 90px;
+  height: 90px;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid rgba(255, 255, 255, 0.2);
-  margin-top: 1rem;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  margin-top: 0.5rem;
 }
 
 .upper-element h2 {
   color: white;
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 500;
-  margin-bottom: 5px;
+  margin-bottom: 4px;
 }
 
 .upper-element p {
   color: rgba(255, 255, 255, 0.8);
   font-style: italic;
-  font-size: 13px;
-  margin-bottom: 4px;
+  font-size: 12px;
+  margin-bottom: 3px;
+  line-height: 1.3;
 }
 
 .stars {
   color: #ffd700;
-  font-size: 18px;
+  font-size: 17px;
   display: flex;
-  gap: 3px;
+  gap: 2px;
   justify-content: center;
+  margin-top: 2px;
 }
 
-/* Content Sections */
+.progress-tracker {
+  margin: 0 0 10px 0;
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 9px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.progress-tracker h1 {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 15px;
+  margin-bottom: 10px;
+  text-align: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  padding-bottom: 7px;
+}
+
+.progress-list {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.progress-item {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 7px;
+  padding: 9px;
+  transition: all 0.3s ease;
+}
+
+.progress-item:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.progress-title {
+  color: white;
+  font-size: 18px;
+  font-weight: bolder;
+  flex: 1;
+}
+
+.progress-label {
+  font-size: 13px !important;
+  font-weight: 100 !important;
+}
+
+.progress-percentage {
+  color: #4ade80;
+  font-size: 10px;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 2px 5px;
+  border-radius: 9px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 5px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4ade80, #22d3ee);
+  border-radius: 3px;
+  transition: width 0.5s ease;
+}
+
+.progress-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.progress-description {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 9px;
+  flex: 1;
+  margin-right: 7px;
+  line-height: 1.2;
+}
+
+.progress-count {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 9px;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 2px 5px;
+  border-radius: 7px;
+  text-align: right;
+  min-width: 42px;
+}
+
 .footer-element {
   flex: 1;
   display: flex;
@@ -127,31 +230,21 @@
   gap: 10px;
 }
 
-.bio-container h1 {
-  color: rgba(255, 255, 255, 0.9);
-  font-size: 14px;
-  padding-top: 17px;
-  margin-top: -1.2rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
-  margin-bottom: 0.5rem;
-}
-
 .availability h1,
 .subject-interest h1 {
   color: rgba(255, 255, 255, 0.9);
-  font-size: 14px;
-  padding-top: 17px;
-  margin-top: -0.4rem;
+  font-size: 13px;
+  padding-top: 14px;
+  margin-top: 0;
   border-top: 1px solid rgba(255, 255, 255, 0.15);
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
 }
 
-/* Information Items */
 .lines {
   display: flex;
-  padding: 8px;
-  border-radius: 8px;
-  margin-bottom: 6px;
+  padding: 7px;
+  border-radius: 7px;
+  margin-bottom: 5px;
   background: rgba(255, 254, 254, 0.2);
   align-items: center;
   font-weight: 600;
@@ -159,22 +252,22 @@
 }
 
 .lines h3 {
-  min-width: 90px;
+  min-width: 75px;
   color: rgba(255, 255, 255, 0.7);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 500;
 }
 
 .lines p,
 .lines div {
   color: white;
-  font-size: 12px;
+  font-size: 11px;
   white-space: nowrap;
   overflow-x: auto;
   overflow-y: hidden;
   max-width: 100%;
-  -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
   -ms-overflow-style: none;
 }
 
@@ -189,20 +282,20 @@
   flex-direction: column;
   align-items: flex-start;
   overflow: hidden;
-  padding: 8px;
+  padding: 7px;
   position: relative;
 }
 
 .bio-container .lines p {
   color: white;
-  font-size: 12px;
-  line-height: 1.2;
+  font-size: 11px;
+  line-height: 1.3;
   margin: 0;
   white-space: normal;
   word-break: break-word;
   width: 100%;
-  padding-right: 12px;
-  max-height: 30px;
+  padding-right: 9px;
+  max-height: 28px;
   overflow-y: scroll;
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -212,7 +305,6 @@
   display: none;
 }
 
-/* Subjects Grid */
 .subject-interest .course-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -220,7 +312,7 @@
 }
 
 .subject-interest .course-card {
-  border-radius: 8px;
+  border-radius: 7px;
   overflow: hidden;
   cursor: default;
   width: 100%;
@@ -237,7 +329,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 500;
   color: rgb(32, 71, 92);
   display: block;
@@ -268,7 +360,6 @@
   background-color: #00819d;
 }
 
-/* All Subjects Popup */
 .subject-interest .all-courses-popup {
   position: fixed;
   top: 0;
@@ -292,11 +383,11 @@
 
 .subject-interest .popup-content {
   background-color: white;
-  padding: 20px;
-  border-radius: 15px;
-  width: 80%;
-  max-width: 400px;
-  max-height: 400px;
+  padding: 18px;
+  border-radius: 11px;
+  width: 83%;
+  max-width: 380px;
+  max-height: 380px;
   overflow-y: auto;
   position: relative;
   z-index: 2001;
@@ -305,22 +396,22 @@
 .subject-interest .popup-content h3 {
   color: #006981;
   text-align: center;
-  margin-bottom: 15px;
-  font-size: 16px;
+  margin-bottom: 14px;
+  font-size: 15px;
 }
 
 .subject-interest .popup-courses {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
-  margin-bottom: 15px;
+  gap: 7px;
+  margin-bottom: 14px;
 }
 
 .subject-interest .popup-course {
   background-color: #d9dcef;
-  padding: 8px;
-  border-radius: 8px;
-  font-size: 12px;
+  padding: 7px;
+  border-radius: 7px;
+  font-size: 11px;
   text-align: center;
   color: #066678;
 }
@@ -329,16 +420,16 @@
   background-color: #006981;
   color: white;
   border: none;
-  padding: 8px 16px;
+  padding: 7px 14px;
   border-radius: 5px;
   cursor: pointer;
   width: 100%;
+  font-size: 12px;
 }
 
-/* Account Dropdown Styles */
 .account-actions {
   margin-top: 0.4rem;
-  padding-top: 15px;
+  padding-top: 14px;
   border-top: 1px solid rgba(255, 255, 255, 0.15);
 }
 
@@ -351,7 +442,7 @@
 .account-dropbtn {
   background-color: #d8e2e4;
   color: rgb(27, 51, 85);
-  padding: 8px 15px;
+  padding: 7px 14px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -359,8 +450,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  font-size: 14px;
+  gap: 7px;
+  font-size: 13px;
   transition: background-color 0.3s ease;
 }
 
@@ -370,16 +461,16 @@
 }
 
 .account-icon {
-  width: 20px;
-  height: 20px;
+  width: 17px;
+  height: 17px;
 }
 
 .account-dropdown-content {
   display: none;
   position: absolute;
   background-color: #f9f9f9;
-  min-width: 200px;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  min-width: 190px;
+  box-shadow: 0px 6px 12px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
   bottom: 100%;
   left: 0;
@@ -389,12 +480,12 @@
 
 .account-dropdown-content a {
   color: #333;
-  padding: 12px 16px;
+  padding: 11px 14px;
   text-decoration: none;
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 13px;
+  gap: 7px;
+  font-size: 12px;
   transition: all 0.3s ease;
   cursor: pointer;
   border-bottom: 1px solid #eee;
@@ -410,30 +501,28 @@
 }
 
 .account-dropdown-content a img {
-  width: 16px;
-  height: 16px;
+  width: 15px;
+  height: 15px;
 }
 
 .account-dropdown:hover .account-dropdown-content {
   display: block;
 }
 
-/* Main Content Area */
 .main-content {
-  padding-left: 330px;
-  padding-right: 20px;
+  padding-left: 325px;
+  padding-right: 22px;
   padding-top: 90px;
-  padding-bottom: 20px;
+  padding-bottom: 22px;
   min-height: 100vh;
   box-sizing: border-box;
 }
 
-/* Topbar Styling */
 .topbar {
   font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
   position: fixed;
   top: 0;
-  left: 300px;
+  left: 310px;
   right: 0;
   height: 70px;
   background-color: white;
@@ -510,19 +599,100 @@
   font-weight: 600;
 }
 
-.topbar-date {
-  font-size: 0.875rem;
-  color: rgba(42, 67, 98, 0.9);
-  font-weight: 500;
-  background-color: #d4d7dd;
-  padding: 10px 15px;
-  border-radius: 20px;
+.dateContainer {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 8px;
 }
 
-/* Popup Styles */
+.calendarIconBtn {
+  background: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.calendarIconBtn:hover {
+  background: #e9ecef;
+  border-color: #006981;
+  transform: scale(1.05);
+}
+
+.calendarIcon {
+  width: 18px;
+  height: 18px;
+}
+
+.datePopup {
+  position: absolute;
+  top: 48px;
+  right: 0;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+  border: 1px solid #e0e0e0;
+  z-index: 1000;
+  min-width: 200px;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dateContent {
+  padding: 16px;
+  text-align: center;
+}
+
+.currentDate {
+  font-size: 13px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+
+.currentTime {
+  font-size: 16px;
+  font-weight: 700;
+  color: #006981;
+  background: #f0f9ff;
+  padding: 6px 10px;
+  border-radius: 6px;
+  display: inline-block;
+}
+
+.popupArrow {
+  position: absolute;
+  top: -5px;
+  right: 18px;
+  width: 10px;
+  height: 10px;
+  background: white;
+  transform: rotate(45deg);
+  border-left: 1px solid #e0e0e0;
+  border-top: 1px solid #e0e0e0;
+}
+
+.topbar-date {
+  display: none;
+}
+
 .edit-information-popup,
 .logout-popup {
   position: fixed;
@@ -536,7 +706,6 @@
   z-index: 2000;
 }
 
-/* Mobile Responsive Styles */
 .sidebar-toggle {
   display: none;
   background: #006981;
@@ -573,9 +742,8 @@
   display: none;
 }
 
-/* Scrollbar Styling */
 .sidebar::-webkit-scrollbar {
-  width: 6px;
+  width: 5px;
 }
 
 .sidebar::-webkit-scrollbar-track {
@@ -602,7 +770,6 @@
   scrollbar-width: none;
 }
 
-/* Topbar Focus States */
 .topbar-focused {
   outline: 2px solid #006981;
   outline-offset: 2px;
@@ -611,15 +778,15 @@
 /* Enhanced Responsive Design */
 @media (max-width: 1024px) {
   .sidebar {
-    width: 280px;
+    width: 290px;
   }
   
   .main-content {
-    padding-left: 310px;
+    padding-left: 305px;
   }
   
   .topbar {
-    left: 280px;
+    left: 290px;
     padding: 0 30px;
   }
   
@@ -669,12 +836,12 @@
     min-width: max-content;
   }
 
-  .topbar-date {
+  .dateContainer {
     display: none;
   }
   
   .sidebar {
-    width: 280px;
+    width: 270px;
   }
   
   .subject-interest .course-grid {
@@ -682,19 +849,36 @@
   }
   
   .subject-interest .popup-content {
-    width: 90%;
-    margin: 20px;
+    width: 88%;
+    margin: 18px;
   }
   
   .subject-interest .popup-courses {
     grid-template-columns: 1fr;
+  }
+
+  .progress-tracker {
+    padding: 11px;
+    margin: 0 0 7px 0;
+  }
+
+  .progress-item {
+    padding: 7px;
+  }
+
+  .progress-title {
+    font-size: 10px;
+  }
+
+  .progress-description {
+    font-size: 8px;
   }
 }
 
 @media (max-width: 480px) {
   .sidebar {
     width: 100%;
-    max-width: 300px;
+    max-width: 270px;
   }
   
   .main-content {
@@ -725,60 +909,84 @@
   }
   
   .subject-interest .popup-content {
-    width: 95%;
-    padding: 15px;
+    width: 93%;
+    padding: 14px;
+  }
+
+  .progress-tracker {
+    padding: 9px;
+  }
+
+  .progress-item {
+    padding: 6px;
+  }
+
+  .progress-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
+  }
+
+  .progress-details {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
+  }
+
+  .progress-description {
+    margin-right: 0;
   }
 }
 
-/* Improved Course Grid Responsiveness */
 .subject-interest .course-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-  gap: 8px;
+  grid-template-columns: repeat(auto-fit, minmax(75px, 1fr));
+  gap: 5px;
 }
 
-/* Enhanced Popup Responsiveness */
 .subject-interest .all-courses-popup {
-  padding: 20px;
+  padding: 14px;
 }
 
 .subject-interest .popup-courses {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 7px;
 }
 
-/* Better Mobile Touch Targets */
 @media (max-width: 768px) {
   .topbar-option {
     min-height: 44px;
   }
   
   .account-dropbtn {
-    min-height: 44px;
+    min-height: 40px;
   }
   
   .account-dropdown-content a {
-    min-height: 44px;
-    padding: 15px 16px;
+    min-height: 40px;
+    padding: 12px 10px;
   }
   
   .subject-interest .course-card {
-    min-height: 44px;
+    min-height: 40px;
+  }
+
+  .progress-item {
+    min-height: 40px;
   }
 }
 
-/* Smooth Transitions */
 .sidebar,
 .main-content,
 .topbar,
 .topbar-option,
 .account-dropbtn,
-.course-card {
+.course-card,
+.progress-item {
   transition: all 0.3s ease;
 }
 
-/* Improved Accessibility */
 .topbar-option:focus-visible {
   outline: 2px solid #006981;
   outline-offset: 2px;
@@ -789,7 +997,11 @@
   outline-offset: 2px;
 }
 
-/* Active States for Better UX */
+.progress-item:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.5);
+  outline-offset: 2px;
+}
+
 .topbar-option:active {
   transform: scale(0.98);
 }
@@ -800,4 +1012,38 @@
 
 .subject-interest .course-card:active {
   transform: scale(0.98);
+}
+
+.progress-item:active {
+  transform: scale(0.98);
+}
+
+.progress-item[data-completed="true"] {
+  background: rgba(74, 222, 128, 0.2);
+  border: 1px solid rgba(74, 222, 128, 0.4);
+}
+
+.progress-item[data-completed="true"] .progress-percentage {
+  background: rgba(74, 222, 128, 0.3);
+  color: #22c55e;
+}
+
+.progress-item[data-completed="true"] .progress-fill {
+  background: linear-gradient(90deg, #22c55e, #16a34a);
+}
+
+@keyframes progressPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 4px rgba(74, 222, 128, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(74, 222, 128, 0);
+  }
+}
+
+.progress-item[data-completed="true"] {
+  animation: progressPulse 2s infinite;
 }

@@ -8,7 +8,7 @@ import notify from '@/lib/toast';
 import api from '@/lib/axios';
 
 interface RescheduleDialogProps {
-  id: number;
+  id: string | number; // accept string OR number
   onClose: () => void;
   onReschedule: (date: Date) => void;
 }
@@ -74,7 +74,7 @@ export default function RescheduleDialog({ id, onClose, onReschedule }: Reschedu
             <DatePicker
               id="reschedule-datetime"
               selected={selectedDate}
-              onChange={(date: Date) => setSelectedDate(date)}
+              onChange={(date: Date | null) => setSelectedDate(date)} // accept null per types
               showTimeSelect
               timeFormat="HH:mm"
               timeIntervals={15}

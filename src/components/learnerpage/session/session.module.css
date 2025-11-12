@@ -4,7 +4,8 @@
   box-shadow: 0 8px 24px rgba(26, 79, 159, 0.5);
   width: 90%;
   margin-top: 2rem;
-  margin-left: 2.5rem;
+  margin-left: auto;
+  margin-right: auto;
   padding: 0 1rem;
   text-align: center;
   display: flex;
@@ -323,7 +324,7 @@
   border: 2px solid #e0e0e0;
   max-height: 80vh;
   overflow-y: auto;
-  margin-left: 18rem;  /* maintains position in full screen */
+  margin-left: 16rem;
 }
 
 .modal-header {
@@ -425,7 +426,7 @@
 }
 
 .modal-button.confirm {
-  background: linear-gradient(135deg, #0c434d, #3b9aa9); /* teal/blue gradient for reschedule/confirm */
+  background: linear-gradient(135deg, #0c434d, #3b9aa9);
   color: #ffffff;
   border: none;
   padding: 0.5rem 0.85rem;
@@ -442,7 +443,7 @@
 
 .modal-button.danger,
 .modal-button.confirm.danger {
-  background: linear-gradient(135deg, #ff3b30, #ff6b4a); /* bright red -> orange-red */
+  background: linear-gradient(135deg, #ff3b30, #ff6b4a);
   color: #ffffff;
   border: none;
   padding: 0.5rem 0.85rem;
@@ -530,82 +531,248 @@
   background-color: #3e8e41;
 }
 
+.join-meeting-btn,
+.sessionJoinBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  margin-right: 0.5rem;
+  transition: transform 0.2s;
+}
+
+.join-meeting-btn:hover,
+.sessionJoinBtn:hover {
+  transform: scale(1.1);
+}
+
+.join-meeting-btn:active,
+.sessionJoinBtn:active {
+  transform: scale(0.95);
+}
+
+/* Responsive Design */
 @media (max-width: 1024px) {
-  .session-grid {
-    grid-template-columns: 1fr;
-    grid-gap: 1rem;
-  }
-
-  .lower-element {
-    height: auto;
-    padding: 0.5rem;
-  }
-
-  .session-card {
-    padding: 0 0.3rem 0.5rem 0.3rem;
-  }
-  .modal-content {
-    margin-left: 0;  /* removes the left margin for responsive */
+  .session-wrapper {
     width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+    height: 35rem;
+    max-height: 35rem;
+  }
+  
+  .session-grid {
+    grid-gap: 1rem;
+    padding: 0 0.3rem;
+  }
+  
+  .table-header {
+    padding: 1.2rem;
+    padding-bottom: 1.5rem;
+  }
+  
+  .table-title {
+    font-size: 1.4rem;
+  }
+  
+  .card-header h1 {
+    font-size: 1.3rem;
   }
 }
 
 @media (max-width: 768px) {
   .session-wrapper {
-    width: 95%;
-    margin: 1rem auto;
-    padding: 0.3rem;
+    width: 98%;
+    margin-top: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+    height: 32rem;
+    max-height: 32rem;
+    padding: 0 0.5rem;
   }
-
+  
+  .session-grid {
+    grid-template-columns: 1fr;
+    grid-gap: 1rem;
+    padding: 0;
+  }
+  
+  .lower-element {
+    gap: 1rem;
+    padding: 0.5rem;
+  }
+  
   .table-header {
     padding: 1rem;
+    padding-bottom: 1.2rem;
+    gap: 0.8rem;
   }
-
+  
   .table-title {
+    font-size: 1.3rem;
+  }
+  
+  .header-icon {
+    font-size: 1.2rem;
+  }
+  
+  .session-card h1 {
     font-size: 1.1rem;
+    margin-top: 0.8rem;
   }
-
-  .modal-content {
-    margin-left: 0;
-    width: 95%;
-    max-width: 400px;
+  
+  .card-header h1 {
+    font-size: 1.2rem;
   }
-
+  
   .today-card,
   .upcomming-card {
-    padding: 0.7rem 0.9rem;
+    padding: 0.4rem 0.7rem;
+    margin-bottom: 0.6rem;
   }
-
-  .card-header h1 {
-    font-size: 0.9rem;
+  
+  .modal-content {
+    width: 95%;
+    margin: 0 auto;
   }
-
-  .info h2 {
-    font-size: 0.85rem;
+  
+  .modal-header {
+    padding: 1rem 1.2rem;
+  }
+  
+  .modal-body {
+    padding: 1.2rem;
+  }
+  
+  .modal-footer {
+    padding: 0.8rem 1.2rem;
   }
 }
 
 @media (max-width: 480px) {
-  .modal-footer {
-    flex-direction: column;
+  .session-wrapper {
+    width: 100%;
+    margin-top: 0.5rem;
+    border-radius: 15px;
+    height: 30rem;
+    max-height: 30rem;
+    padding: 0 0.3rem;
+  }
+  
+  .table-header {
+    padding: 0.8rem;
+    padding-bottom: 1rem;
     gap: 0.5rem;
   }
-
-  .modal-button {
-    margin-left: 0;
-    width: 100%;
-    justify-content: center;
+  
+  .table-title {
+    font-size: 1.1rem;
+    gap: 0.5rem;
   }
-
-  .session-card h1 {
+  
+  .header-icon {
     font-size: 1rem;
   }
-
+  
+  .lower-element {
+    gap: 0.8rem;
+    padding: 0.3rem;
+  }
+  
+  .session-grid {
+    grid-gap: 0.8rem;
+  }
+  
+  .session-card {
+    gap: 0.6rem;
+    padding: 0 0.3rem 0.6rem 0.3rem;
+  }
+  
+  .session-card h1 {
+    font-size: 1rem;
+    margin-top: 0.6rem;
+    padding-left: 0.3rem;
+  }
+  
+  .today-card,
+  .upcomming-card {
+    padding: 0.3rem 0.5rem;
+    margin-bottom: 0.5rem;
+    border-left-width: 4px;
+  }
+  
+  .card-header h1 {
+    font-size: 1rem;
+  }
+  
+  .info h2,
   .info p {
     font-size: 0.8rem;
   }
+  
+  .location-text,
+  .last > div:first-child p {
+    font-size: 0.75rem;
+  }
+  
+  .popup-menu {
+    min-width: 120px;
+  }
+  
+  .popup-option {
+    padding: 0.4rem 0.6rem;
+  }
+  
+  .option-text {
+    font-size: 0.75rem;
+  }
+  
+  .modal-content {
+    width: 98%;
+    margin: 0 auto;
+  }
+  
+  .modal-header h3 {
+    font-size: 1.1rem;
+  }
+  
+  .modal-body p {
+    font-size: 0.9rem;
+  }
+  
+  .modal-button {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+}
 
+/* Additional utility for very small screens */
+@media (max-width: 360px) {
+  .session-wrapper {
+    height: 35rem;
+    max-height: 100%;
+  }
+  
+  .table-title {
+    font-size: 1rem;
+  }
+  
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.3rem;
+  }
+  
+  .card-header h1 {
+    margin-right: 0;
+    width: 100%;
+  }
+  
+  .ellipsis-container {
+    align-self: flex-end;
+  }
+  
   .action-icons {
-    gap: 0.6rem;
+    gap: 0.5rem;
   }
 }

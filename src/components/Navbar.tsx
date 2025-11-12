@@ -4,6 +4,17 @@ import { useRouter, usePathname } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 
+type NavItem = { name: string; href: string; isButton?: boolean };
+
+const links: NavItem[] = [
+  { name: 'Home', href: '#home' },
+  { name: 'Roles', href: '#learners' },
+  { name: 'Overview', href: '#how-it-works' },
+  { name: 'Get Started', href: '#get-started' },
+];
+
+const navItems: NavItem[] = [...links, { name: 'Login', href: '#login', isButton: true }];
+
 export default function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
@@ -13,16 +24,10 @@ export default function Navbar() {
   const [clickedLink, setClickedLink] = useState<string | null>(null);
   const [focusedIndex, setFocusedIndex] = useState(-1);
 
-  const links = [
-    { name: 'Home', href: '#home' },
-    { name: 'Roles', href: '#learners' },
-    { name: 'Overview', href: '#how-it-works' },
-    { name: 'Get Started', href: '#get-started' },
-  ];
-
-  const navItems = [...links, { name: 'Login', href: '#login', isButton: true }];
-  const hamburgerRef = useRef<HTMLButtonElement>(null);
   const menuId = 'primary-navigation';
+
+  // Fix: define hamburgerRef used in the JSX (prevents hamburgerRef is not defined)
+  const hamburgerRef = useRef<HTMLButtonElement | null>(null);
 
   const toggleMenu = () => {
     console.log('Toggle menu clicked, current state:', isMenuOpen); // Debug

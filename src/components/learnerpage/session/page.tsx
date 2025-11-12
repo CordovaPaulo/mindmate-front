@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faEllipsisH, 
@@ -12,8 +12,10 @@ import {
   faFileAlt, 
   faEye, 
   faDownload,
-  faFile
+  faFile,
+  faVideo
 } from '@fortawesome/free-solid-svg-icons';
+import { useRouter } from 'next/navigation';
 import RescheduleDialog from '@/components/learnerpage/RescheduleDialog/page';
 import api from '@/lib/axios';
 import styles from './session.module.css';
@@ -26,6 +28,7 @@ interface ScheduleItem {
       name: string;
     };
     ment_inf_id: number;
+    id?: string | number; // added optional id - backend shapes vary
   };
   date: string;
   time: string;
@@ -62,6 +65,8 @@ export default function SessionComponent({
   userInformation = [],
   userData
 }: SessionComponentProps) {
+  const router = useRouter();
+  
   const [showCancelConfirmation, setShowCancelConfirmation] = useState(false);
   const [selectedItem, setSelectedItem] = useState<ScheduleItem | null>(null);
   const [isFileModalOpen, setIsFileModalOpen] = useState(false);
@@ -69,12 +74,7 @@ export default function SessionComponent({
   const [todaySchedule, setTodaySchedule] = useState<ScheduleItem[]>([]);
   const [upcommingSchedule, setUpcommingSchedule] = useState<ScheduleItem[]>([]);
   const [selectedMentorId, setSelectedMentorId] = useState<number | null>(null);
-  const [mentorFilesLocal, setMentorFilesLocal] = useState<Array<{
-    id: number | string;
-    file_name: string;
-    file_id: string;
-    owner_id: number | string;
-  }>>([]);
+  const [mentorFilesLocal, setMentorFilesLocal] = useState<any[]>([]); // allow extended file props
   const [isFetchingFiles, setIsFetchingFiles] = useState(false);
   const [reschedIsOpen, setReschedIsOpen] = useState(false);
   const [selectedSessionID, setSelectedSessionID] = useState<number | string | null>(null);
@@ -86,11 +86,12 @@ export default function SessionComponent({
   const filteredFiles = (mentorFilesLocal.length > 0
     ? mentorFilesLocal
     : (mentFiles?.files || [])
-  ).filter(file => String(file.owner_id) === String(selectedMentorId)) || [];
+  ).filter((file: any) => String(file.owner_id) === String(selectedMentorId)) || [];
 
   const openFileModal = async (event: React.MouseEvent, mentorId: number | string) => {
     event.stopPropagation();
-    setSelectedMentorId(Number(mentorId) || mentorId);
+    const numeric = Number(mentorId);
+    setSelectedMentorId(Number.isFinite(numeric) ? numeric : null);
     setMentorFilesLocal([]); // clear previous
     setIsFileModalOpen(true);
     setIsFetchingFiles(true);
@@ -102,7 +103,6 @@ export default function SessionComponent({
         file_name: f.file_name || f.name || f.fileName || '',
         file_id: f.file_id || f.id || '',
         owner_id: f.owner_id ?? String(mentorId),
-        // include the direct links returned by backend so we can use them directly
         webViewLink: f.webViewLink || f.web_view_link || '',
         webContentLink: f.webContentLink || f.web_content_link || ''
       }));
@@ -318,6 +318,19 @@ export default function SessionComponent({
     });
   };
 
+  // NEW: Helper to check if session is online
+  const isOnlineSession = (location: string) => {
+    if (!location) return false;
+    const loc = location.toLowerCase().trim();
+    return loc === 'online' || loc.includes('online');
+  };
+
+  // NEW: Handler for joining meeting - navigate to meeting page
+  const handleJoinMeeting = (scheduleId: string, event: React.MouseEvent) => {
+    event.stopPropagation();
+    router.push(`/meeting/${scheduleId}`);
+  };
+
   return (
     <div className={styles['session-wrapper']}>
       <div className={styles['table-header']}>
@@ -397,6 +410,16 @@ export default function SessionComponent({
                         <p className={styles['location-text']}>{item.location}</p>
                       </div>
                       <div className={styles['action-icons']}>
+                        {/* Join Meeting button - only for online sessions */}
+                        {isOnlineSession(item.location) && (
+                          <button
+                            className={styles['join-meeting-btn']}
+                            onClick={(e) => handleJoinMeeting(item.id, e)}
+                            title="Join Online Meeting"
+                          >
+                            <FontAwesomeIcon icon={faVideo} size="2x" style={{ color: '#4CAF50' }} />
+                          </button>
+                        )}
                         <FontAwesomeIcon
                           icon={faFileAlt}
                           size="2x"
@@ -412,7 +435,7 @@ export default function SessionComponent({
             </div>
           </div>
 
-          {/* Upcoming Schedule */}
+          {/* Upcoming Schedule - same structure, no join button */}
           <div className={styles['session-card']}>
             <h1>UPCOMING</h1>
             <div className={styles['session-card-content']}>

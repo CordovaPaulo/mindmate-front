@@ -88,7 +88,8 @@ export default function FileManagerComponent({ files: propFiles, setFiles }: Fil
       const list = processFiles(res.data?.files || []);
       setFilesState(list);
       setFiles(list);
-      const types = ['all', ...new Set(list.map((file) => (file.File_type || 'Unknown')))];
+      // ensure compatibility with older TS targets by converting Set -> Array
+      const types = ['all', ...Array.from(new Set(list.map((file) => (file.File_type || 'Unknown'))))];
       setUniqueFileTypes(types);
     } catch (e: any) {
       console.error('Fetch files error:', e?.response?.data || e.message);

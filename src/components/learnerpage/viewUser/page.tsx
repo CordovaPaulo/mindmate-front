@@ -34,8 +34,9 @@ export default function ViewUser({ user, onClose, isOpen }: ViewUserProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [showSchedule, setShowSchedule] = useState(false);
-  const [userDeetsForSched, setUserDeetsForSched] = useState<any[]>([]);
-  
+  // was any[] but we set an object - use any (object) for schedule data
+  const [userDeetsForSched, setUserDeetsForSched] = useState<any>(null);
+
   const [userInfo, setUserInfo] = useState<UserInfo>({
     name: '',
     year: '',
@@ -95,39 +96,38 @@ export default function ViewUser({ user, onClose, isOpen }: ViewUserProps) {
       const mentor = res.data;
 
     setUserInfo({
-      name: mentor.name || '',
-      year: mentor.yearLevel || '',
-      course: mentor.program || '',
-      gender: mentor.sex || '',
-      phoneNum: mentor.phoneNumber || '',
-      email: mentor.email || '',
-      address: mentor.address || '',
-      bio: mentor.bio || '',
-      subjects: mentor.subjects || [],
-      learn_modality: mentor.modality || '',
-      learn_sty: mentor.style || [],
-      availability: mentor.availability || [],
-      prefSessDur: mentor.sessionDur || '',
-      goals: mentor.goals || '',
-      image: mentor.image || '',
-      id: mentor._id || ''
+      name: mentor.mentor.name || '',
+      year: mentor.mentor.yearLevel || '',
+      course: mentor.mentor.program || '',
+      gender: mentor.mentor.sex || '',
+      phoneNum: mentor.mentor.phoneNumber || '',
+      email: mentor.mentor.email || '',
+      address: mentor.mentor.address || '',
+      bio: mentor.mentor.bio || '',
+      subjects: mentor.mentor.subjects || [],
+      learn_modality: mentor.mentor.modality || '',
+      learn_sty: mentor.mentor.style || [],
+      availability: mentor.mentor.availability || [],
+      prefSessDur: mentor.mentor.sessionDur || '',
+      goals: mentor.mentor.goals || '',
+      image: mentor.mentor.image || '',
+      id: mentor.mentor._id || ''
     });
 
-      setImageUrl(mentor.image || '');
+      setImageUrl(mentor.mentor.image || '');
 
       // Prepare data for schedule component - use more robust object structure
       const scheduleData = {
-        mentorId: mentor._id || id,
-        mentorName: mentor.name || '',
-        mentorYear: mentor.yearLevel || '',
-        mentorCourse: mentor.program || '',
-        mentorSessionDur: mentor.sessionDur || '',
-        mentorModality: mentor.modality || '',
-        mentorTeachStyle: mentor.style || [],
-        mentorAvailability: mentor.availability || [],
-        mentorProfilePic: mentor.image || '',
-        mentorSubjects: mentor.subjects || [],
-        // Add more fields from userInfo if needed
+        mentorId: mentor.mentor._id || id,
+        mentorName: mentor.mentor.name || '',
+        mentorYear: mentor.mentor.yearLevel || '',
+        mentorCourse: mentor.mentor.program || '',
+        mentorSessionDur: mentor.mentor.sessionDur || '',
+        mentorModality: mentor.mentor.modality || '',
+        mentorTeachStyle: mentor.mentor.style || [],
+        mentorAvailability: mentor.mentor.availability || [],
+        mentorProfilePic: mentor.mentor.image || '',
+        mentorSubjects: mentor.mentor.subjects || [],
       };
       
       setUserDeetsForSched(scheduleData);
@@ -360,7 +360,7 @@ export default function ViewUser({ user, onClose, isOpen }: ViewUserProps) {
         )}
 
         {/* Schedule Modal - This will appear when showSchedule is true */}
-        {showSchedule && (
+        {showSchedule && userDeetsForSched && (
           <div className={styles.popupOverlay}>
             <Schedule
               info={userDeetsForSched}

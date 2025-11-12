@@ -3,35 +3,35 @@
 import { useState, useEffect, useRef } from 'react';
 import styles from './information.module.css';
 
-interface UserData {
-  user: {
-    id: number | null;
-    name: string;
-    email: string;
-    role: string;
-  };
-  learn: {
-    address: string;
-    year: string;
-    course: string;
-    availability: string[];
-    prefSessDur: string;
-    bio: string;
-    subjects: string[];
-    image: string;
-    phoneNum: string;
-    learn_sty: string[];
-    goals: string;
-    rating_ave: number;
-    learn_modality?: string;
-  };
-  image_url: string | null;
+interface IUserData {
+  _id: string;
+  userId: string;
+  name: string;
+  email: string;
+  address: string;
+  yearLevel: string;
+  program: string;
+  availability: string[];
+  sessionDur: string;
+  bio: string;
+  subjects: string[];
+  image: string;
+  phoneNumber: string;
+  style: string[];
+  goals: string;
+  sex: string;
+  status: string;
+  modality: string;
+  createdAt: string;
+  __v: number;
+  // added to match usage in component (server returns nested learn object)
+  learn?: any;
 }
 
 interface EditInformationProps {
-  userData: UserData;
+  userData: IUserData;
   onClose: () => void;
-  onUpdateUserData: (updatedData: Partial<UserData>) => void;
+  onUpdateUserData: (updatedData: Partial<IUserData>) => void;
 }
 
 interface InputField {
@@ -51,14 +51,14 @@ interface PersonalData {
 }
 
 interface ProfileData {
-  [key: string]: string | string[];
+  [key: string]: string | string[] | undefined; // allow undefined for indexed properties
   courseOffered: string[];
   shortBio: string;
   learningGoals: string;
-  learningModality?: string;
-  daysOfAvailability?: string[];
-  learningStyle?: string[];
-  preferredSessionDuration?: string;
+  modality?: string;
+  availability?: string[];
+  style?: string[];
+  sessionDur?: string;
 }
 
 interface ValidationErrors {
@@ -71,10 +71,10 @@ export default function EditInformation({ userData, onClose, onUpdateUserData }:
     courseOffered: [],
     shortBio: userData?.learn?.bio || '',
     learningGoals: userData?.learn?.goals || '',
-    learningModality: '',
-    daysOfAvailability: [],
-    learningStyle: [],
-    preferredSessionDuration: '',
+    modality: '',
+    availability: [],
+    style: [],
+    sessionDur: '',
   });
   const [dropdownOpen, setDropdownOpen] = useState<{ [key: string]: boolean }>({});
   const [availableSubjects, setAvailableSubjects] = useState<AvailableSubjects>({
@@ -380,16 +380,16 @@ export default function EditInformation({ userData, onClose, onUpdateUserData }:
   const getDisplayValue = (field: string): string => {
     if (Array.isArray(profileData[field])) {
       if (profileData[field].length === 0) {
-        if (field === 'daysOfAvailability') {
-          return userData.learn.availability?.join(', ') || '';
+        if (field === 'availability') {
+          return userData?.learn?.availability?.join(', ') || '';
         }
-        if (field === 'learningStyle') {
-          return userData.learn.learn_sty?.join(', ') || '';
+        if (field === 'style') {
+          return userData?.learn?.style?.join(', ') || '';
         }
       }
       return (profileData[field] as string[]).join(', ');
     }
-    return profileData[field] as string || '';
+    return (profileData[field] as string) || '';
   };
 
   const handleClickOutside = (event: MouseEvent) => {
@@ -463,7 +463,7 @@ export default function EditInformation({ userData, onClose, onUpdateUserData }:
       return;
     }
 
-    const learn = userData.learn || {};
+    const learn = userData?.learn || {};
 
     const combinedData = {
       phoneNum: personalData.contactNumber?.trim() || learn.phoneNum,
@@ -482,11 +482,12 @@ export default function EditInformation({ userData, onClose, onUpdateUserData }:
 
     try {
       onUpdateUserData({
+        // allow updating nested learn object
         learn: {
-          ...userData.learn,
+          ...learn,
           ...combinedData
         }
-      });
+      } as Partial<IUserData>);
 
       alert('Changes saved successfully!');
       onClose();
@@ -559,23 +560,23 @@ export default function EditInformation({ userData, onClose, onUpdateUserData }:
     });
     setPersonalData(initialPersonalData);
 
-    updateAvailableSubjects(userData.learn.course);
+    updateAvailableSubjects(userData?.learn?.course);
     
     setProfileData({
-      courseOffered: userData.learn.subjects || [],
-      shortBio: userData.learn.bio || '',
-      learningGoals: userData.learn.goals || '',
-      learningModality: userData.learn.learn_modality || '',
-      daysOfAvailability: userData.learn.availability || [],
-      learningStyle: userData.learn.learn_sty || [],
-      preferredSessionDuration: userData.learn.prefSessDur || '',
+      courseOffered: userData?.learn?.subjects || [],
+      shortBio: userData?.learn?.bio || '',
+      learningGoals: userData?.learn?.goals || '',
+      learningModality: userData?.learn?.modality || '',
+      daysOfAvailability: userData?.learn?.availability || [],
+      learningStyle: userData?.learn?.style || [],
+      preferredSessionDuration: userData?.learn?.sessionDur || '',
     });
     
     setPersonalData({
-      contactNumber: userData.learn.phoneNum || '',
-      address: userData.learn.address || '',
-      program: userData.learn.course || '',
-      yearLevel: userData.learn.year || '',
+      contactNumber: userData?.learn?.phoneNum || '',
+      address: userData?.learn?.address || '',
+      program: userData?.learn?.course || '',
+      yearLevel: userData?.learn?.year || '',
     });
 
     return () => {

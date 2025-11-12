@@ -1,6 +1,3 @@
-/* RescheduleDialog.module.css */
-
-/* Use very specific class names to prevent conflicts */
 .rescheduleModalOverlay {
   position: fixed;
   top: 0;
@@ -27,6 +24,7 @@
   display: flex;
   flex-direction: column;
   min-height: 250px;
+  margin-left: 16rem;
 }
 
 .rescheduleUpperElement {
@@ -95,6 +93,11 @@
   cursor: pointer;
   transition: all 0.2s ease;
   border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 40px;
 }
 
 .rescheduleCancelButton {
@@ -104,6 +107,8 @@
 
 .rescheduleCancelButton:hover {
   background: #f7f7f7;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .rescheduleConfirmButton {
@@ -119,6 +124,25 @@
 
 .rescheduleConfirmButton:not(:disabled):hover {
   background: #1a2634;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.rescheduleButtonContainer button:active,
+.rescheduleButtonContainer button.active {
+  transform: translateY(0);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.rescheduleButtonContainer button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.rescheduleButtonContainer button.loading {
+  pointer-events: none;
 }
 
 .rescheduleLoader {
@@ -143,39 +167,6 @@
   }
 }
 
-/* Button states */
-.rescheduleButtonContainer button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  transition: all 0.3s ease;
-  min-height: 40px;
-}
-
-.rescheduleButtonContainer button:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}
-
-.rescheduleButtonContainer button:active,
-.rescheduleButtonContainer button.active {
-  transform: translateY(0);
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.rescheduleButtonContainer button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
-}
-
-.rescheduleButtonContainer button.loading {
-  pointer-events: none;
-}
-
-/* Disabled form elements */
 .rescheduleDatepickerWrapper input:disabled,
 .rescheduleDatepickerWrapper textarea:disabled,
 .rescheduleDatepickerWrapper select:disabled {
@@ -184,7 +175,6 @@
   background-color: #f5f5f5;
 }
 
-/* DatePicker Input Styles with specific names */
 .rescheduleDpInput {
   width: 100%;
   padding: 10px 12px;
@@ -205,7 +195,6 @@
   box-shadow: 0 0 0 2px rgba(44, 62, 80, 0.1);
 }
 
-/* React DatePicker wrapper */
 .rescheduleDatepickerWrapper .react-datepicker-wrapper {
   width: 100%;
 }
@@ -214,7 +203,6 @@
   width: 100%;
 }
 
-/* React DatePicker custom styling with increased specificity */
 .rescheduleModalOverlay .react-datepicker-popper {
   z-index: 1001 !important;
 }
@@ -252,7 +240,6 @@
   width: 100%;
 }
 
-/* Toast styles with specific names */
 .rescheduleToast .mosha__toast__content {
   font-family: "Montserrat", sans-serif;
   font-size: 0.9rem;
@@ -262,10 +249,77 @@
   padding: 0.5rem;
 }
 
-/* Responsive Design */
+@media (max-width: 1200px) {
+  .rescheduleWrapper {
+    margin-left: 8rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .rescheduleWrapper {
+    margin-left: 4rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .rescheduleWrapper {
+    margin-left: 2rem;
+    margin-right: 2rem;
+    width: calc(100% - 4rem);
+  }
+  
+  .rescheduleUpperElement {
+    padding: 20px;
+  }
+  
+  .rescheduleContentElement {
+    padding: 20px;
+  }
+  
+  .rescheduleFooterElement {
+    padding: 20px;
+  }
+  
+  .rescheduleButtonContainer {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .rescheduleButtonContainer button {
+    width: 100%;
+  }
+}
+
 @media (max-width: 600px) {
   .rescheduleWrapper {
-    width: calc(100vw - 40px);
+    margin-left: 1rem;
+    margin-right: 1rem;
+    width: calc(100% - 2rem);
+  }
+  
+  .rescheduleUpperElement {
+    padding: 16px;
+  }
+  
+  .rescheduleContentElement {
+    padding: 16px;
+  }
+  
+  .rescheduleFooterElement {
+    padding: 16px;
+  }
+  
+  .rescheduleUpperElement h1 {
+    font-size: 1.1rem;
+  }
+  
+  .rescheduleContentElement p {
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+  }
+  
+  .rescheduleDatepickerWrapper {
+    margin: 20px 0;
   }
   
   .rescheduleModalOverlay .react-datepicker {
@@ -275,14 +329,66 @@
   }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 480px) {
   .rescheduleWrapper {
-    width: calc(100vw - 30px);
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    width: calc(100% - 1rem);
+  }
+  
+  .rescheduleUpperElement {
+    padding: 14px;
+  }
+  
+  .rescheduleContentElement {
+    padding: 14px;
+  }
+  
+  .rescheduleFooterElement {
+    padding: 14px;
+  }
+  
+  .rescheduleButtonContainer button {
+    padding: 12px 16px;
+    font-size: 0.85rem;
   }
   
   .rescheduleModalOverlay .react-datepicker {
     width: calc(100vw - 50px) !important;
     left: 15px !important;
     right: 15px !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .rescheduleWrapper {
+    margin-left: 0.25rem;
+    margin-right: 0.25rem;
+    width: calc(100% - 0.5rem);
+  }
+  
+  .rescheduleUpperElement {
+    padding: 12px;
+  }
+  
+  .rescheduleContentElement {
+    padding: 12px;
+  }
+  
+  .rescheduleFooterElement {
+    padding: 12px;
+  }
+  
+  .rescheduleUpperElement h1 {
+    font-size: 1rem;
+  }
+  
+  .rescheduleContentElement p {
+    font-size: 0.85rem;
+  }
+  
+  .rescheduleDpInput {
+    padding: 8px 10px;
+    font-size: 0.9rem;
   }
 }

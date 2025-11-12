@@ -29,6 +29,7 @@ interface UserInfo {
   goals: string;
   image: string;
   id: string;
+  rank?: string; // <-- added
 }
 
 export default function ViewUser({ userId, mentorData, onClose }: ViewUserProps) {
@@ -40,45 +41,48 @@ export default function ViewUser({ userId, mentorData, onClose }: ViewUserProps)
   const [userInfo, setUserInfo] = useState<UserInfo>({
     name: '', year: '', course: '', gender: '', phoneNum: '', email: '', address: '',
     bio: '', subjects: [], learn_modality: '', learn_sty: [], availability: [],
-    prefSessDur: '', goals: '', image: '', id: ''
+    prefSessDur: '', goals: '', image: '', id: '', rank: '' // <-- init rank
   });
 
   const fetchUserInfo = async (id: string) => {
     try {
       setIsLoading(true);
       const response = await api.get(`/api/mentor/learners/${id}`, { withCredentials: true });
-      const data = response.data;
+      const payload = response.data || {};
+      const learner = payload.learner || payload;         // supports both old and new shapes
+      const rankVal = payload.rank?.rank || learner.rank || ''; // new payload: { rank: { rank: '...' } }
 
       setUserInfo({
-        name: data.name || '',
-        year: data.yearLevel || '',
-        course: data.program || '',
-        gender: data.sex || '',
-        phoneNum: data.phoneNumber || '',
-        email: data.email || '',
-        address: data.address || '',
-        bio: data.bio || '',
-        subjects: data.subjects || [],
-        learn_modality: data.modality || '',
-        learn_sty: data.style || [],
-        availability: data.availability || [],
-        prefSessDur: data.sessionDur || '',
-        goals: data.goals || '',
-        image: data.image || '',
-        id: data._id || data.id || ''
+        name: learner.name || '',
+        year: learner.yearLevel || '',
+        course: learner.program || '',
+        gender: learner.sex || '',
+        phoneNum: learner.phoneNumber || '',
+        email: learner.email || '',
+        address: learner.address || '',
+        bio: learner.bio || '',
+        subjects: learner.subjects || [],
+        learn_modality: learner.modality || '',
+        learn_sty: learner.style || [],
+        availability: learner.availability || [],
+        prefSessDur: learner.sessionDur || '',
+        goals: learner.goals || '',
+        image: learner.image || '',
+        id: learner._id || learner.id || '',
+        rank: rankVal
       });
 
       setOfferInfo({
-        learnerId: data._id || data.id || '',
-        name: data.name || '',
-        year: data.yearLevel || '',
-        course: data.program || '',
-        sessionDur: data.sessionDur || '',
-        modality: data.modality || '',
-        learnStyle: data.style || [],
-        availability: data.availability || [],
-        profilePic: data.image || '',
-        subjects: data.subjects || []
+        learnerId: learner._id || learner.id || '',
+        name: learner.name || '',
+        year: learner.yearLevel || '',
+        course: learner.program || '',
+        sessionDur: learner.sessionDur || '',
+        modality: learner.modality || '',
+        learnStyle: learner.style || [],
+        availability: learner.availability || [],
+        profilePic: learner.image || '',
+        subjects: learner.subjects || []
       });
     } catch (error) {
       console.error('Error fetching learner details:', error);
@@ -150,7 +154,7 @@ export default function ViewUser({ userId, mentorData, onClose }: ViewUserProps)
                     <i className="fas fa-venus-mars"></i> Sex at Birth
                   </span>
                   <span className={styles.viewInfoValue}>
-                    {userInfo.gender.charAt(0).toUpperCase() + userInfo.gender.slice(1).toLowerCase() || "N/A"}
+                    {(userInfo.gender || 'N/A').toString().charAt(0).toUpperCase() + (userInfo.gender || 'N/A').toString().slice(1)}
                   </span>
                 </div>
                 <div className={styles.viewInfoItem}>
@@ -165,6 +169,14 @@ export default function ViewUser({ userId, mentorData, onClose }: ViewUserProps)
                   </span>
                   <span className={styles.viewInfoValue}>{userInfo.course || "N/A"}</span>
                 </div>
+                {/* NEW: Rank display */}
+                <div className={styles.viewInfoItem}>
+                  <span className={styles.viewInfoLabel}>
+                    <i className="fas fa-medal"></i> Rank
+                  </span>
+                  <span className={styles.viewInfoValue}>{userInfo.rank || "N/A"}</span>
+                </div>
+                {/* End NEW */}
                 <div className={styles.viewInfoItem}>
                   <span className={styles.viewInfoLabel}>
                     <i className="fas fa-phone"></i> Contact

@@ -8,6 +8,8 @@ import SessionComponent from '@/components/learnerpage/session/page';
 import ReviewsComponent from '@/components/learnerpage/reviews/page';
 import EditInformation from '@/components/learnerpage/information/page';
 import LogoutComponent from '@/components/learnerpage/logout/page';
+import CommunityForumComponent from '@/components/learnerpage/community/page';
+import SessionAnalyticsComponent from '@/components/learnerpage/analytics/page'; // Add this import
 import api from "@/lib/axios";
 import styles from './learner.module.css';
 import { toast } from 'react-toastify';
@@ -123,6 +125,56 @@ interface TransformedMentor {
   rating_ave: number;
 }
 
+interface ForumData {
+  id: string; // MongoDB ObjectId as string
+  title: string;
+  content: string;
+  author: string; // MongoDB ObjectId as string
+  authorName: string;
+  createdAt: string;
+  upvotes: number;
+  downvotes: number;
+  commentsCount: number; // backend uses commentsCount, not commentCount
+  topics?: string; // backend uses topics, not category
+  tags?: string[];
+  userVote?: 'up' | 'down' | null;
+}
+
+interface ProgressData {
+  sessionsAttended: number;
+  totalSessions: number;
+  progress: number;
+}
+
+// Add this
+interface RankData {
+  rank: string;
+  progress: number;
+  requiredSessions: number | null;
+  sessionsToNextRank: number | null;
+}
+
+// Update the AnalyticsData interface to match the backend response exactly
+interface AnalyticsData {
+  totalSessions: number;
+  oneOnOneSessions: number;
+  groupSessions: number;
+  subjectsOfInterest: { subject: string; count: number }[];
+  schedules: AnalyticsSchedule[];
+}
+
+interface AnalyticsSchedule {
+  id: string;
+  date: string;
+  time: string;
+  subject: string;
+  mentor: string;
+  duration: string;
+  type: string;
+  location: string;
+  status: string;
+}
+
 const transformSchedulesForReview = (schedules: any[]): any[] => {
   return schedules.map(schedule => ({
     id: schedule.id,
@@ -199,6 +251,8 @@ export default function LearnerPage() {
   const [roleData, setRoleData] = useState<RoleData | null>(null);
   const [transformedMentors, setTransformedMentors] = useState<TransformedMentor[]>([]);
   const [schedules, setSchedules] = useState<Schedule[]>([]);
+  const [forumData, setForumData] = useState<ForumData[]>([]);
+  const [analyticsData, setAnalyticsData] = useState<AnalyticsData | null>(null); // Add analytics data state
   const [isLoadingMentors, setIsLoadingMentors] = useState(false);
   const [isLoadingSchedules, setIsLoadingSchedules] = useState(false);
   
@@ -210,23 +264,48 @@ export default function LearnerPage() {
   
   const [isSidebarVisible, setIsSidebarVisible] = useState(false);
   const [isMobileView, setIsMobileView] = useState(false);
+  const [showDatePopup, setShowDatePopup] = useState(false);
+  const datePopupRef = useRef<HTMLDivElement>(null);
 
   const [focusedTopbarIndex, setFocusedTopbarIndex] = useState(0);
   const [isTopbarFocused, setIsTopbarFocused] = useState(false);
   const topbarRef = useRef<HTMLDivElement>(null);
 
+  // Progress Data State - Simplified to just session attendance
+  const [progressData, setProgressData] = useState<ProgressData>({
+    sessionsAttended: 0,
+    totalSessions: 0,
+    progress: 0
+  });
+
+  // Add this state
+  const [rankData, setRankData] = useState<RankData | null>(null);
+
+  // Update topbarItems to include Analytics
   const topbarItems = [
     { key: 'main', label: 'Mentors', icon: '/main.svg' },
     { key: 'session', label: 'Schedules', icon: '/calendar.svg' },
-    { key: 'records', label: 'Reviews', icon: '/records.svg' }
+    { key: 'records', label: 'Reviews', icon: '/records.svg' },
+    { key: 'community', label: 'Community', icon: '/community.svg' },
+    { key: 'analytics', label: 'Analytics', icon: '/analytics.svg' } // Add Analytics
   ];
-// proxy code
+
   useEffect(() => {
-    // Initialize only after the mentor's User id is available
+    const handleClickOutside = (event: MouseEvent) => {
+      if (datePopupRef.current && !datePopupRef.current.contains(event.target as Node)) {
+        setShowDatePopup(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  useEffect(() => {
     if (!userData?.userId) return;
 
-    // Optional: enable client logs while testing
-    // @ts-ignore
     Pusher.logToConsole = true;
 
     const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY!, {
@@ -234,7 +313,7 @@ export default function LearnerPage() {
       authEndpoint: `/api/pusher-auth`,
     });
 
-    const channelName = `private-user-${userData.userId}`; // userId only
+    const channelName = `private-user-${userData.userId}`;
     const channel = pusher.subscribe(channelName);
 
     channel.bind('pusher:subscription_succeeded', () => {
@@ -280,6 +359,61 @@ export default function LearnerPage() {
       pusher.disconnect();
     };
   }, [userData.userId]);
+
+  // Update progress based on completed sessions
+  useEffect(() => {
+    const updateProgress = () => {
+      const sessionsAttended = schedForReview.filter(session => session.has_feedback).length;
+      const totalSessions = schedForReview.length;
+      const progress = totalSessions > 0 ? (sessionsAttended / totalSessions) * 100 : 0;
+      
+      setProgressData({
+        sessionsAttended,
+        totalSessions,
+        progress
+      });
+    };
+
+    updateProgress();
+  }, [schedForReview]);
+
+  const fetchForumData = async () => {
+    try {
+      console.log("Fetching forum data...");
+      const token = getCookie('MindMateToken');
+      const res = await api.get('/api/forum/posts', {
+        timeout: 10000,
+        withCredentials: true,
+      });
+      
+      console.log("Forum API Response:", res.data);
+      setForumData(res.data);
+      
+    } catch (error) {
+      console.error('Error fetching forum data:', error);
+    }
+  };
+
+  // Add fetchAnalyticsData function
+  const fetchAnalyticsData = async () => {
+    try {
+      console.log("Fetching analytics data...");
+      const res = await api.get('/api/learner/analytics', {
+        timeout: 50000,
+        withCredentials: true,
+      });
+      
+      console.log("Analytics API Response:", res.data);
+      if (res.data?.data) {
+        // Mount the data exactly as received from backend
+        setAnalyticsData(res.data.data);
+      }
+      
+    } catch (error) {
+      console.error('Error fetching analytics data:', error);
+      toast.error('Error fetching analytics data');
+    }
+  };
 
   const startLoading = () => setIsLoading(true);
   const stopLoading = () => setIsLoading(false);
@@ -355,59 +489,11 @@ export default function LearnerPage() {
   const mentorProfile = async () => {
     try {
       console.log("Fetching mentor profiles...");
-      setUsers([
-        {
-          id: 1,
-          userName: "Dr. Smith",
-          yearLevel: "Professor",
-          course: "Computer Science",
-          image_id: "",
-          proficiency: "Expert",
-          subjects: ["Programming", "Algorithms"],
-          availability: ["Mon", "Wed"],
-          rating_ave: 4.5,
-          bio: "Experienced professor with 10+ years in computer science education",
-          exp: "10 years",
-          prefSessDur: "1 hour",
-          teach_sty: ["Interactive", "Project-based"],
-          credentials: ["PhD in Computer Science"],
-          image_url: "https://placehold.co/600x400"
-        },
-        {
-          id: 2,
-          userName: "Prof. Johnson",
-          yearLevel: "Associate Professor",
-          course: "Software Engineering",
-          image_id: "",
-          proficiency: "Advanced",
-          subjects: ["Web Development", "Database"],
-          availability: ["Tue", "Thu"],
-          rating_ave: 4.2,
-          bio: "Industry expert with 8 years of software development experience",
-          exp: "8 years",
-          prefSessDur: "1.5 hours",
-          teach_sty: ["Practical", "Hands-on"],
-          credentials: ["MSc in Software Engineering"],
-          image_url: "https://placehold.co/600x400"
-        },
-        {
-          id: 3,
-          userName: "Dr. Wilson",
-          yearLevel: "Professor",
-          course: "Computer Science",
-          image_id: "",
-          proficiency: "Expert",
-          subjects: ["Data Structures", "Algorithms"],
-          availability: ["Mon", "Fri"],
-          rating_ave: 4.8,
-          bio: "Specialized in data structures and algorithm optimization",
-          exp: "12 years",
-          prefSessDur: "1 hour",
-          teach_sty: ["Visual", "Step-by-step"],
-          credentials: ["PhD in Computer Science"],
-          image_url: "https://placehold.co/600x400"
-        }
-      ]);
+      const token = getCookie('MindMateToken');
+      const res = await api.get('/api/learner/mentors', {
+        withCredentials: true,
+      });
+      setUsers(res.data);
     } catch (error) {
       console.error('Error fetching mentors:', error);
     }
@@ -416,46 +502,11 @@ export default function LearnerPage() {
   const fetchMentFiles = async () => {
     try {
       console.log("Fetching mentor files...");
-      const mockMentorFiles: MentorFile[] = [
-        {
-          id: 1,
-          name: "Programming Guide.pdf",
-          url: "/files/programming-guide.pdf",
-          type: "PDF",
-          owner_id: 1,
-          file_id: "file1",
-          file_name: "Programming Guide.pdf"
-        },
-        {
-          id: 2,
-          name: "Algorithms Notes.docx",
-          url: "/files/algorithms-notes.docx",
-          type: "DOCX",
-          owner_id: 2,
-          file_id: "file2",
-          file_name: "Algorithms Notes.docx"
-        },
-        {
-          id: 3,
-          name: "Data Structures Tutorial.pdf",
-          url: "/files/ds-tutorial.pdf",
-          type: "PDF",
-          owner_id: 3,
-          file_id: "file3",
-          file_name: "Data Structures Tutorial.pdf"
-        },
-        {
-          id: 4,
-          name: "Mathematics Problem Sets.pdf",
-          url: "/files/math-problems.pdf",
-          type: "PDF",
-          owner_id: 4,
-          file_id: "file4",
-          file_name: "Mathematics Problem Sets.pdf"
-        }
-      ];
-      
-      setMentorFiles(mockMentorFiles);
+      const token = getCookie('MindMateToken');
+      const res = await api.get('/api/learner/files', {
+        withCredentials: true,
+      });
+      setMentorFiles(res.data);
     } catch (error) {
       console.error('Error fetching mentor files:', error);
     }
@@ -486,7 +537,6 @@ export default function LearnerPage() {
       if (res.status === 200) {
         const newRole = res.data?.newRole;
         toast.success(`Role switched to ${newRole}. Please log in again.`);
-        // Clear client auth
         try { document.cookie = 'MindMateToken=; Max-Age=0; path=/'; } catch {}
         localStorage.removeItem('auth_token');
         router.replace('/auth/login');
@@ -562,9 +612,6 @@ export default function LearnerPage() {
       
       const res = await api.get('/api/learner/profile', {
         withCredentials: true,
-        // headers: {
-        //   ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        // },
       });
       
       setUserData(res.data.userData);
@@ -572,11 +619,12 @@ export default function LearnerPage() {
         role: res.data.roleData.role,
         altRole: res.data.roleData.altRole
       });
+      // Mount rank data from payload
+      setRankData(res.data.rankData || null);
       console.log(res.data);
       
     } catch (error) {
       console.error('Error fetching user data:', error);
-      console.log("Keeping mock data due to API error");
     } finally {
       setIsLoading(false);
     }
@@ -589,9 +637,6 @@ export default function LearnerPage() {
       const token = getCookie('MindMateToken');
       const res = await api.get('/api/learner/mentors', {
         withCredentials: true,
-        // headers: {
-        //   ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        // },
       });
       
       console.log("Mentors API Response:", res.data);
@@ -602,39 +647,6 @@ export default function LearnerPage() {
       
     } catch (error) {
       console.error('Error fetching mentors:', error);
-      const mockMentors: MentorFromAPI[] = [
-        {
-          id: "1",
-          name: "Dr. Smith",
-          program: "BSCS",
-          yearLevel: "Professor",
-          image: "https://placehold.co/600x400",
-          aveRating: 4.5,
-          proficiency: "Expert"
-        },
-        {
-          id: "2", 
-          name: "Prof. Johnson",
-          program: "BSIT",
-          yearLevel: "Associate Professor",
-          image: "https://placehold.co/600x400",
-          aveRating: 4.2,
-          proficiency: "Advanced"
-        },
-        {
-          id: "3",
-          name: "Dr. Wilson", 
-          program: "BSCS",
-          yearLevel: "Professor",
-          image: "https://placehold.co/600x400",
-          aveRating: 4.8,
-          proficiency: "Expert"
-        }
-      ];
-      
-      setMentors(mockMentors);
-      setTransformedMentors(transformMentorData(mockMentors));
-      
     } finally {
       setIsLoadingMentors(false);
     }
@@ -646,9 +658,6 @@ export default function LearnerPage() {
       const token = getCookie('MindMateToken');
       const res = await api.get('/api/learner/schedules', {
         withCredentials: true,
-        // headers: {
-        //   ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        // },
       });
 
       setTodaySchedule(res.data.todaySchedule || []);
@@ -691,7 +700,9 @@ export default function LearnerPage() {
           mentorProfile(),
           fetchMentFiles(),
           fetchMentors(),
-          fetchSchedules()
+          fetchSchedules(),
+          fetchForumData(),
+          fetchAnalyticsData() // Add analytics data fetch
         ]);
       } catch (error) {
         console.error('Error during initialization:', error);
@@ -713,21 +724,29 @@ export default function LearnerPage() {
     console.log("Current userData state:", userData);
   }, [userData]);
 
+  // Helper for rank progress percentage
+  const rankProgressPct = (() => {
+    if (!rankData) return 0;
+    if (rankData.requiredSessions == null) return 100; // top rank
+    const req = Math.max(Number(rankData.requiredSessions) || 0, 1);
+    const prog = Math.max(Number(rankData.progress) || 0, 0);
+    return Math.min(Math.round((prog / req) * 100), 100);
+  })();
+
   const renderComponent = () => {
     const transformedSchedForReview = transformSchedulesForReview(schedForReview);
 
     const normalizeForSession = (items: any[] = []) =>
       items.map((s: any) => ({
-        // id: Number(s.id) || 0,
-        id: String(s.id ?? s._id ?? ''), // keep string id to avoid falsy 0
+        id: String(s.id ?? s._id ?? ''),
         subject: s.subject || '',
         mentor: {
           user: { name: s.mentor?.user?.name || s.mentor?.name || 'Unknown Mentor' },
           ment_inf_id: Number(s.mentor?.ment_inf_id ?? s.mentor?.id ?? 0),
-          id: String(s.mentor?.id ?? s.mentor?.ment_inf_id ?? '') // <-- explicit mentor id
+          id: String(s.mentor?.id ?? s.mentor?.ment_inf_id ?? '')
         },
         learner: {
-          id: String(s.learner?.id ?? s.learner?._id ?? ''), // <-- explicit learner id
+          id: String(s.learner?.id ?? s.learner?._id ?? ''),
           name: s.learner?.name || ''
         },
         date: s.date ? String(s.date) : '',
@@ -777,6 +796,22 @@ export default function LearnerPage() {
             schedForReview={schedForReview}
             userData={userData}
             data={{ schedForReview: schedForReview }}
+          />
+        );
+      case 'community':
+        return (
+          <CommunityForumComponent 
+            forumData={forumData}
+            userData={userData}
+            onForumUpdate={fetchForumData}
+          />
+        );
+      case 'analytics': // Add analytics case
+        return (
+          <SessionAnalyticsComponent 
+            analyticsData={analyticsData}
+            userData={userData}
+            onDataRefresh={fetchAnalyticsData}
           />
         );
       default:
@@ -834,14 +869,42 @@ export default function LearnerPage() {
           </div>
         </div>
 
-        <div className={styles['footer-element']}>
-          <div className={styles['bio-container']}>
-            <h1>BIO</h1>
-            <div className={styles.lines}>
-              <p>{userData.bio}</p>
+        <div className={styles['progress-tracker']}>
+          <h1>Learning Progress</h1>
+          <div className={styles['progress-item']}>
+            <div className={styles['progress-header']}>
+              <span className={styles['progress-title']}>
+                <p className={styles['progress-label']}>Rank:</p>
+                {rankData ? `${rankData.rank}` : 'Sessions Attended'}
+              </span>
+              <span className={styles['progress-percentage']}>
+                {rankData ? `${rankProgressPct}%` : `${Math.round(progressData.progress)}%`}
+              </span>
+            </div>
+            <div className={styles['progress-bar']}>
+              <div 
+                className={styles['progress-fill']}
+                style={{ width: `${rankData ? rankProgressPct : progressData.progress}%` }}
+              ></div>
+            </div>
+            <div className={styles['progress-details']}>
+              <span className={styles['progress-count']}>
+                {rankData
+                  ? (rankData.requiredSessions == null
+                      ? 'Top rank achieved'
+                      : `${rankData.progress} / ${rankData.requiredSessions} sessions` +
+                        (typeof rankData.sessionsToNextRank === 'number'
+                          ? ` • ${rankData.sessionsToNextRank} to next rank`
+                          : '')
+                    )
+                  : `${progressData.sessionsAttended} / ${progressData.totalSessions} sessions`
+                }
+              </span>
             </div>
           </div>
+        </div>
 
+        <div className={styles['footer-element']}>
           <div className={styles.availability}>
             <h1>Availability</h1>
             <div className={styles.lines}>
@@ -966,13 +1029,38 @@ export default function LearnerPage() {
             </div>
           ))}
         </div>
-        <div className={styles['topbar-date']}>
-          {new Date().toLocaleDateString('en-US', {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-          })}
+        
+        <div className={styles.dateContainer} ref={datePopupRef}>
+          <button 
+            className={styles.calendarIconBtn}
+            onClick={() => setShowDatePopup(!showDatePopup)}
+            aria-label="Show current date and time"
+          >
+            <img src="/time.svg" alt="Calendar" className={styles.calendarIcon} />
+          </button>
+          
+          {showDatePopup && (
+            <div className={styles.datePopup}>
+              <div className={styles.dateContent}>
+                <div className={styles.currentDate}>
+                  {new Date().toLocaleDateString("en-US", {
+                    weekday: "long",
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </div>
+                <div className={styles.currentTime}>
+                  {new Date().toLocaleTimeString("en-US", {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: true
+                  })}
+                </div>
+              </div>
+              <div className={styles.popupArrow}></div>
+            </div>
+          )}
         </div>
       </div>
 
@@ -988,7 +1076,7 @@ export default function LearnerPage() {
       {isEdit && (
         <div className={styles['edit-information-popup']}>
           <EditInformation 
-            UserData={userData}
+            userData={userData}
             onClose={() => setIsEdit(false)}
             onUpdateUserData={handleUpdateUserData}
           />

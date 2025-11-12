@@ -9,7 +9,7 @@ import styles from './main.module.css';
 interface User {
   id: string;
   name: string;
-  yearLevel: string;
+  yearLevel?: string;
   program?: string; // Make this optional since some learners don't have it
   image?: string | null;
 }
@@ -258,41 +258,45 @@ export default function MainComponent({
       
       <div className={styles.mainUserGrid}>
         {filteredUsers.length > 0 ? (
-          filteredUsers.map((user, index) => (
-            <div 
-              key={user.id} 
-              className={styles.mainUserCard}
-              ref={el => userCardRefs.current[index] = el}
-              tabIndex={focusedIndex === index ? 0 : -1}
-              style={{
-                border: focusedIndex === index ? '2px solid #6b7280' : 'none',
-                boxShadow: focusedIndex === index ? '0 2px 2px rgba(146, 145, 145, 0.1)' : 'none'
-              }}
-            >
-              <div className={styles.mainUpperElement}>
-                <img
-                  src={getImageUrl(user.image)}
-                  alt={`${user.name || 'User'} profile`}
-                  onError={(e) => {
-                    e.currentTarget.src = 'https://placehold.co/600x400';
-                  }}
-                />
-                <h1>{user.name || 'Unknown User'}</h1>
-              </div>
-              <div className={styles.mainLowerElement}>
-                <p>{user.yearLevel || 'N/A'}</p>
-                <p>{getProgramDisplay(user.program)}</p>
-                <div className={styles.mainButtonGroup}>
-                  <button 
-                    className={styles.mainSeeMoreBtn}
-                    onClick={() => openView(user.id)}
-                  >
-                    See More
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))
+          filteredUsers.map((user, index) => {
+            const uid = user.id;
+            return (
+              <div 
+              key={uid}
+               className={styles.mainUserCard}
+               ref={el => { userCardRefs.current[index] = el; }} // return void
+               tabIndex={focusedIndex === index ? 0 : -1}
+               style={{
+                 border: focusedIndex === index ? '2px solid #6b7280' : 'none',
+                 boxShadow: focusedIndex === index ? '0 2px 2px rgba(146, 145, 145, 0.1)' : 'none'
+               }}
+             >
+               <div className={styles.mainUpperElement}>
+                 <img
+                   src={getImageUrl(user.image)}
+                   alt={`${user.name || 'User'} profile`}
+                   onError={(e) => {
+                     e.currentTarget.src = 'https://placehold.co/600x400';
+                   }}
+                 />
+                 <h1>{user.name || 'Unknown User'}</h1>
+               </div>
+               <div className={styles.mainLowerElement}>
+                 <p>{user.yearLevel || 'N/A'}</p>
+                 <p>{getProgramDisplay(user.program)}</p>
+                 <div className={styles.mainButtonGroup}>
+                   <button 
+                     type="button"
+                     className={styles.mainSeeMoreBtn}
+                    onClick={() => openView(uid)}
+                   >
+                     See More
+                   </button>
+                 </div>
+               </div>
+             </div>
+           );
+          })
         ) : (
           <div className={styles.noResults}>
             <p>No learners found matching your search.</p>

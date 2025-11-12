@@ -35,13 +35,29 @@ interface UserData {
   image_url: string | null;
 }
 
-interface EditInformationComponentProps {
-  userData: UserData;
-  onSave: (updatedData: UserData) => void;
+type EditInformationComponentProps = {
+  userData: any; // allow flexible shape to avoid duplicate-type collisions across files
+  onSave: (updatedData: any) => void;
   onCancel: () => void;
+  // Optional: parent can receive partial updates as user edits (keeps parent in sync)
+  onUpdateUserData?: (updatedData: Partial<any>) => void;
+};
+
+type OptionItem = string | { label: string; value: string };
+
+function normalizeOptionValue(opt: OptionItem): string {
+  return typeof opt === 'string' ? opt : (opt as { value: string }).value;
+}
+function normalizeOptionLabel(opt: OptionItem): string {
+  return typeof opt === 'string' ? opt : (opt as { label: string }).label;
 }
 
-export default function EditInformationComponent({ userData, onSave, onCancel }: EditInformationComponentProps) {
+export default function EditInformationComponent({
+  userData,
+  onSave,
+  onCancel,
+  onUpdateUserData,
+}: EditInformationComponentProps) {
   const [personalData, setPersonalData] = useState({
     gender: '',
     otherGender: '',
@@ -73,8 +89,8 @@ export default function EditInformationComponent({ userData, onSave, onCancel }:
   const [dropdownFocusedIndex, setDropdownFocusedIndex] = useState<number>(-1);
   const [currentDropdown, setCurrentDropdown] = useState<string>('');
 
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  const inputRefs = useRef<(HTMLInputElement | HTMLTextAreaElement | HTMLDivElement | null)[]>([]);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
+  const inputRefs = useRef<(HTMLInputElement | HTMLTextAreaElement | HTMLDivElement | HTMLButtonElement | null)[]>([]);
   const dropdownOptionRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   // Options
@@ -150,28 +166,29 @@ export default function EditInformationComponent({ userData, onSave, onCancel }:
   };
 
   const getPlaceholder = (field: string, section: 'personal' | 'profile') => {
-    const mappings = {
+    // use flexible lookup to avoid TS index signature issues
+    const mappings: Record<string, Record<string, any>> = {
       personal: {
-        'Full Name': userData.user.name,
-        'Year Level': userData.ment.year,
-        'Program': userData.ment.course,
-        'Address': userData.ment.address,
-        'Contact Number': userData.ment.phoneNum,
-        'Sex at Birth': capitalizeFirstLetter(userData.ment.gender || ''),
+        'Full Name': userData?.user?.name,
+        'Year Level': userData?.ment?.year,
+        'Program': userData?.ment?.course,
+        'Address': userData?.ment?.address,
+        'Contact Number': userData?.ment?.phoneNum,
+        'Sex at Birth': capitalizeFirstLetter(userData?.ment?.gender || ''),
       },
       profile: {
-        'Teaching Modality': userData.ment.learn_modality,
-        'Days of Availability': userData.ment.availability?.join(', '),
-        'Proficiency Level': userData.ment.proficiency,
-        'Teaching Style': userData.ment.teach_sty?.join(', ') || '',
-        'Preferred Session Duration': userData.ment.prefSessDur,
-        'Course Offered': userData.ment.subjects?.join(', '),
-        'Short Bio': userData.ment.bio,
-        'Tutoring Experience': userData.ment.exp,
+        'Teaching Modality': userData?.ment?.learn_modality,
+        'Days of Availability': userData?.ment?.availability?.join(', '),
+        'Proficiency Level': userData?.ment?.proficiency,
+        'Teaching Style': userData?.ment?.teach_sty?.join(', ') || '',
+        'Preferred Session Duration': userData?.ment?.prefSessDur,
+        'Course Offered': userData?.ment?.subjects?.join(', '),
+        'Short Bio': userData?.ment?.bio,
+        'Tutoring Experience': userData?.ment?.exp,
       },
     };
 
-    return mappings[section][field];
+    return (mappings[section] as any)[field];
   };
 
   const updateAvailableSubjects = (program: string) => {
@@ -573,10 +590,19 @@ export default function EditInformationComponent({ userData, onSave, onCancel }:
               if (currentDropdown === 'gender') {
                 selectGender(genderOptions[dropdownFocusedIndex]);
               } else if (dropdownOptions.length > 0) {
-                selectOption(currentDropdown, dropdownOptions[dropdownFocusedIndex], 
-                  inputFieldPersonalInformation.some(f => toCamelCase(f.field) === currentDropdown) ? 'personal' : 'profile');
+                // normalize dropdown option to string before selecting
+                const opt = dropdownOptions[dropdownFocusedIndex];
+                const optVal = normalizeOptionValue(opt as OptionItem);
+                selectOption(
+                  currentDropdown,
+                  optVal,
+                  inputFieldPersonalInformation.some(f => toCamelCase(f.field) === currentDropdown) ? 'personal' : 'profile'
+                );
               } else if (checkboxOptions.length > 0) {
-                handleCheckboxSelection(currentDropdown, checkboxOptions[dropdownFocusedIndex].value);
+                // checkboxOptions may be objects or strings
+                const chk = checkboxOptions[dropdownFocusedIndex];
+                const chkVal = normalizeOptionValue(chk as OptionItem);
+                handleCheckboxSelection(currentDropdown, chkVal);
               }
             }
             break;
@@ -776,7 +802,16 @@ export default function EditInformationComponent({ userData, onSave, onCancel }:
           },
         };
         
+        // notify parent about full save
         onSave(updatedUserData);
+        // also provide partial update callback if parent supplied it (keeps parent state in sync without forcing types)
+        try {
+          onUpdateUserData?.({
+            ment: updatedUserData.ment,
+          });
+        } catch (e) {
+          // swallow; optional callback
+        }
       } else {
         alert('An error occurred while saving changes.');
       }
@@ -825,7 +860,7 @@ export default function EditInformationComponent({ userData, onSave, onCancel }:
                     {item.type === 'text' ? (
                       <>
                         <input
-                          ref={el => inputRefs.current[index] = el}
+                          ref={el => { inputRefs.current[index] = el as HTMLInputElement | null; }}
                           type="text"
                           value={personalData[toCamelCase(item.field) as keyof typeof personalData] as string}
                           onChange={(e) => {
@@ -846,7 +881,7 @@ export default function EditInformationComponent({ userData, onSave, onCancel }:
                     ) : item.type === 'select' && item.field !== 'Gender' ? (
                       <div className={styles.customDropdown}>
                         <div
-                          ref={el => inputRefs.current[index] = el}
+                          ref={el => { inputRefs.current[index] = el as HTMLDivElement | null; }}
                           className={styles.dropdownContainer}
                           onClick={() => toggleDropdown(toCamelCase(item.field))}
                           onFocus={() => setFocusedIndex(index)}
@@ -863,17 +898,21 @@ export default function EditInformationComponent({ userData, onSave, onCancel }:
                         </div>
                         {dropdownOpen[toCamelCase(item.field)] && (
                           <div className={styles.dropdownOptions}>
-                            {item.options.map((option, i) => (
-                              <div
-                                key={i}
-                                ref={el => dropdownOptionRefs.current[i] = el}
-                                className={`${styles.dropdownOption} ${dropdownFocusedIndex === i ? styles.dropdownFocused : ''}`}
-                                onClick={() => selectOption(toCamelCase(item.field), option, 'personal')}
-                                tabIndex={-1}
-                              >
-                                {option}
-                              </div>
-                            ))}
+                            {(item.options ?? []).map((op, i) => {
+                              const val = normalizeOptionValue(op as OptionItem);
+                              const label = normalizeOptionLabel(op as OptionItem);
+                              return (
+                                <div
+                                  key={val + '-' + i}
+                                  role="option"
+                                  onClick={() => selectOption(toCamelCase(item.field), val, 'personal')}
+                                  ref={el => { dropdownOptionRefs.current[i] = el; }} // ensure callback returns void
+                                  tabIndex={0}
+                                >
+                                  {label}
+                                </div>
+                              );
+                            })}
                           </div>
                         )}
                       </div>
@@ -887,7 +926,7 @@ export default function EditInformationComponent({ userData, onSave, onCancel }:
                   <div className={styles.genderSection}>
                     <div className={styles.genderDropdown}>
                       <div
-                        ref={el => inputRefs.current[inputFieldPersonalInformation.length] = el}
+                        ref={el => { inputRefs.current[inputFieldPersonalInformation.length] = el as HTMLDivElement | null; }}
                         className={styles.dropdownContainer}
                         onClick={() => toggleDropdown('gender')}
                         onFocus={() => setFocusedIndex(inputFieldPersonalInformation.length)}
@@ -907,7 +946,7 @@ export default function EditInformationComponent({ userData, onSave, onCancel }:
                           {genderOptions.map((option, i) => (
                             <div
                               key={i}
-                              ref={el => dropdownOptionRefs.current[i] = el}
+                              ref={el => { dropdownOptionRefs.current[i] = el; }}
                               className={`${styles.dropdownOption} ${dropdownFocusedIndex === i ? styles.dropdownFocused : ''}`}
                               onClick={() => selectGender(option)}
                               tabIndex={-1}
@@ -935,7 +974,7 @@ export default function EditInformationComponent({ userData, onSave, onCancel }:
                       {item.type === 'select' && item.field !== 'Course Offered' ? (
                         <div className={styles.customDropdown}>
                           <div
-                            ref={el => inputRefs.current[globalIndex] = el}
+                            ref={el => { inputRefs.current[globalIndex] = el as HTMLDivElement | null; }}
                             className={styles.dropdownContainer}
                             onClick={() => toggleDropdown(toCamelCase(item.field))}
                             onFocus={() => setFocusedIndex(globalIndex)}
@@ -952,24 +991,28 @@ export default function EditInformationComponent({ userData, onSave, onCancel }:
                           </div>
                           {dropdownOpen[toCamelCase(item.field)] && (
                             <div className={styles.dropdownOptions}>
-                              {item.options.map((option, i) => (
-                                <div
-                                  key={i}
-                                  ref={el => dropdownOptionRefs.current[i] = el}
-                                  className={`${styles.dropdownOption} ${dropdownFocusedIndex === i ? styles.dropdownFocused : ''}`}
-                                  onClick={() => selectOption(toCamelCase(item.field), option)}
-                                  tabIndex={-1}
-                                >
-                                  {option}
-                                </div>
-                              ))}
+                              {(item.options ?? []).map((op, i) => {
+                                const val = normalizeOptionValue(op as OptionItem);
+                                const label = normalizeOptionLabel(op as OptionItem);
+                                return (
+                                  <div
+                                    key={val + '-' + i}
+                                    role="option"
+                                    onClick={() => selectOption(toCamelCase(item.field), val)}
+                                    ref={el => { dropdownOptionRefs.current[i] = el; }} // return void
+                                    tabIndex={0}
+                                  >
+                                    {label}
+                                  </div>
+                                );
+                              })}
                             </div>
                           )}
                         </div>
                       ) : item.field === 'Course Offered' ? (
                         <div className={styles.customDropdown}>
                           <div
-                            ref={el => inputRefs.current[globalIndex] = el}
+                            ref={el => { inputRefs.current[globalIndex] = el as HTMLDivElement | null; }}
                             className={styles.dropdownContainer}
                             onClick={() => toggleDropdown(toCamelCase(item.field))}
                             onFocus={() => setFocusedIndex(globalIndex)}
@@ -1043,7 +1086,7 @@ export default function EditInformationComponent({ userData, onSave, onCancel }:
                       ) : item.type === 'checkbox' ? (
                         <div className={styles.customDropdown}>
                           <div
-                            ref={el => inputRefs.current[globalIndex] = el}
+                            ref={el => { inputRefs.current[globalIndex] = el as HTMLDivElement | null; }}
                             className={styles.dropdownContainer}
                             onClick={() => toggleDropdown(toCamelCase(item.field))}
                             onFocus={() => setFocusedIndex(globalIndex)}
@@ -1060,25 +1103,30 @@ export default function EditInformationComponent({ userData, onSave, onCancel }:
                           </div>
                           {dropdownOpen[toCamelCase(item.field)] && (
                             <div className={`${styles.dropdownOptions} ${styles.checkboxOptions}`}>
-                              {item.options.map((option, i) => (
-                                <div 
-                                  key={i} 
-                                  ref={el => dropdownOptionRefs.current[i] = el}
-                                  className={`${styles.checkboxOption} ${dropdownFocusedIndex === i ? styles.dropdownFocused : ''}`}
-                                  tabIndex={-1}
-                                >
-                                  <input
-                                    type="checkbox"
-                                    id={`${toCamelCase(item.field)}-${i}`}
-                                    value={option.value}
-                                    checked={profileData[toCamelCase(item.field) as keyof typeof profileData].includes(option.value)}
-                                    onChange={() => selectOption(toCamelCase(item.field), option.value)}
-                                  />
-                                  <label htmlFor={`${toCamelCase(item.field)}-${i}`}>
-                                    {option.label}
-                                  </label>
-                                </div>
-                              ))}
+                              {(item.options ?? []).map((option, i) => {
+                                const opt = option as OptionItem;
+                                const val = normalizeOptionValue(opt);
+                                const label = normalizeOptionLabel(opt);
+                                return (
+                                  <div 
+                                    key={i} 
+                                    ref={el => { dropdownOptionRefs.current[i] = el; }} // return void
+                                    className={`${styles.checkboxOption} ${dropdownFocusedIndex === i ? styles.dropdownFocused : ''}`}
+                                    tabIndex={-1}
+                                  >
+                                    <input
+                                      type="checkbox"
+                                      id={`${toCamelCase(item.field)}-${i}`}
+                                      value={val}
+                                      checked={(profileData[toCamelCase(item.field) as keyof typeof profileData] as string[]).includes(val)}
+                                      onChange={() => selectOption(toCamelCase(item.field), val)}
+                                    />
+                                    <label htmlFor={`${toCamelCase(item.field)}-${i}`}>
+                                      {label}
+                                    </label>
+                                  </div>
+                                );
+                              })}
                             </div>
                           )}
                         </div>
@@ -1097,7 +1145,7 @@ export default function EditInformationComponent({ userData, onSave, onCancel }:
                     <div key={`bio-${index}`} className={styles.inputFields}>
                       <label>{item.field}</label>
                       <textarea
-                        ref={el => inputRefs.current[globalIndex] = el}
+                        ref={el => { inputRefs.current[globalIndex] = el as HTMLTextAreaElement | null; }}
                         value={profileData[toCamelCase(item.field) as keyof typeof profileData] as string}
                         onChange={(e) => {
                           const newValue = e.target.value;
@@ -1122,7 +1170,7 @@ export default function EditInformationComponent({ userData, onSave, onCancel }:
           </div>
           <div className={styles.save}>
             <button 
-              ref={el => inputRefs.current[totalFocusableElements - 1] = el}
+              ref={el => { inputRefs.current[totalFocusableElements - 1] = el as HTMLButtonElement | null; }}
               className={styles.saveButton} 
               onClick={saveChanges}
               onFocus={() => setFocusedIndex(totalFocusableElements - 1)}

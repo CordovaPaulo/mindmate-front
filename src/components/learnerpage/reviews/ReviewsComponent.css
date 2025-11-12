@@ -1,18 +1,18 @@
-
         .reviews-container {
-          background: #ffffff;
+          background: var(--bg-light);
           border-radius: 20px;
           box-shadow: 0 8px 24px rgba(26, 79, 159, 0.5);
           width: 90%;
           margin-top: 2rem;
-          margin-left: 2.5rem;
+          margin-left: auto;
+          margin-right: auto;
           padding: 0 1rem;
           text-align: center;
           display: flex;
           flex-direction: column;
           height: 37.4rem;
           max-height: 37.5rem;
-          overflow-y: auto;
+          overflow: hidden;
         }
 
         .reviews-container::-webkit-scrollbar {
@@ -109,6 +109,7 @@
           width: 100%;
           border-collapse: collapse;
           text-align: center;
+          font-size: 0.85rem;
         }
 
         .reviews-table th {
@@ -117,14 +118,16 @@
           background-color: #e5e5e5;
           color: #0b2548;
           font-weight: 600;
-          padding: 0.75rem;
+          padding: 0.6rem;
           border-bottom: 2px solid #3b9aa9;
+          font-size: 0.8rem;
         }
 
         .reviews-table td {
-          padding: 0.8rem;
+          padding: 0.6rem;
           vertical-align: middle;
           border-bottom: 1px solid #eee;
+          font-size: 0.8rem;
         }
 
         .reviews-table tr:hover {
@@ -150,7 +153,7 @@
         }
 
         .star {
-          font-size: 1.2rem;
+          font-size: 1rem;
           color: #ccc;
         }
 
@@ -165,10 +168,10 @@
           border: 1px solid #0b3e8a;
           background-color: rgba(73, 152, 164, 0.103);
           color: #0b3e8a;
-          padding: 6px 12px;
+          padding: 4px 10px;
           border-radius: 6px;
           font-weight: 500;
-          font-size: 0.9rem;
+          font-size: 0.8rem;
           cursor: pointer;
           transition: all 0.3s ease;
         }
@@ -187,6 +190,7 @@
           text-align: center;
           padding: 1rem;
           color: #0b2548;
+          font-size: 0.9rem;
         }
 
         .modal-overlay {
@@ -196,6 +200,8 @@
           right: 0;
           bottom: 0;
           background: rgba(0, 0, 0, 0.4);
+          -webkit-backdrop-filter: blur(3px);
+          backdrop-filter: blur(3px);
           display: flex;
           justify-content: center;
           align-items: center;
@@ -484,12 +490,11 @@
           opacity: 0.7;
         }
 
-        /* Tablet Responsive Design */
+        /* 1024px - Tablet */
         @media (max-width: 1024px) {
           .reviews-container {
             width: 95%;
             margin: 1.5rem auto;
-            margin-left: 1.5rem;
             height: 35rem;
             padding: 0 0.8rem;
           }
@@ -501,6 +506,10 @@
 
           .reviews-title {
             font-size: 1.4rem;
+          }
+
+          .header-icon {
+            font-size: 1.2rem;
           }
 
           .search-input {
@@ -515,62 +524,48 @@
             font-size: 0.8rem;
           }
 
+          .reviews-table {
+            font-size: 0.8rem;
+          }
+
+          .reviews-table th,
+          .reviews-table td {
+            padding: 0.5rem;
+            font-size: 0.75rem;
+          }
+
+          .star {
+            font-size: 0.9rem;
+          }
+
+          .details-btn {
+            font-size: 0.75rem;
+            padding: 3px 8px;
+          }
+
           .modal-content {
             width: 50%;
           }
 
-          .user-profile {
-            flex-direction: row;
-            align-items: flex-start;
-            gap: 1.5rem;
+          .modal-header h3 {
+            font-size: 1.3rem;
           }
 
           .profile-info h4 {
-            text-align: left;
+            font-size: 1.4rem;
           }
 
-          .profile-details {
-            flex-direction: row;
-            gap: 2rem;
-          }
-
-          .detail-item {
-            text-align: left;
+          .detail-label,
+          .detail-value {
+            font-size: 0.9rem;
           }
         }
 
-        @media (max-width: 992px) {
-          .reviews-container {
-            width: 96%;
-            margin-left: 0.5rem;
-            margin-top: 1rem;
-            height: 35rem;
-          }
-
-          .reviews-header {
-            flex-direction: row;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1rem;
-          }
-
-          .search-container {
-            margin-left: 0;
-          }
-
-          .modal-content {
-            width: 70%;
-          }
-
-          .search-input {
-            width: 160px;
-          }
-        }
-
+        /* 768px - Mobile */
         @media (max-width: 768px) {
           .reviews-container {
             width: 98%;
-            margin-left: 0;
+            margin: 1rem auto;
             padding: 0 0.5rem;
             height: 32rem;
             border-radius: 12px;
@@ -585,7 +580,11 @@
           }
 
           .reviews-title {
-            font-size: 1.4rem;
+            font-size: 1.2rem;
+          }
+
+          .header-icon {
+            font-size: 1rem;
           }
 
           .search-container {
@@ -594,13 +593,24 @@
 
           .search-input {
             width: 150px;
-            height: 35px;
+            height: 30px;
+            font-size: 0.75rem;
+            padding: 0.3rem 0.6rem 0.3rem 1.8rem;
+          }
+
+          .search-icon {
+            left: 8px;
+            font-size: 0.7rem;
+          }
+
+          .reviews-table {
+            font-size: 0.75rem;
           }
 
           .reviews-table th,
           .reviews-table td {
-            padding: 0.6rem;
-            font-size: 0.85rem;
+            padding: 0.4rem;
+            font-size: 0.7rem;
           }
 
           .reviews-table th:nth-child(1),
@@ -609,120 +619,34 @@
             max-width: 200px;
           }
 
+          .star {
+            font-size: 0.8rem;
+          }
+
+          .details-btn {
+            font-size: 0.7rem;
+            padding: 2px 6px;
+          }
+
+          .no-records {
+            font-size: 0.8rem;
+          }
+
           .modal-content {
-            width: 85%;
+            width: 70%;
+            margin: 0 auto;
+          }
+
+          .modal-header {
+            padding: 1rem;
+          }
+
+          .modal-header h3 {
+            font-size: 1.1rem;
           }
 
           .modal-body {
             padding: 1.5rem;
-          }
-
-          .user-profile {
-            flex-direction: row;
-            gap: 1.5rem;
-          }
-
-          .profile-info h4 {
-            font-size: 1.3rem;
-            text-align: left;
-          }
-
-          .profile-details {
-            flex-direction: row;
-            gap: 1.5rem;
-          }
-
-          .modal-header {
-            padding: 1.2rem;
-          }
-
-          .modal-header h3 {
-            font-size: 1.3rem;
-          }
-        }
-
-        @media (max-width: 576px) {
-          .reviews-container {
-            width: 100%;
-            margin: 0.5rem 0;
-            height: 30rem;
-            border-radius: 8px;
-          }
-
-          .reviews-header {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 1rem;
-          }
-
-          .reviews-title {
-            font-size: 1.2rem;
-          }
-
-          .search-container {
-            width: 100%;
-          }
-
-          .search-input {
-            width: 100%;
-            max-width: 250px;
-            font-size: 0.8rem;
-            height: 32px;
-            padding: 0.4rem 0.6rem 0.4rem 1.8rem;
-          }
-
-          .search-icon {
-            left: 8px;
-            font-size: 0.75rem;
-          }
-
-          .reviews-table {
-            font-size: 0.8rem;
-          }
-
-          .reviews-table th,
-          .reviews-table td {
-            padding: 0.5rem 0.3rem;
-          }
-
-          .reviews-table th:nth-child(1),
-          .reviews-table td:nth-child(1) {
-            width: 120px;
-            max-width: 150px;
-          }
-
-          .stars {
-            gap: 0.1rem;
-          }
-
-          .star {
-            font-size: 1rem;
-          }
-
-          .details-btn {
-            padding: 4px 8px;
-            font-size: 0.8rem;
-          }
-
-          .details-btn span {
-            display: none;
-          }
-
-          .modal-content {
-            width: 92%;
-            margin: 0.5rem;
-          }
-
-          .modal-header {
-            padding: 1rem;
-          }
-
-          .modal-header h3 {
-            font-size: 1.2rem;
-          }
-
-          .modal-body {
-            padding: 1rem;
           }
 
           .user-profile {
@@ -733,8 +657,7 @@
           }
 
           .profile-info h4 {
-            font-size: 1.1rem;
-            margin-bottom: 1rem;
+            font-size: 1.2rem;
             text-align: center;
           }
 
@@ -746,13 +669,11 @@
 
           .detail-item {
             text-align: center;
-            align-items: center;
           }
 
           .detail-label,
           .detail-value {
             font-size: 0.8rem;
-            text-align: center;
             justify-content: center;
           }
 
@@ -762,70 +683,102 @@
 
           .feedback-card h5 {
             font-size: 1rem;
-            justify-content: center;
-          }
-
-          .feedback-input {
-            font-size: 0.85rem;
-            padding: 0.8rem;
           }
 
           .modal-footer {
-            flex-direction: column;
-            gap: 0.5rem;
             padding: 0.8rem 1rem;
           }
 
           .modal-btn {
-            margin-left: 0;
-            width: 100%;
-            justify-content: center;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
           }
         }
 
-        @media (max-width: 400px) {
+        /* 320px - Small Mobile */
+        @media (max-width: 320px) {
           .reviews-container {
-            width: 88%;
+            width: 100%;
             margin: 0.5rem auto;
             height: 28rem;
+            border-radius: 8px;
+            padding: 0 0.3rem;
+          }
+
+          .reviews-header {
+            padding: 0.8rem;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.8rem;
           }
 
           .reviews-title {
-            font-size: 1.1rem;
+            font-size: 1rem;
+          }
+
+          .header-icon {
+            font-size: 0.9rem;
+          }
+
+          .search-container {
+            width: 100%;
           }
 
           .search-input {
             width: 100%;
-            font-size: 0.75rem;
-            height: 30px;
+            max-width: 100%;
+            font-size: 0.7rem;
+            height: 28px;
+            padding: 0.3rem 0.5rem 0.3rem 1.6rem;
+          }
+
+          .search-icon {
+            left: 6px;
+            font-size: 0.65rem;
           }
 
           .reviews-table {
-            font-size: 0.75rem;
+            font-size: 0.65rem;
           }
 
           .reviews-table th,
           .reviews-table td {
-            padding: 0.4rem 0.2rem;
+            padding: 0.3rem 0.1rem;
+            font-size: 0.6rem;
+          }
+
+          .reviews-table th:nth-child(1),
+          .reviews-table td:nth-child(1) {
+            width: 100px;
+            max-width: 120px;
+          }
+
+          .stars {
+            gap: 0.1rem;
+          }
+
+          .star {
+            font-size: 0.7rem;
+          }
+
+          .details-btn {
+            font-size: 0.6rem;
+            padding: 1px 4px;
+            gap: 0.2rem;
+          }
+
+          .details-btn span {
+            display: none;
+          }
+
+          .no-records {
+            font-size: 0.75rem;
+            padding: 0.8rem;
           }
 
           .modal-content {
-            width: 96%;
+            width: 95%;
             margin: 0.5rem;
-          }
-
-          .user-profile {
-            gap: 0.8rem;
-            margin-bottom: 1.2rem;
-          }
-
-          .profile-info h4 {
-            font-size: 1rem;
-          }
-
-          .close-btn {
-            width: 32px;
-            height: 32px;
           }
 
           .modal-header {
@@ -833,23 +786,7 @@
           }
 
           .modal-header h3 {
-            font-size: 1.1rem;
-          }
-        }
-
-        @media (max-height: 700px) {
-          .reviews-container {
-            height: 32rem;
-          }
-
-          .modal-content {
-            max-height: 85vh;
-          }
-        }
-
-        @media (max-height: 600px) {
-          .reviews-container {
-            height: 28rem;
+            font-size: 1rem;
           }
 
           .modal-body {
@@ -857,11 +794,61 @@
           }
 
           .user-profile {
+            gap: 0.8rem;
             margin-bottom: 1rem;
+          }
+
+          .profile-image img {
+            width: 80px;
+            height: 80px;
           }
 
           .profile-info h4 {
             font-size: 1rem;
             margin-bottom: 0.8rem;
+          }
+
+          .profile-details {
+            gap: 0.8rem;
+          }
+
+          .detail-label,
+          .detail-value {
+            font-size: 0.7rem;
+          }
+
+          .feedback-card {
+            padding: 0.8rem;
+          }
+
+          .feedback-card h5 {
+            font-size: 0.9rem;
+          }
+
+          .rating-stars .star {
+            font-size: 1.4rem;
+          }
+
+          .feedback-input {
+            font-size: 0.8rem;
+            padding: 0.6rem;
+          }
+
+          .modal-footer {
+            flex-direction: column;
+            gap: 0.5rem;
+            padding: 0.6rem 0.8rem;
+          }
+
+          .modal-btn {
+            width: 100%;
+            justify-content: center;
+            padding: 0.4rem 0.8rem;
+            font-size: 0.8rem;
+          }
+
+          .close-btn {
+            width: 28px;
+            height: 28px;
           }
         }

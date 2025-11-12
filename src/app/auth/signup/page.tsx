@@ -259,98 +259,87 @@ export default function SignupPage() {
       </div>
 
       <section className={styles.joinSection} id="get-started">
-        <div 
-          ref={learnerCardRef}
-          className={`${styles.joinCard} ${styles.learnerCard}`} 
-          onClick={() => initiateSignUp('learner')}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault();
-              initiateSignUp('learner');
-            }
-          }}
-          onFocus={() => setFocusedIndex(1)}
-          tabIndex={0}
-          role="button"
-          aria-label="Select Learner role"
-        >
-          <div className={styles.cardContent}>
-            <div className={styles.roleTitle}>
-              <span>PROCEED AS</span>
-              <h3>LEARNER</h3>
-              <hr className={styles.divider} />
-            </div>
-            <div className={styles.cardIcon}>
-              <Image 
-                src="/learners.png" 
-                alt="Learner Icon" 
-                width={230}
-                height={200}
-              />
-            </div>
-            <button className={styles.joinBtn} tabIndex={-1}>
-              Get Started
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </button>
+      {/* Learner Card */}
+      <div className={`${styles.joinCard} ${styles.learnerCard}`}>
+        <div className={styles.cardContent}>
+          <div className={styles.roleTitle}>
+            <span>PROCEED AS</span>
+            <h3>LEARNER</h3>
+            <hr className={styles.divider} />
           </div>
-        </div>
 
-        <div 
-          ref={mentorCardRef}
-          className={`${styles.joinCard} ${styles.mentorCard}`} 
-          onClick={() => initiateSignUp('mentor')}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault();
-              initiateSignUp('mentor');
-            }
-          }}
-          onFocus={() => setFocusedIndex(2)}
-          tabIndex={0}
-          role="button"
-          aria-label="Select Mentor role"
-        >
-          <div className={styles.cardContent}>
-            <div className={styles.roleTitle}>
-              <span>PROCEED AS</span>
-              <h3>MENTOR</h3>
-              <hr className={styles.divider} />
-            </div>
-            <div className={styles.cardIcon}>
-              <Image 
-                src="/mentors.png" 
-                alt="Mentor Icon" 
-                width={230}
-                height={200}
-              />
-            </div>
-            <button className={styles.joinBtn} tabIndex={-1}>
-              Get Started
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </button>
+          <div className={styles.cardIcon}>
+            <Image 
+              src="/learners.png" 
+              alt="Learner Icon" 
+              width={230}
+              height={200}
+            />
           </div>
+
+          <button
+            type="button"
+            className={styles.joinBtn}
+            onClick={() => initiateSignUp('learner')}
+            aria-label="Sign up as Learner"
+          >
+            Get Started
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </button>
         </div>
-      </section>
+      </div>
+
+      {/* Mentor Card */}
+      <div className={`${styles.joinCard} ${styles.mentorCard}`}>
+        <div className={styles.cardContent}>
+          <div className={styles.roleTitle}>
+            <span>PROCEED AS</span>
+            <h3>MENTOR</h3>
+            <hr className={styles.divider} />
+          </div>
+
+          <div className={styles.cardIcon}>
+            <Image 
+              src="/mentors.png" 
+              alt="Mentor Icon" 
+              width={230}
+              height={200}
+            />
+          </div>
+
+          <button
+            type="button"
+            className={styles.joinBtn}
+            onClick={() => initiateSignUp('mentor')}
+            aria-label="Sign up as Mentor"
+          >
+            Get Started
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
     </div>
   );
 }

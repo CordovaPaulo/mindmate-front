@@ -10,8 +10,10 @@ import {
   faTimes, 
   faUser, 
   faClock, 
-  faMapMarkerAlt 
+  faMapMarkerAlt,
+  faVideo
 } from '@fortawesome/free-solid-svg-icons';
+import { useRouter } from 'next/navigation';
 import RescheduleDialog from '../RescheduleDialog/page';
 import api from '@/lib/axios';
 import notify from '@/lib/toast';
@@ -43,6 +45,8 @@ interface SessionItem {
 interface SessionComponentProps {
   schedule?: SessionItem[];
   upcomingSchedule?: SessionItem[];
+  userData?: any; // allow mentor page to pass user data
+  onScheduleCreated?: () => Promise<void>;
 }
 
 // Helper to get cookie value
@@ -53,15 +57,20 @@ function getCookie(name: string) {
   return null;
 }
 
-export default function SessionComponent({ schedule = [], upcomingSchedule = [] }: SessionComponentProps) {
+export default function SessionComponent({ schedule = [], upcomingSchedule = [], userData, onScheduleCreated }: SessionComponentProps) {
+  const router = useRouter();
+  
   const [todaySchedule, setTodaySchedule] = useState<SessionItem[]>([]);
   const [upcommingSchedule, setUpcommingSchedule] = useState<SessionItem[]>([]);
-  const [selectedSessionID, setSelectedSessionID] = useState<string | null>(null); // Changed to string
+  const [selectedSessionID, setSelectedSessionID] = useState<string | null>(null); // keep string|null
   const [activePopup, setActivePopup] = useState<{ type: string | null; index: number | null }>({ type: null, index: null });
   const [showRemindConfirmation, setShowRemindConfirmation] = useState(false);
   const [showCancelConfirmation, setShowCancelConfirmation] = useState(false);
   const [selectedItem, setSelectedItem] = useState<SessionItem | null>(null);
   const [reschedIsOpen, setReschedIsOpen] = useState(false);
+
+  // const [showJitsiModal, setShowJitsiModal] = useState(false);
+  // const [selectedJitsiScheduleId, setSelectedJitsiScheduleId] = useState<string | null>(null);
 
   const todayPopupRefs = useRef<(HTMLDivElement | null)[]>([]);
   const upcomingPopupRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -244,6 +253,19 @@ export default function SessionComponent({ schedule = [], upcomingSchedule = [] 
     return `${displayHour}:${minutes} ${ampm}`;
   };
 
+  // Helper to check if session is online
+  const isOnlineSession = (location: string) => {
+    if (!location) return false;
+    const loc = location.toLowerCase().trim();
+    return loc === 'online' || loc.includes('online');
+  };
+
+  // NEW: Handler for joining meeting
+  const handleJoinMeeting = (scheduleId: string, event: React.MouseEvent) => {
+    event.stopPropagation();
+    router.push(`/meeting/${scheduleId}`);
+  };
+
   return (
     <div className={styles.sessionWrapper}>
       {/* Header Section */}
@@ -266,40 +288,52 @@ export default function SessionComponent({ schedule = [], upcomingSchedule = [] 
                   <div key={item.id} className={styles.sessionTodayCard}>
                     <div className={styles.sessionCardHeader}>
                       <h1>{item.subject}</h1>
-                      <div 
-                        className={styles.sessionEllipsisContainer} 
-                        ref={el => todayPopupRefs.current[index] = el}
-                      >
-                        <FontAwesomeIcon 
-                          icon={faEllipsisH}
-                          style={{ cursor: 'pointer', color: '#066678', fontSize: '1.2rem' }}
-                          onClick={(e) => togglePopup('today', index, e)}
-                        />
-                        {activePopup.type === `today-${index}` && (
-                          <div className={styles.sessionPopupMenu} onClick={(e) => e.stopPropagation()}>
-                            <div 
-                              className={styles.sessionPopupOption}
-                              onClick={(e) => handleOptionClick('remind', item, e)}
-                            >
-                              <FontAwesomeIcon icon={faBell} className={styles.sessionOptionIcon} />
-                              <p className={styles.sessionOptionText}>Remind</p>
-                            </div>
-                            <div 
-                              className={styles.sessionPopupOption}
-                              onClick={(e) => handleOptionClick('reschedule', item, e)}
-                            >
-                              <FontAwesomeIcon icon={faCalendarAlt} className={styles.sessionOptionIcon} />
-                              <p className={styles.sessionOptionText}>Reschedule</p>
-                            </div>
-                            <div 
-                              className={styles.sessionPopupOption}
-                              onClick={(e) => handleOptionClick('cancel', item, e)}
-                            >
-                              <FontAwesomeIcon icon={faTimes} className={styles.sessionOptionIcon} />
-                              <p className={styles.sessionOptionText}>Cancel Session</p>
-                            </div>
-                          </div>
+                      <div className={styles.sessionHeaderActions}>
+                        {/* Join Meeting button - only for online sessions */}
+                        {isOnlineSession(item.location) && (
+                          <button
+                            className={styles.sessionJoinBtn}
+                            onClick={(e) => handleJoinMeeting(item.id, e)}
+                            title="Join Online Meeting"
+                          >
+                            <FontAwesomeIcon icon={faVideo} style={{ color: '#4CAF50', fontSize: '1.5rem' }} />
+                          </button>
                         )}
+                        <div 
+                          className={styles.sessionEllipsisContainer} 
+                          ref={el => { todayPopupRefs.current[index] = el; }}
+                        >
+                          <FontAwesomeIcon 
+                            icon={faEllipsisH}
+                            style={{ cursor: 'pointer', color: '#066678', fontSize: '1.2rem' }}
+                            onClick={(e) => togglePopup('today', index, e)}
+                          />
+                          {activePopup.type === `today-${index}` && (
+                            <div className={styles.sessionPopupMenu} onClick={(e) => e.stopPropagation()}>
+                              <div 
+                                className={styles.sessionPopupOption}
+                                onClick={(e) => handleOptionClick('remind', item, e)}
+                              >
+                                <FontAwesomeIcon icon={faBell} className={styles.sessionOptionIcon} />
+                                <p className={styles.sessionOptionText}>Remind</p>
+                              </div>
+                              <div 
+                                className={styles.sessionPopupOption}
+                                onClick={(e) => handleOptionClick('reschedule', item, e)}
+                              >
+                                <FontAwesomeIcon icon={faCalendarAlt} className={styles.sessionOptionIcon} />
+                                <p className={styles.sessionOptionText}>Reschedule</p>
+                              </div>
+                              <div 
+                                className={styles.sessionPopupOption}
+                                onClick={(e) => handleOptionClick('cancel', item, e)}
+                              >
+                                <FontAwesomeIcon icon={faTimes} className={styles.sessionOptionIcon} />
+                                <p className={styles.sessionOptionText}>Cancel Session</p>
+                              </div>
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
                     <div className={styles.sessionInfo}>
@@ -328,7 +362,7 @@ export default function SessionComponent({ schedule = [], upcomingSchedule = [] 
             </div>
           </div>
 
-          {/* Upcoming Schedule */}
+          {/* Upcoming Schedule - same structure, no join button */}
           <div className={styles.sessionCard}>
             <h1>UPCOMING</h1>
             <div className={styles.sessionCardContent}>
@@ -339,7 +373,7 @@ export default function SessionComponent({ schedule = [], upcomingSchedule = [] 
                       <h1>{item.subject}</h1>
                       <div 
                         className={styles.sessionEllipsisContainer} 
-                        ref={el => upcomingPopupRefs.current[index] = el}
+                        ref={el => { upcomingPopupRefs.current[index] = el; }} // return void
                       >
                         <FontAwesomeIcon 
                           icon={faEllipsisH}
@@ -472,7 +506,6 @@ export default function SessionComponent({ schedule = [], upcomingSchedule = [] 
           id={selectedItem.id}
           onClose={() => setReschedIsOpen(false)}
           onReschedule={handleReschedule}
-          currentSession={selectedItem}
         />
       )}
     </div>

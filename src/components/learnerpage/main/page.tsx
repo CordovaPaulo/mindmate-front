@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import ViewUser from '@/components/learnerpage/viewUser/page';
 import styles from './MainComponent.module.css';
+import api from '@/lib/axios';
 
 interface User {
   id: string;
@@ -253,7 +254,7 @@ export default function MainComponent({
             key={user.id} 
             className={styles.userCard}
             // NEW: Added ref, tabIndex, and keyboard event handlers
-            ref={el => userCardRefs.current[index] = el}
+            ref={el => { userCardRefs.current[index] = el; }} // <-- ensure void return
             tabIndex={focusedIndex === index ? 0 : -1}
             style={{
               border: focusedIndex === index ? '2px solid #6b7280' : 'none',

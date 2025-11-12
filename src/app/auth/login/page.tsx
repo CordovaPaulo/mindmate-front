@@ -293,8 +293,9 @@ export default function Login() {
               onKeyDown={(e) => handleKeyDown(e, 2)}
               onFocus={() => handleElementFocus(2)}
               disabled={isLoading}
-              aria-busy={isLoading ? "true" : "false"}
+              aria-busy={isLoading}
               onClick={login}
+              aria-label="Login to your account"
             >
               {isLoading && <span className={styles.loadingSpinner}></span>}
               {isLoading ? "Logging in..." : "Login"}

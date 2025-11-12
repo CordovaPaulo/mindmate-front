@@ -394,8 +394,13 @@ const Users: React.FC<UsersProps> = ({ users, onUpdateUsers }) => {
                   <i className={`fas fa-user ${styles['modal-title-icon']}`}></i>
                   <h3 className={styles['modal-title']}>User Details</h3>
                 </div>
-                <button className={styles['close-btn']} onClick={hideUserDetails}>
-                  <i className="fas fa-times"></i>
+                <button
+                  className={styles['close-btn']}
+                  onClick={hideUserDetails}
+                  aria-label="Close modal"
+                  title="Close"
+                >
+                  <i className="fas fa-times" aria-hidden="true"></i>
                 </button>
               </div>
 

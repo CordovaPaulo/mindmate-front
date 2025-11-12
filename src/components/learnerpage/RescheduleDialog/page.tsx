@@ -94,7 +94,7 @@ export default function RescheduleDialog({ sessionId, currentDate, currentTime, 
             <DatePicker
               id="reschedule-datetime"
               selected={selectedDate}
-              onChange={(date: Date) => setSelectedDate(date)}
+              onChange={(date: Date | null) => setSelectedDate(date)} // accept null per react-datepicker types
               showTimeSelect
               timeFormat="HH:mm"
               timeIntervals={15}

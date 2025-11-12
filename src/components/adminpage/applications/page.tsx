@@ -552,8 +552,12 @@ const Applications: React.FC<ApplicationsProps> = ({
                   <i className={`fas fa-user-graduate ${styles['modal-title-icon']}`}></i>
                   <h3 className={styles['modal-title']}>Applicant Credentials</h3>
                 </div>
-                <button className={styles['close-btn']} onClick={hideCredentials}>
-                  <i className="fas fa-times"></i>
+                <button
+                  className={styles['close-btn']}
+                  onClick={hideCredentials}
+                  aria-label="Close credentials modal"
+                >
+                  <i className="fas fa-times" aria-hidden="true"></i>
                 </button>
               </div>
 

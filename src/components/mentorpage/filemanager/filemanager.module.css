@@ -1,13 +1,9 @@
-/* filemanager.module.css */
-
-/* Use very specific class names to prevent conflicts */
 .fileManagerTableContainer {
   background: #ffffff;
   border-radius: 20px;
   box-shadow: 0 8px 24px rgba(26, 79, 159, 0.5);
   width: 90%;
-  margin-top: 2rem;
-  margin-left: 2.5rem;
+  margin: 2rem auto 0;
   padding: 0 1rem;
   text-align: center;
   display: flex;
@@ -99,8 +95,8 @@
   border-bottom: 2px solid #3b9aa9;
   cursor: pointer;
   transition: background-color 0.2s;
-  user-select: none;
   -webkit-user-select: none;
+  user-select: none;
 }
 
 .fileManagerDataTable th:hover {
@@ -172,7 +168,6 @@
   font-size: 1.1rem;
 }
 
-/* Modal Styles */
 .fileManagerModalOverlay {
   position: fixed;
   top: 0;
@@ -184,6 +179,8 @@
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
 }
 
 .fileManagerFileModal {
@@ -194,6 +191,7 @@
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
   overflow: hidden;
   animation: fileManagerModalSlideIn 0.3s ease-out;
+  margin-left: 14rem;
 }
 
 @keyframes fileManagerModalSlideIn {
@@ -342,7 +340,6 @@
   background-color: rgba(244, 67, 54, 0.2);
 }
 
-/* Type Filter Dropdown */
 .fileManagerThContent {
   display: flex;
   align-items: center;
@@ -401,7 +398,6 @@
   box-shadow: 0 0 0 2px rgba(59, 154, 169, 0.2);
 }
 
-/* Laptop (1024px - 1439px) */
 @media (min-width: 1024px) and (max-width: 1439px) {
   .fileManagerTableTitle {
     font-size: 1.4rem;
@@ -465,11 +461,10 @@
   }
 }
 
-/* Tablet (768px - 1023px) */
 @media (min-width: 768px) and (max-width: 1023px) {
   .fileManagerTableContainer {
     width: 95%;
-    margin-left: 1rem;
+    margin: 1.5rem auto 0;
     height: 35rem;
   }
 
@@ -512,7 +507,11 @@
     width: 13px;
     margin-right: 6px;
   }
-  
+    
+  .fileManagerFileModal {
+    margin-left: 2rem;
+    margin-right: 2rem;
+  }
   .fileManagerModalTitle {
     font-size: 1.1rem;
   }
@@ -537,12 +536,12 @@
   }
 }
 
-/* Mobile (below 768px) */
 @media (max-width: 767px) {
   .fileManagerTableContainer {
     width: 95%;
-    margin-left: 1rem;
+    margin: 1rem auto 0;
     height: 35rem;
+    border-radius: 15px;
   }
 
   .fileManagerTableHeader {
@@ -630,14 +629,12 @@
   }
 }
 
-/* Small Mobile (below 480px) */
 @media (max-width: 480px) {
   .fileManagerTableContainer {
     width: 100%;
-    margin-left: 0;
+    margin: 0.5rem auto;
     border-radius: 10px;
-    margin: 1rem 0;
-    height: 32rem;
+    height: 35rem;
   }
 
   .fileManagerTableTitle {
@@ -670,6 +667,8 @@
   
   .fileManagerFileModal {
     width: 95vw;
+    margin-left: 2rem;
+    margin-right: 2rem;
   }
   
   .fileManagerModalTitle {
@@ -694,7 +693,4 @@
     font-size: 0.75rem;
     padding: 0.6rem;
   }
-}
-
-@media (min-width: 1440px) {
 }

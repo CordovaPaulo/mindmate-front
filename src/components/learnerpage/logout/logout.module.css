@@ -186,6 +186,7 @@
   .logoutWrapper {
     width: 280px;
     height: 150px;
+    margin-right: 4rem;
   }
 
   .logoutLowerElement h1 {

@@ -382,7 +382,7 @@ export default function LearnerPage() {
       console.log("Fetching forum data...");
       const token = getCookie('MindMateToken');
       const res = await api.get('/api/forum/posts', {
-        timeout: 10000,
+        timeout: 100000,
         withCredentials: true,
       });
       
@@ -399,7 +399,7 @@ export default function LearnerPage() {
     try {
       console.log("Fetching analytics data...");
       const res = await api.get('/api/learner/analytics', {
-        timeout: 50000,
+        timeout: 100000,
         withCredentials: true,
       });
       

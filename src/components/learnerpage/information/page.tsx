@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useRef } from 'react';
 import styles from './information.module.css';
+import api from '@/lib/axios';
+import { toast } from 'react-toastify';
 
 interface User {
   id: number | null;
@@ -123,23 +125,23 @@ export default function EditInformationComponent({
   onUpdateUserData,
 }: EditInformationComponentProps) {
   const [personalData, setPersonalData] = useState({
-    gender: '',
+    gender: userData?.sex || '',
     otherGender: '',
-    yearLevel: '',
-    program: '',
-    address: '',
-    contactNumber: '',
+    yearLevel: userData?.yearLevel || '',
+    program: userData?.program || '',
+    address: userData?.address || '',
+    contactNumber: userData?.phoneNumber || '',
   });
   
   const [profileData, setProfileData] = useState({
-    courseOffered: [] as string[],
-    shortBio: '',
-    tutoringExperience: '',
-    teachingModality: '',
-    daysOfAvailability: [] as string[],
+    courseOffered: userData?.subjects || [] as string[],
+    shortBio: userData?.bio || '',
+    tutoringExperience: userData?.goals || '',
+    teachingModality: userData?.modality || '',
+    daysOfAvailability: userData?.availability || [] as string[],
     proficiencyLevel: '',
-    teachingStyle: [] as string[],
-    preferredSessionDuration: '',
+    teachingStyle: userData?.style || [] as string[],
+    preferredSessionDuration: userData?.sessionDur || '',
   });
   
   const [dropdownOpen, setDropdownOpen] = useState<Record<string, boolean>>({});
@@ -165,22 +167,22 @@ export default function EditInformationComponent({
   const getPlaceholder = (field: string, section: 'personal' | 'profile') => {
     const mappings: Record<string, Record<string, any>> = {
       personal: {
-        'Full Name': userData?.user?.name,
-        'Year Level': userData?.ment?.year,
-        'Program': userData?.ment?.course,
-        'Address': userData?.ment?.address,
-        'Contact Number': userData?.ment?.phoneNum,
-        'Sex at Birth': capitalizeFirstLetter(userData?.ment?.gender || ''),
+        'Full Name': userData?.name,
+        'Year Level': userData?.yearLevel,
+        'Program': userData?.program,
+        'Address': userData?.address,
+        'Contact Number': userData?.phoneNumber,
+        'Sex at Birth': capitalizeFirstLetter(userData?.sex || ''),
       },
       profile: {
-        'Teaching Modality': userData?.ment?.learn_modality,
-        'Days of Availability': userData?.ment?.availability?.join(', '),
-        'Proficiency Level': userData?.ment?.proficiency,
-        'Teaching Style': userData?.ment?.teach_sty?.join(', ') || '',
-        'Preferred Session Duration': userData?.ment?.prefSessDur,
-        'Course Offered': userData?.ment?.subjects?.join(', '),
-        'Short Bio': userData?.ment?.bio,
-        'Tutoring Experience': userData?.ment?.exp,
+        'Teaching Modality': userData?.modality,
+        'Days of Availability': userData?.availability?.join(', '),
+        'Proficiency Level': '',
+        'Teaching Style': userData?.style?.join(', ') || '',
+        'Preferred Session Duration': userData?.sessionDur,
+        'Course Offered': userData?.subjects?.join(', '),
+        'Short Bio': userData?.bio,
+        'Tutoring Experience': userData?.goals,
       },
     };
 
@@ -188,7 +190,7 @@ export default function EditInformationComponent({
   };
 
   const updateAvailableSubjects = (program: string) => {
-    const selectedProgram = program || userData?.ment?.course;
+    const selectedProgram = program || userData?.program;
 
     switch (selectedProgram) {
       case 'Bachelor of Science in Information Technology (BSIT)':
@@ -406,10 +408,10 @@ export default function EditInformationComponent({
     if (Array.isArray(value)) {
       if (value.length === 0) {
         if (field === 'daysOfAvailability') {
-          return userData?.ment?.availability?.join(', ') || '';
+          return userData?.availability?.join(', ') || '';
         }
         if (field === 'teachingStyle') {
-          return userData?.ment?.teach_sty?.join(', ') || '';
+          return userData?.style?.join(', ') || '';
         }
       }
       return value.join(', ');
@@ -480,7 +482,7 @@ export default function EditInformationComponent({
       if (index === -1) {
         newSubjects = [...currentSubjects, subject];
       } else {
-        newSubjects = currentSubjects.filter(item => item !== subject);
+        newSubjects = currentSubjects.filter((item: string) => item !== subject);
       }
       
       return { ...prev, courseOffered: newSubjects };
@@ -560,75 +562,134 @@ export default function EditInformationComponent({
     });
 
     if (Object.values(validationErrors).some(error => error)) {
-      alert('Please fix validation errors before saving.');
+      toast.error('Please fix validation errors before saving.');
       return;
     }
 
     try {
-      const response = await fetch('/api/mentor/edit', {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-        body: JSON.stringify({
-          name: userData?.user?.name,
-          gender: capitalizeFirstLetter(personalData.gender || userData?.ment?.gender || ''),
-          phoneNum: personalData.contactNumber || userData?.ment?.phoneNum,
-          address: personalData.address || userData?.ment?.address,
-          course: personalData.program || userData?.ment?.course,
-          department: 'College of Computer Studies',
-          year: personalData.yearLevel || userData?.ment?.year,
-          subjects: JSON.stringify(profileData.courseOffered.length ? profileData.courseOffered : userData?.ment?.subjects || []),
-          proficiency: profileData.proficiencyLevel || userData?.ment?.proficiency,
-          learn_modality: profileData.teachingModality || userData?.ment?.learn_modality,
-          teach_sty: JSON.stringify((profileData.teachingStyle?.length ? profileData.teachingStyle : userData?.ment?.teach_sty || []).filter(Boolean)),
-          availability: JSON.stringify((profileData.daysOfAvailability?.length ? profileData.daysOfAvailability : userData?.ment?.availability || []).filter(Boolean)),
-          prefSessDur: profileData.preferredSessionDuration || userData?.ment?.prefSessDur,
-          bio: profileData.shortBio || userData?.ment?.bio,
-          exp: profileData.tutoringExperience || userData?.ment?.exp,
-        }),
-      });
-
-      if (response.ok) {
-        alert('Changes saved successfully!');
-        
-        const updatedUserData: UserData = {
-          ...userData,
-          user: {
-            ...userData.user,
-            name: userData.user.name,
-          },
-          ment: {
-            ...userData.ment,
-            gender: capitalizeFirstLetter(personalData.gender || userData?.ment?.gender || ''),
-            phoneNum: personalData.contactNumber || userData?.ment?.phoneNum,
-            address: personalData.address || userData?.ment?.address,
-            course: personalData.program || userData?.ment?.course,
-            year: personalData.yearLevel || userData?.ment?.year,
-            subjects: profileData.courseOffered.length ? profileData.courseOffered : userData?.ment?.subjects || [],
-            proficiency: profileData.proficiencyLevel || userData?.ment?.proficiency,
-            learn_modality: profileData.teachingModality || userData?.ment?.learn_modality,
-            teach_sty: profileData.teachingStyle?.length ? profileData.teachingStyle : userData?.ment?.teach_sty || [],
-            availability: profileData.daysOfAvailability?.length ? profileData.daysOfAvailability : userData?.ment?.availability || [],
-            prefSessDur: profileData.preferredSessionDuration || userData?.ment?.prefSessDur,
-            bio: profileData.shortBio || userData?.ment?.bio,
-            exp: profileData.tutoringExperience || userData?.ment?.exp,
-          },
-        };
-        
-        onSave(updatedUserData);
-        try {
-          onUpdateUserData?.({
-            ment: updatedUserData.ment,
-          });
-        } catch (e) {}
-      } else {
-        alert('An error occurred while saving changes.');
+      // Map frontend field names to backend field names
+      const payload: any = {};
+      
+      // Only include fields that have been changed
+      if (personalData.gender && personalData.gender !== userData?.sex) {
+        payload.sex = personalData.gender.toLowerCase();
       }
-    } catch (error) {
+      if (personalData.contactNumber && personalData.contactNumber !== userData?.phoneNumber) {
+        payload.phoneNumber = personalData.contactNumber;
+      }
+      if (personalData.address && personalData.address !== userData?.address) {
+        payload.address = personalData.address;
+      }
+      if (personalData.program && personalData.program !== userData?.program) {
+        // Map full program name to abbreviated form
+        if (personalData.program.includes('Information Technology')) {
+          payload.program = 'BSIT';
+        } else if (personalData.program.includes('Computer Science')) {
+          payload.program = 'BSCS';
+        } else if (personalData.program.includes('Entertainment and Multimedia')) {
+          payload.program = 'BSEMC';
+        }
+      }
+      if (personalData.yearLevel && personalData.yearLevel !== userData?.yearLevel) {
+        // Map "1st Year" to "1st year" format
+        payload.yearLevel = personalData.yearLevel.toLowerCase();
+      }
+      
+      // Profile data mappings
+      if (profileData.courseOffered.length && JSON.stringify(profileData.courseOffered) !== JSON.stringify(userData?.subjects)) {
+        payload.subjects = profileData.courseOffered;
+      }
+      if (profileData.proficiencyLevel && profileData.proficiencyLevel !== '') {
+        payload.proficiency = profileData.proficiencyLevel.toLowerCase();
+      }
+      if (profileData.teachingModality && profileData.teachingModality !== userData?.modality) {
+        payload.modality = profileData.teachingModality.toLowerCase();
+      }
+      if (profileData.teachingStyle?.length && JSON.stringify(profileData.teachingStyle) !== JSON.stringify(userData?.style)) {
+        // Map "Lecture-Based" to "lecture-based" format
+        payload.style = profileData.teachingStyle.map((s: string) => s.toLowerCase().replace(/\s+/g, '-'));
+      }
+      if (profileData.daysOfAvailability?.length && JSON.stringify(profileData.daysOfAvailability) !== JSON.stringify(userData?.availability)) {
+        payload.availability = profileData.daysOfAvailability.map((d: string) => d.toLowerCase());
+      }
+      if (profileData.preferredSessionDuration && profileData.preferredSessionDuration !== userData?.sessionDur) {
+        // Map "1 hour" to "1hr" format
+        if (profileData.preferredSessionDuration.includes('1')) {
+          payload.sessionDur = '1hr';
+        } else if (profileData.preferredSessionDuration.includes('2')) {
+          payload.sessionDur = '2hrs';
+        } else if (profileData.preferredSessionDuration.includes('3')) {
+          payload.sessionDur = '3hrs';
+        }
+      }
+      if (profileData.shortBio && profileData.shortBio !== userData?.bio) {
+        payload.bio = profileData.shortBio;
+      }
+      if (profileData.tutoringExperience && profileData.tutoringExperience !== userData?.goals) {
+        payload.goals = profileData.tutoringExperience;
+      }
+
+      // Only proceed if there are changes to save
+      if (Object.keys(payload).length === 0) {
+        toast.info('No changes detected to save.');
+        return;
+      }
+
+      const response = await api.patch('/api/learner/profile/edit', payload);
+
+      if (response.status === 200) {
+        toast.success('Profile updated successfully.');
+        
+        // Map backend response back to frontend format
+        const updatedData: any = {
+          ...userData,
+        };
+
+        if (response.data.learner) {
+          if (response.data.learner.sex) updatedData.sex = capitalizeFirstLetter(response.data.learner.sex);
+          if (response.data.learner.phoneNumber) updatedData.phoneNumber = response.data.learner.phoneNumber;
+          if (response.data.learner.address) updatedData.address = response.data.learner.address;
+          if (response.data.learner.program) {
+            updatedData.program = response.data.learner.program === 'BSIT' ? 'Bachelor of Science in Information Technology (BSIT)' :
+                        response.data.learner.program === 'BSCS' ? 'Bachelor of Science in Computer Science (BSCS)' :
+                        response.data.learner.program === 'BSEMC' ? 'Bachelor of Science in Entertainment and Multimedia Computing (BSEMC)' :
+                        response.data.learner.program;
+          }
+          if (response.data.learner.yearLevel) updatedData.yearLevel = capitalizeFirstLetter(response.data.learner.yearLevel);
+          if (response.data.learner.subjects) updatedData.subjects = response.data.learner.subjects;
+          if (response.data.learner.modality) updatedData.modality = capitalizeFirstLetter(response.data.learner.modality);
+          if (response.data.learner.style) {
+            updatedData.style = response.data.learner.style.map((s: string) => 
+              s.split('-').map((w: string) => capitalizeFirstLetter(w)).join(' ')
+            );
+          }
+          if (response.data.learner.availability) {
+            updatedData.availability = response.data.learner.availability.map((d: string) => capitalizeFirstLetter(d));
+          }
+          if (response.data.learner.sessionDur) {
+            updatedData.sessionDur = response.data.learner.sessionDur.replace('1hr', '1 hour')
+              .replace('2hrs', '2 hours').replace('3hrs', '3 hours');
+          }
+          if (response.data.learner.bio) updatedData.bio = response.data.learner.bio;
+          if (response.data.learner.goals) updatedData.goals = response.data.learner.goals;
+        }
+        
+        onSave(updatedData);
+        try {
+          onUpdateUserData?.(updatedData);
+        } catch (e) {}
+      }
+    } catch (error: any) {
       console.error('Error saving changes:', error);
-      alert('An error occurred while saving changes.');
+      
+      // Handle validation errors from backend
+      if (error.response?.data?.errors && Array.isArray(error.response.data.errors)) {
+        toast.error(`Validation failed:\n${error.response.data.errors.join('\n')}`);
+      } else if (error.response?.data?.message) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error('An error occurred while saving changes.');
+      }
     }
   };
 
@@ -643,29 +704,29 @@ export default function EditInformationComponent({
   };
 
   useEffect(() => {
-    if (userData?.ment?.course) {
-      updateAvailableSubjects(userData.ment.course);
+    if (userData?.program) {
+      updateAvailableSubjects(userData.program);
     }
     
     setPersonalData({
-      gender: userData?.ment?.gender || '',
+      gender: userData?.sex || '',
       otherGender: '',
-      yearLevel: userData?.ment?.year || '',
-      program: userData?.ment?.course || '',
-      address: userData?.ment?.address || '',
-      contactNumber: userData?.ment?.phoneNum || '',
+      yearLevel: userData?.yearLevel || '',
+      program: userData?.program || '',
+      address: userData?.address || '',
+      contactNumber: userData?.phoneNumber || '',
     });
     
     setProfileData(prev => ({
       ...prev,
-      courseOffered: userData?.ment?.subjects || [],
-      daysOfAvailability: userData?.ment?.availability || [],
-      teachingStyle: userData?.ment?.teach_sty || [],
-      teachingModality: userData?.ment?.learn_modality || '',
-      proficiencyLevel: userData?.ment?.proficiency || '',
-      preferredSessionDuration: userData?.ment?.prefSessDur || '',
-      shortBio: userData?.ment?.bio || '',
-      tutoringExperience: userData?.ment?.exp || '',
+      courseOffered: userData?.subjects || [],
+      daysOfAvailability: userData?.availability || [],
+      teachingStyle: userData?.style || [],
+      teachingModality: userData?.modality || '',
+      proficiencyLevel: '',
+      preferredSessionDuration: userData?.sessionDur || '',
+      shortBio: userData?.bio || '',
+      tutoringExperience: userData?.goals || '',
     }));
   }, [userData]);
 
@@ -849,7 +910,7 @@ export default function EditInformationComponent({
                           }}
                           onFocus={() => setFocusedIndex(index)}
                           className={styles.standardInput}
-                          placeholder={item.placeholder}
+                          placeholder={String(getPlaceholder(item.field, 'personal') || item.placeholder)}
                         />
                         {validationErrors[toCamelCase(item.field)] && (
                           <span className={styles.errorMessage}>
@@ -869,7 +930,7 @@ export default function EditInformationComponent({
                           <input
                             type="text"
                             value={personalData[toCamelCase(item.field) as keyof typeof personalData] as string}
-                            placeholder={item.placeholder}
+                            placeholder={getPlaceholder(item.field, 'personal') || item.placeholder}
                             readOnly
                             className={styles.standardInput}
                           />
@@ -912,7 +973,7 @@ export default function EditInformationComponent({
                       <input
                         type="text"
                         value={personalData.gender}
-                        placeholder="Select your gender"
+                        placeholder={getPlaceholder('Sex at Birth', 'personal') || 'Select your gender'}
                         className={styles.standardInput}
                         readOnly
                       />
@@ -959,7 +1020,7 @@ export default function EditInformationComponent({
                             <input
                               type="text"
                               value={profileData[toCamelCase(item.field) as keyof typeof profileData] as string}
-                              placeholder={item.placeholder}
+                              placeholder={getPlaceholder(item.field, 'profile') || item.placeholder}
                               readOnly
                               className={styles.standardInput}
                             />
@@ -997,7 +1058,7 @@ export default function EditInformationComponent({
                             <input
                               type="text"
                               value={getDisplayValue('courseOffered')}
-                              placeholder={item.placeholder}
+                              placeholder={getPlaceholder(item.field, 'profile') || item.placeholder}
                               readOnly
                               className={styles.standardInput}
                             />
@@ -1074,7 +1135,7 @@ export default function EditInformationComponent({
                             <input
                               type="text"
                               value={getDisplayValue(toCamelCase(item.field))}
-                              placeholder={item.placeholder}
+                              placeholder={getPlaceholder(item.field, 'profile') || item.placeholder}
                               readOnly
                               className={styles.standardInput}
                             />
@@ -1134,7 +1195,7 @@ export default function EditInformationComponent({
                         }}
                         onFocus={() => setFocusedIndex(globalIndex)}
                         className={styles.fixedTextarea}
-                        placeholder={item.placeholder}
+                        placeholder={getPlaceholder(item.field, 'profile') || item.placeholder}
                       />
                       {validationErrors[toCamelCase(item.field)] && (
                         <span className={styles.errorMessage}>

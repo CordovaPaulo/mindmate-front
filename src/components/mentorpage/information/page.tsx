@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useRef } from 'react';
 import styles from './information.module.css';
+import api from '@/lib/axios';
+import { toast } from 'react-toastify';
 
 // =============================================================================
 // TYPES AND INTERFACES
@@ -143,23 +145,23 @@ export default function EditInformationComponent({
   // =============================================================================
 
   const [personalData, setPersonalData] = useState({
-    gender: '',
+    gender: userData?.sex || '',
     otherGender: '',
-    yearLevel: '',
-    program: '',
-    address: '',
-    contactNumber: '',
+    yearLevel: userData?.yearLevel || '',
+    program: userData?.program || '',
+    address: userData?.address || '',
+    contactNumber: userData?.phoneNumber || '',
   });
   
   const [profileData, setProfileData] = useState({
-    courseOffered: [] as string[],
-    shortBio: '',
-    tutoringExperience: '',
-    teachingModality: '',
-    daysOfAvailability: [] as string[],
-    proficiencyLevel: '',
-    teachingStyle: [] as string[],
-    preferredSessionDuration: '',
+    courseOffered: userData?.subjects || [] as string[],
+    shortBio: userData?.bio || '',
+    tutoringExperience: userData?.goals || '',
+    teachingModality: userData?.modality || '',
+    daysOfAvailability: userData?.availability || [] as string[],
+    proficiencyLevel: userData?.proficiency || '',
+    teachingStyle: userData?.style || [] as string[],
+    preferredSessionDuration: userData?.sessionDur || '',
   });
   
   const [dropdownOpen, setDropdownOpen] = useState<Record<string, boolean>>({});
@@ -197,21 +199,21 @@ export default function EditInformationComponent({
   const getPlaceholder = (field: string, section: 'personal' | 'profile') => {
     const mappings: Record<string, Record<string, any>> = {
       personal: {
-        'Year Level': userData?.ment?.year || 'Select your year level',
-        'Program': userData?.ment?.course || 'Select your program',
-        'Address': userData?.ment?.address || 'Enter your complete address',
-        'Contact Number': userData?.ment?.phoneNum || 'Enter your 11-digit contact number',
-        'Sex at Birth': capitalizeFirstLetter(userData?.ment?.gender || 'Select your gender'),
+        'Year Level': userData?.yearLevel || 'Select your year level',
+        'Program': userData?.program || 'Select your program',
+        'Address': userData?.address || 'Enter your complete address',
+        'Contact Number': userData?.phoneNumber || 'Enter your 11-digit contact number',
+        'Sex at Birth': capitalizeFirstLetter(userData?.sex || 'Select your gender'),
       },
       profile: {
-        'Teaching Modality': userData?.ment?.learn_modality || 'Select preferred teaching modality',
-        'Days of Availability': userData?.ment?.availability?.join(', ') || 'Select available days',
-        'Proficiency Level': userData?.ment?.proficiency || 'Select your proficiency level',
-        'Teaching Style': userData?.ment?.teach_sty?.join(', ') || 'Select teaching styles',
-        'Preferred Session Duration': userData?.ment?.prefSessDur || 'Select session duration',
-        'Course Offered': userData?.ment?.subjects?.join(', ') || 'Select courses you can teach',
-        'Short Bio': userData?.ment?.bio || 'Tell us about yourself and your teaching approach',
-        'Tutoring Experience': userData?.ment?.exp || 'Describe your tutoring experience and background',
+        'Teaching Modality': userData?.modality || 'Select preferred teaching modality',
+        'Days of Availability': userData?.availability?.join(', ') || 'Select available days',
+        'Proficiency Level': userData?.proficiency || 'Select your proficiency level',
+        'Teaching Style': userData?.style?.join(', ') || 'Select teaching styles',
+        'Preferred Session Duration': userData?.sessionDur || 'Select session duration',
+        'Course Offered': userData?.subjects?.join(', ') || 'Select courses you can teach',
+        'Short Bio': userData?.bio || 'Tell us about yourself and your teaching approach',
+        'Tutoring Experience': userData?.goals || 'Describe your tutoring experience and background',
       },
     };
 
@@ -219,7 +221,7 @@ export default function EditInformationComponent({
   };
 
   const updateAvailableSubjects = (program: string) => {
-    const selectedProgram = program || userData?.ment?.course;
+    const selectedProgram = program || userData?.program;
 
     switch (selectedProgram) {
       case 'Bachelor of Science in Information Technology (BSIT)':
@@ -437,10 +439,10 @@ export default function EditInformationComponent({
     if (Array.isArray(value)) {
       if (value.length === 0) {
         if (field === 'daysOfAvailability') {
-          return userData?.ment?.availability?.join(', ') || '';
+          return userData?.availability?.join(', ') || '';
         }
         if (field === 'teachingStyle') {
-          return userData?.ment?.teach_sty?.join(', ') || '';
+          return userData?.style?.join(', ') || '';
         }
       }
       return value.join(', ');
@@ -515,7 +517,7 @@ export default function EditInformationComponent({
       if (index === -1) {
         newSubjects = [...currentSubjects, subject];
       } else {
-        newSubjects = currentSubjects.filter(item => item !== subject);
+        newSubjects = currentSubjects.filter((item: string) => item !== subject);
       }
       
       return { ...prev, courseOffered: newSubjects };
@@ -588,10 +590,6 @@ export default function EditInformationComponent({
     }));
   };
 
-  // =============================================================================
-  // SAVE AND CLOSE HANDLERS
-  // =============================================================================
-
   const saveChanges = async () => {
     // Validate all fields
     Object.keys(personalData).forEach(key => {
@@ -605,80 +603,137 @@ export default function EditInformationComponent({
 
     // Check if there are any validation errors
     if (Object.values(validationErrors).some(error => error)) {
-      alert('Please fix validation errors before saving.');
+      toast.error('Please fix validation errors before saving.');
       return;
     }
 
     try {
-      const response = await fetch('/api/mentor/edit', {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-        body: JSON.stringify({
-          name: userData?.user?.name,
-          gender: capitalizeFirstLetter(personalData.gender || userData?.ment?.gender || ''),
-          phoneNum: personalData.contactNumber || userData?.ment?.phoneNum,
-          address: personalData.address || userData?.ment?.address,
-          course: personalData.program || userData?.ment?.course,
-          department: 'College of Computer Studies',
-          year: personalData.yearLevel || userData?.ment?.year,
-          subjects: JSON.stringify(profileData.courseOffered.length ? profileData.courseOffered : userData?.ment?.subjects || []),
-          proficiency: profileData.proficiencyLevel || userData?.ment?.proficiency,
-          learn_modality: profileData.teachingModality || userData?.ment?.learn_modality,
-          teach_sty: JSON.stringify((profileData.teachingStyle?.length ? profileData.teachingStyle : userData?.ment?.teach_sty || []).filter(Boolean)),
-          availability: JSON.stringify((profileData.daysOfAvailability?.length ? profileData.daysOfAvailability : userData?.ment?.availability || []).filter(Boolean)),
-          prefSessDur: profileData.preferredSessionDuration || userData?.ment?.prefSessDur,
-          bio: profileData.shortBio || userData?.ment?.bio,
-          exp: profileData.tutoringExperience || userData?.ment?.exp,
-        }),
-      });
-
-      if (response.ok) {
-        alert('Changes saved successfully!');
-        
-        // Update the user data with new values
-        const updatedUserData: UserData = {
-          ...userData,
-          user: {
-            ...userData.user,
-            name: userData.user.name, // Name remains the same
-          },
-          ment: {
-            ...userData.ment,
-            gender: capitalizeFirstLetter(personalData.gender || userData?.ment?.gender || ''),
-            phoneNum: personalData.contactNumber || userData?.ment?.phoneNum,
-            address: personalData.address || userData?.ment?.address,
-            course: personalData.program || userData?.ment?.course,
-            year: personalData.yearLevel || userData?.ment?.year,
-            subjects: profileData.courseOffered.length ? profileData.courseOffered : userData?.ment?.subjects || [],
-            proficiency: profileData.proficiencyLevel || userData?.ment?.proficiency,
-            learn_modality: profileData.teachingModality || userData?.ment?.learn_modality,
-            teach_sty: profileData.teachingStyle?.length ? profileData.teachingStyle : userData?.ment?.teach_sty || [],
-            availability: profileData.daysOfAvailability?.length ? profileData.daysOfAvailability : userData?.ment?.availability || [],
-            prefSessDur: profileData.preferredSessionDuration || userData?.ment?.prefSessDur,
-            bio: profileData.shortBio || userData?.ment?.bio,
-            exp: profileData.tutoringExperience || userData?.ment?.exp,
-          },
-        };
-        
-        // notify parent about full save
-        onSave(updatedUserData);
-        // also provide partial update callback if parent supplied it (keeps parent state in sync without forcing types)
-        try {
-          onUpdateUserData?.({
-            ment: updatedUserData.ment,
-          });
-        } catch (e) {
-          // swallow; optional callback
-        }
-      } else {
-        alert('An error occurred while saving changes.');
+      // Map frontend field names to backend field names
+      const payload: any = {};
+      
+      // Only include fields that have been changed
+      if (personalData.gender && personalData.gender !== userData?.sex) {
+        payload.sex = personalData.gender.toLowerCase();
       }
-    } catch (error) {
+      if (personalData.contactNumber && personalData.contactNumber !== userData?.phoneNumber) {
+        payload.phoneNumber = personalData.contactNumber;
+      }
+      if (personalData.address && personalData.address !== userData?.address) {
+        payload.address = personalData.address;
+      }
+      if (personalData.program && personalData.program !== userData?.program) {
+        // Map full program name to abbreviated form
+        if (personalData.program.includes('Information Technology')) {
+          payload.program = 'BSIT';
+        } else if (personalData.program.includes('Computer Science')) {
+          payload.program = 'BSCS';
+        } else if (personalData.program.includes('Entertainment and Multimedia')) {
+          payload.program = 'BSEMC';
+        }
+      }
+      if (personalData.yearLevel && personalData.yearLevel !== userData?.yearLevel) {
+        // Map "1st Year" to "1st year" format
+        payload.yearLevel = personalData.yearLevel.toLowerCase();
+      }
+      
+      // Profile data mappings
+      if (profileData.courseOffered.length && JSON.stringify(profileData.courseOffered) !== JSON.stringify(userData?.subjects)) {
+        payload.subjects = profileData.courseOffered;
+      }
+      if (profileData.proficiencyLevel && profileData.proficiencyLevel !== userData?.proficiency) {
+        payload.proficiency = profileData.proficiencyLevel.toLowerCase();
+      }
+      if (profileData.teachingModality && profileData.teachingModality !== userData?.modality) {
+        payload.modality = profileData.teachingModality.toLowerCase();
+      }
+      if (profileData.teachingStyle?.length && JSON.stringify(profileData.teachingStyle) !== JSON.stringify(userData?.style)) {
+        // Map "Lecture-Based" to "lecture-based" format
+        payload.style = profileData.teachingStyle.map((s: string) => s.toLowerCase().replace(/\s+/g, '-'));
+      }
+      if (profileData.daysOfAvailability?.length && JSON.stringify(profileData.daysOfAvailability) !== JSON.stringify(userData?.availability)) {
+        payload.availability = profileData.daysOfAvailability.map((d: string) => d.toLowerCase());
+      }
+      if (profileData.preferredSessionDuration && profileData.preferredSessionDuration !== userData?.sessionDur) {
+        // Map "1 hour" to "1hr" format
+        if (profileData.preferredSessionDuration.includes('1')) {
+          payload.sessionDur = '1hr';
+        } else if (profileData.preferredSessionDuration.includes('2')) {
+          payload.sessionDur = '2hrs';
+        } else if (profileData.preferredSessionDuration.includes('3')) {
+          payload.sessionDur = '3hrs';
+        }
+      }
+      if (profileData.shortBio && profileData.shortBio !== userData?.bio) {
+        payload.bio = profileData.shortBio;
+      }
+      if (profileData.tutoringExperience && profileData.tutoringExperience !== userData?.goals) {
+        payload.exp = profileData.tutoringExperience;
+      }
+
+      // Only proceed if there are changes to save
+      if (Object.keys(payload).length === 0) {
+        toast.info('No changes detected to save.');
+        return;
+      }
+
+      const response = await api.patch('/api/mentor/profile/edit', payload);
+
+      if (response.status === 200) {
+        toast.success('Changes saved successfully!');
+        
+        // Map backend response back to frontend format
+        const updatedData: any = {
+          ...userData,
+        };
+
+        if (response.data.mentor) {
+          if (response.data.mentor.sex) updatedData.sex = capitalizeFirstLetter(response.data.mentor.sex);
+          if (response.data.mentor.phoneNumber) updatedData.phoneNumber = response.data.mentor.phoneNumber;
+          if (response.data.mentor.address) updatedData.address = response.data.mentor.address;
+          if (response.data.mentor.program) {
+            updatedData.program = response.data.mentor.program === 'BSIT' ? 'Bachelor of Science in Information Technology (BSIT)' :
+                        response.data.mentor.program === 'BSCS' ? 'Bachelor of Science in Computer Science (BSCS)' :
+                        response.data.mentor.program === 'BSEMC' ? 'Bachelor of Science in Entertainment and Multimedia Computing (BSEMC)' :
+                        response.data.mentor.program;
+          }
+          if (response.data.mentor.yearLevel) updatedData.yearLevel = capitalizeFirstLetter(response.data.mentor.yearLevel);
+          if (response.data.mentor.subjects) updatedData.subjects = response.data.mentor.subjects;
+          if (response.data.mentor.proficiency) updatedData.proficiency = capitalizeFirstLetter(response.data.mentor.proficiency);
+          if (response.data.mentor.modality) updatedData.modality = capitalizeFirstLetter(response.data.mentor.modality);
+          if (response.data.mentor.style) {
+            updatedData.style = response.data.mentor.style.map((s: string) => 
+              s.split('-').map((word: string) => 
+                word.charAt(0).toUpperCase() + word.slice(1)
+              ).join(' ')
+            );
+          }
+          if (response.data.mentor.availability) {
+            updatedData.availability = response.data.mentor.availability.map((d: string) => capitalizeFirstLetter(d));
+          }
+          if (response.data.mentor.sessionDur) {
+            updatedData.sessionDur = response.data.mentor.sessionDur.replace('1hr', '1 hour')
+              .replace('2hrs', '2 hours').replace('3hrs', '3 hours');
+          }
+          if (response.data.mentor.bio) updatedData.bio = response.data.mentor.bio;
+          if (response.data.mentor.exp) updatedData.goals = response.data.mentor.exp;
+        }
+        
+        onSave(updatedData);
+        try {
+          onUpdateUserData?.(updatedData);
+        } catch (e) {}
+      }
+    } catch (error: any) {
       console.error('Error saving changes:', error);
-      alert('An error occurred while saving changes.');
+      
+      // Handle validation errors from backend
+      if (error.response?.data?.errors && Array.isArray(error.response.data.errors)) {
+        toast.error(`Validation failed:\n${error.response.data.errors.join('\n')}`);
+      } else if (error.response?.data?.message) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error('An error occurred while saving changes.');
+      }
     }
   };
 
@@ -692,31 +747,31 @@ export default function EditInformationComponent({
 
   // Initialize data
   useEffect(() => {
-    if (userData?.ment?.course) {
-      updateAvailableSubjects(userData.ment.course);
+    if (userData?.program) {
+      updateAvailableSubjects(userData.program);
     }
     
     // Set personal data from props with safe access
     setPersonalData({
-      gender: userData?.ment?.gender || '',
+      gender: userData?.sex || '',
       otherGender: '',
-      yearLevel: userData?.ment?.year || '',
-      program: userData?.ment?.course || '',
-      address: userData?.ment?.address || '',
-      contactNumber: userData?.ment?.phoneNum || '',
+      yearLevel: userData?.yearLevel || '',
+      program: userData?.program || '',
+      address: userData?.address || '',
+      contactNumber: userData?.phoneNumber || '',
     });
     
     // Set profile data from props with safe access
     setProfileData(prev => ({
       ...prev,
-      courseOffered: userData?.ment?.subjects || [],
-      daysOfAvailability: userData?.ment?.availability || [],
-      teachingStyle: userData?.ment?.teach_sty || [],
-      teachingModality: userData?.ment?.learn_modality || '',
-      proficiencyLevel: userData?.ment?.proficiency || '',
-      preferredSessionDuration: userData?.ment?.prefSessDur || '',
-      shortBio: userData?.ment?.bio || '',
-      tutoringExperience: userData?.ment?.exp || '',
+      courseOffered: userData?.subjects || [],
+      daysOfAvailability: userData?.availability || [],
+      teachingStyle: userData?.style || [],
+      teachingModality: userData?.modality || '',
+      proficiencyLevel: userData?.proficiency || '',
+      preferredSessionDuration: userData?.sessionDur || '',
+      shortBio: userData?.bio || '',
+      tutoringExperience: userData?.goals || '',
     }));
   }, [userData]);
 
@@ -727,7 +782,6 @@ export default function EditInformationComponent({
     }
   }, [personalData.program]);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -739,10 +793,8 @@ export default function EditInformationComponent({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Keyboard navigation handler
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      // If a dropdown is open, handle dropdown navigation
       if (currentDropdown && dropdownOpen[currentDropdown]) {
         const dropdownOptions = getDropdownOptions(currentDropdown);
         const checkboxOptions = getCheckboxOptions(currentDropdown);
@@ -874,10 +926,6 @@ export default function EditInformationComponent({
       getDropdownOptions(currentDropdown).length || getCheckboxOptions(currentDropdown).length
     );
   }, [currentDropdown, dropdownOpen]);
-
-  // =============================================================================
-  // RENDER
-  // =============================================================================
 
   return (
     <>

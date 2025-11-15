@@ -58,7 +58,7 @@ export default function ReviewsComponent({ schedForReview = [], userData, data }
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [existingFeedbacks, setExistingFeedbacks] = useState<FeedbackFromAPI[]>([]);
 
-  const baseURL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+  const baseURL = process.env.NEXT_PUBLIC_API_URL
 
   const fetchExistingFeedbacks = async () => {
     try {

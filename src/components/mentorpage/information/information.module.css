@@ -1,4 +1,3 @@
-/* Background Overlay */
 .editInformationOverlay {
   position: fixed;
   top: 0;
@@ -7,27 +6,26 @@
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 1999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-/* Modal Container */
 .editInformationModal {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 2000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
-
 .editInformation {
-  width: 500px !important;
+  width: 500px;
   max-height: 700px;
   height: 700px;
   display: flex;
   flex-direction: column;
   gap: 20px;
+  z-index: 2000;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   border-radius: 20px;
   background-color: white;
@@ -44,7 +42,7 @@
   position: relative;
 }
 
-.upperElement h1 {
+.upperElementH1 {
   font-size: 24px;
   color: #ffffff;
   margin: 0;
@@ -65,7 +63,7 @@
   flex: 1;
 }
 
-.lowerElement h1 {
+.sectionH1 {
   font-size: 17px;
   color: #0c434d;
   margin-bottom: 20px;
@@ -83,7 +81,7 @@
   margin-bottom: 15px;
 }
 
-.inputFields label {
+.label {
   color: #116174;
   margin-bottom: 5px;
   font-size: 13px;
@@ -101,7 +99,12 @@
   height: 35px;
 }
 
-.personalInformation,
+.personalInformation {
+  padding: 0 0 20px 0;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 20px;
+}
+
 .profileInformation {
   padding: 0 0 20px 0;
   border-bottom: 1px solid #eee;
@@ -109,16 +112,6 @@
 }
 
 .customDropdown {
-  position: relative;
-  width: 100%;
-}
-
-.genderSection {
-  position: relative;
-  width: 100%;
-}
-
-.genderDropdown {
   position: relative;
   width: 100%;
 }
@@ -139,7 +132,7 @@
   pointer-events: none;
 }
 
-.dropdownIcon.open {
+.dropdownIconOpen {
   transform: translateY(-50%) rotate(180deg);
 }
 
@@ -155,10 +148,6 @@
   border-radius: 0 0 10px 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 1000;
-}
-
-.genderOptions {
-  z-index: 1001;
 }
 
 .dropdownOption {
@@ -183,16 +172,12 @@
   cursor: pointer;
 }
 
-.checkboxOption:hover {
-  background-color: #f0f0f0;
-}
-
-.checkboxOption input[type="checkbox"] {
+.checkboxInput {
   margin-right: 8px;
   cursor: pointer;
 }
 
-.checkboxOption label {
+.checkboxLabel {
   font-size: 12px;
   color: #0c434d;
   cursor: pointer;
@@ -203,18 +188,18 @@
   border-bottom: 1px solid #eee;
 }
 
-.categorySection h4 {
+.categoryH4 {
   margin: 5px 0;
   color: #0c434d;
   font-size: 12px;
   font-weight: bold;
 }
 
-.bioExperienceWrapper {
+.bioGoalsWrapper {
   margin-top: 20px;
 }
 
-.bioExperienceGrid {
+.bioGoalsGrid {
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -237,7 +222,7 @@
   display: flex;
   justify-content: flex-end;
   padding: 10px;
-  border-radius: 0 0 20px 20px !important;
+  border-radius: 0 0 20px 20px;
 }
 
 .saveButton {
@@ -250,17 +235,30 @@
   font-size: 16px;
 }
 
-.inputError {
-  border-color: #f87171;
-  background-color: #fff1f2;
-  outline: none;
+.saveButton:hover {
+  background-color: #005670;
 }
 
 .errorMessage {
-  color: #ef4444;
-  font-size: 0.875rem;
-  margin-top: 0.25rem;
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
 }
+
+/* Hover effects */
+.standardInput:hover,
+.fixedTextarea:hover {
+  border-color: #006981;
+}
+
+.dropdownOption:hover {
+  background-color: #f5f5f5;
+}
+
+.checkboxOption:hover {
+  background-color: #f5f5f5;
+}
+
 
 @media (max-width: 768px) {
   .editInformation {

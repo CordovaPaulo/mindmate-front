@@ -4,7 +4,6 @@ import './globals.css';
 import Providers from '@/components/Providers';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import ChatbotWidget from '@/components/ChatbotWidget';
 
 export const metadata: Metadata = {
   title: 'MindMates - Peer Tutoring Platform',
@@ -35,7 +34,6 @@ export default function RootLayout({
           </Providers>
           <ToastContainer />
         </main>
-        <ChatbotWidget />
       </body>
     </html>
   );

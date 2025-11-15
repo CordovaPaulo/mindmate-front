@@ -14,6 +14,7 @@ import api from "@/lib/axios";
 import styles from './learner.module.css';
 import { toast } from 'react-toastify';
 import Pusher from 'pusher-js';
+import ChatbotWidget from '@/components/ChatbotWidget';
 
 // Helper to get cookie value (works only for non-httpOnly cookies)
 function getCookie(name: string) {
@@ -382,7 +383,7 @@ export default function LearnerPage() {
       console.log("Fetching forum data...");
       const token = getCookie('MindMateToken');
       const res = await api.get('/api/forum/posts', {
-        timeout: 100000,
+        timeout: 10000,
         withCredentials: true,
       });
       
@@ -399,7 +400,7 @@ export default function LearnerPage() {
     try {
       console.log("Fetching analytics data...");
       const res = await api.get('/api/learner/analytics', {
-        timeout: 100000,
+        timeout: 50000,
         withCredentials: true,
       });
       
@@ -1077,7 +1078,14 @@ export default function LearnerPage() {
         <div className={styles['edit-information-popup']}>
           <EditInformation 
             userData={userData}
-            onClose={() => setIsEdit(false)}
+            onCancel={() => setIsEdit(false)}
+            onSave={(updatedData) => {
+              console.log('Data saved:', updatedData);
+              // Update the user data with the saved changes
+              handleUpdateUserData(updatedData);
+              // Close the modal
+              setIsEdit(false);
+            }}
             onUpdateUserData={handleUpdateUserData}
           />
         </div>
@@ -1086,6 +1094,8 @@ export default function LearnerPage() {
       {confirmLogout && (
         <LogoutComponent onCancel={handleCancelLogout} />
       )}
+
+      <ChatbotWidget />
     </>
   );
 }

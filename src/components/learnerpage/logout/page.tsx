@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import styles from './logout.module.css';
-import api from '../../../lib/axios';
 
 interface LogoutComponentProps {
   onCancel: () => void;
@@ -26,16 +25,22 @@ export default function LogoutComponent({ onCancel }: LogoutComponentProps) {
     setIsLoggingOut(true);
     
     try {
-      const response = await api.post('/api/auth/logout', {
-        withCredentials: true,
+      const response = await fetch('http://localhost:3001/api/auth/logout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        credentials: 'include',
       });
 
-      if (response.status === 200) {
+      if (response.ok) {
         toast.success('Logout successful!');
         removeToken();
         router.replace('/auth/login');
       } else {
-        toast.error('Logout failed!');
+        const data = await response.json().catch(() => null);
+        toast.error(data?.message || 'Logout failed!');
       }
     } catch (error) {
       console.error('Logout error:', error);

@@ -1,3 +1,23 @@
+.editInformationOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.editInformationModal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2000;
+}
 .editInformation {
   width: 500px;
   max-height: 700px;
@@ -237,4 +257,79 @@
 
 .checkboxOption:hover {
   background-color: #f5f5f5;
+}
+
+
+@media (max-width: 768px) {
+  .editInformation {
+    width: calc(80vw - 30px) !important;
+    height: 85vh;
+    max-height: 85vh;
+    margin-right: 10px;
+    border-radius: 15px;
+  }
+
+  .upperElement {
+    padding: 12px 15px;
+    border-radius: 15px 15px 0 0;
+  }
+
+  .upperElement h1 {
+    font-size: 20px;
+  }
+
+  .exitIcon {
+    right: 15px;
+    width: 18px;
+    height: 18px;
+  }
+
+  .lowerElement {
+    padding: 0 15px;
+    max-height: calc(85vh - 120px);
+    overflow-y: auto;
+  }
+
+  .inputWrapper {
+    gap: 12px;
+  }
+
+  .inputFields {
+    margin-bottom: 12px;
+  }
+
+  .standardInput,
+  .dropdownOption,
+  .checkboxOption label,
+  .categorySection h4,
+  .fixedTextarea {
+    font-size: 11px;
+  }
+
+  .saveButton {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .editInformation {
+    width: calc(95vw - 10px) !important;
+    margin-right: 5px;
+    height: 90vh;
+    max-height: 90vh;
+  }
+
+  .upperElement h1 {
+    font-size: 18px;
+  }
+
+  .lowerElement {
+    max-height: calc(90vh - 120px);
+  }
+
+  .lowerElement h1 {
+    font-size: 15px;
+    margin-bottom: 15px;
+  }
 }

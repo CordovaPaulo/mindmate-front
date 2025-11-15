@@ -55,25 +55,25 @@ export default function ReviewsComponent({ feedbacks = [] }: ReviewsComponentPro
 
       // For each feedback, fetch the learner (reviewer) details using the learner field
       const reviewerPromises = feedbacksData.map((fb: any) =>
-        api.get(`/api/mentor/learners/${fb.learner}`, {
-          headers: {
-            ...(token ? { Authorization: `Bearer ${token}` } : {}),
-          },
+        api.get(`/api/mentor/feedbacks/reviewer/${fb.learner}`, {
           withCredentials: true,
         }).then(res => ({
           id: fb.learner,
           name: res.data.name,
-          course: res.data.program,
-          year: res.data.yearLevel,
+          course: res.data.course,
+          year: res.data.year,
           image: res.data.image,
         }))
-        .catch(() => ({
-          id: fb.learner,
-          name: 'Unknown',
-          course: 'N/A',
-          year: 'N/A',
-          image: '',
-        }))
+        .catch((err) => {
+          console.error(`Error fetching reviewer ${fb.learner}:`, err);
+          return {
+            id: fb.learner,
+            name: 'Unknown Learner',
+            course: 'N/A',
+            year: 'N/A',
+            image: '',
+          };
+        })
       );
 
       const reviewersData = await Promise.all(reviewerPromises);

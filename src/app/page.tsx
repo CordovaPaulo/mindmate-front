@@ -166,6 +166,138 @@ export default function Home() {
         </div>
         <button className={styles.learnMoreBtn} onClick={goToLearnMore}>LEARN MORE</button>
       </section>
+
+      <section id="pricing" className={styles.pricingSection}>
+        <div className={styles.pricingContainer}>
+          <h2 className={styles.pricingTitle}>CHOOSE YOUR PLAN</h2>
+          <p className={styles.pricingSubtitle}>Free access with premium features for everyone</p>
+          
+          <div className={styles.pricingCards}>
+            {/* Free Plan Card */}
+            <div className={`${styles.pricingCard} ${styles.freeCard}`}>
+              <div className={styles.cardHeader}>
+                <h3>Free Plan</h3>
+                <div className={styles.price}>
+                  <span className={styles.priceAmount}>$0</span>
+                  <span className={styles.pricePeriod}>/forever</span>
+                </div>
+              </div>
+              <div className={styles.cardBody}>
+                <ul className={styles.featuresList}>
+                  <li className={styles.featureItem}>
+                    <span className={styles.featureIcon}>✓</span>
+                    Access to basic mentor matching
+                  </li>
+                  <li className={styles.featureItem}>
+                    <span className={styles.featureIcon}>✓</span>
+                    Schedule up to 3 sessions per week
+                  </li>
+                  <li className={styles.featureItem}>
+                    <span className={styles.featureIcon}>✓</span>
+                    Community support forum
+                  </li>
+                  <li className={styles.featureItem}>
+                    <span className={styles.featureIcon}>✓</span>
+                    Basic profile customization
+                  </li>
+                  <li className={styles.featureItem}>
+                    <span className={styles.featureIcon}>✓</span>
+                    Email notifications
+                  </li>
+                </ul>
+                <button className={`${styles.planButton} ${styles.freeButton}`}>
+                  Get Started Free
+                </button>
+              </div>
+            </div>
+
+            {/* Pro Plan Card */}
+            <div className={`${styles.pricingCard} ${styles.proCard}`}>
+              <div className={styles.cardBadge}>Most Popular</div>
+              <div className={styles.cardHeader}>
+                <h3>Pro Plan</h3>
+                <div className={styles.price}>
+                  <span className={styles.priceAmount}>$9</span>
+                  <span className={styles.pricePeriod}>/month</span>
+                </div>
+              </div>
+              <div className={styles.cardBody}>
+                <ul className={styles.featuresList}>
+                  <li className={styles.featureItem}>
+                    <span className={styles.featureIcon}>⚡</span>
+                    Unlimited session scheduling
+                  </li>
+                  <li className={styles.featureItem}>
+                    <span className={styles.featureIcon}>⚡</span>
+                    Priority mentor matching
+                  </li>
+                  <li className={styles.featureItem}>
+                    <span className={styles.featureIcon}>⚡</span>
+                    Advanced analytics dashboard
+                  </li>
+                  <li className={styles.featureItem}>
+                    <span className={styles.featureIcon}>⚡</span>
+                    Custom learning paths
+                  </li>
+                  <li className={styles.featureItem}>
+                    <span className={styles.featureIcon}>⚡</span>
+                    Group session hosting
+                  </li>
+                  <li className={styles.featureItem}>
+                    <span className={styles.featureIcon}>⚡</span>
+                    Premium support 24/7
+                  </li>
+                </ul>
+                <button className={`${styles.planButton} ${styles.proButton}`}>
+                  Upgrade to Pro
+                </button>
+              </div>
+            </div>
+
+            {/* Premium Plan Card */}
+            <div className={`${styles.pricingCard} ${styles.premiumCard}`}>
+              <div className={styles.cardHeader}>
+                <h3>Premium Plan</h3>
+                <div className={styles.price}>
+                  <span className={styles.priceAmount}>$19</span>
+                  <span className={styles.pricePeriod}>/month</span>
+                </div>
+              </div>
+              <div className={styles.cardBody}>
+                <ul className={styles.featuresList}>
+                  <li className={styles.featureItem}>
+                    <span className={styles.featureIcon}>🎯</span>
+                    All Pro features included
+                  </li>
+                  <li className={styles.featureItem}>
+                    <span className={styles.featureIcon}>🎯</span>
+                    One-on-one expert mentoring
+                  </li>
+                  <li className={styles.featureItem}>
+                    <span className={styles.featureIcon}>🎯</span>
+                    Custom certification programs
+                  </li>
+                  <li className={styles.featureItem}>
+                    <span className={styles.featureIcon}>🎯</span>
+                    Career guidance sessions
+                  </li>
+                  <li className={styles.featureItem}>
+                    <span className={styles.featureIcon}>🎯</span>
+                    Exclusive webinars & workshops
+                  </li>
+                  <li className={styles.featureItem}>
+                    <span className={styles.featureIcon}>🎯</span>
+                    Dedicated success manager
+                  </li>
+                </ul>
+                <button className={`${styles.planButton} ${styles.premiumButton}`}>
+                  Go Premium
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
       
       <section className={styles.joinSection} id="get-started">
         <div className={styles.getStartedCard}>

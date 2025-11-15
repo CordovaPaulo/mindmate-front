@@ -10,6 +10,7 @@ const links: NavItem[] = [
   { name: 'Home', href: '#home' },
   { name: 'Roles', href: '#learners' },
   { name: 'Overview', href: '#how-it-works' },
+  { name: 'Plans', href: '#pricing' },
   { name: 'Get Started', href: '#get-started' },
 ];
 

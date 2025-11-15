@@ -4,7 +4,6 @@
   padding: 0;
   overflow-x: hidden;
   -ms-overflow-style: none;
-  scrollbar-width: none;
 }
 
 .homeContainer::-webkit-scrollbar {
@@ -68,7 +67,6 @@
 
 .learnersSection {
   width: 100%;
-  min-height: auto;
   overflow: hidden;
   background-color: #02475e;
   transition: all 0.5s ease;
@@ -127,7 +125,6 @@
 
 .mentorsSection {
   width: 100%;
-  min-height: auto;
   overflow: hidden;
   background-color: white;
   transition: all 0.5s ease;
@@ -297,6 +294,213 @@
   background-color: #15191b;
 }
 
+/* Pricing Section Styles */
+.pricingSection {
+  padding: 3rem 5%;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  text-align: center;
+}
+
+.pricingContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  margin-top: -2rem;
+}
+
+.pricingTitle {
+  font-size: 2rem;
+  color: #02475e;
+  margin-bottom: 0.8rem;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
+}
+
+.pricingSubtitle {
+  font-size: 1rem;
+  color: #116275;
+  margin-bottom: 2.5rem;
+  opacity: 0.9;
+}
+
+.pricingCards {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.pricingCard {
+  background: white;
+  border-radius: 15px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  position: relative;
+  width: 100%;
+  max-width: 350px;
+  border: 2px solid transparent;
+}
+
+.pricingCard:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+.freeCard {
+  border-color: #02475e;
+}
+
+.freeCard:hover {
+  border-color: #0097b2;
+}
+
+.proCard {
+  border-color: #0097b2;
+  transform: scale(1.02);
+}
+
+.proCard:hover {
+  border-color: #02475e;
+  transform: scale(1.02) translateY(-8px);
+}
+
+.premiumCard {
+  border-color: #ff6b35;
+}
+
+.premiumCard:hover {
+  border-color: #ff8c00;
+}
+
+.cardBadge {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #0097b2, #02475e);
+  color: white;
+  padding: 0.4rem 1.2rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.cardHeader {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #f1f3f4;
+}
+
+.cardHeader h3 {
+  font-size: 1.4rem;
+  color: #02475e;
+  margin-bottom: 0.8rem;
+  font-family: "Montserrat", sans-serif;
+}
+
+.price {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+.priceAmount {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #02475e;
+  font-family: "Montserrat", sans-serif;
+}
+
+.pricePeriod {
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: 500;
+}
+
+.featuresList {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem 0;
+  text-align: left;
+}
+
+.featureItem {
+  padding: 0.6rem 0;
+  font-size: 0.9rem;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  line-height: 1.4;
+}
+
+.featureIcon {
+  font-size: 1rem;
+  min-width: 20px;
+  text-align: center;
+}
+
+.freeCard .featureIcon {
+  color: #02475e;
+}
+
+.proCard .featureIcon {
+  color: #0097b2;
+}
+
+.premiumCard .featureIcon {
+  color: #ff6b35;
+}
+
+.planButton {
+  width: 100%;
+  padding: 0.8rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.freeButton {
+  background: linear-gradient(135deg, #02475e, #116275);
+  color: white;
+}
+
+.freeButton:hover {
+  background: linear-gradient(135deg, #116275, #0097b2);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(2, 71, 94, 0.3);
+}
+
+.proButton {
+  background: linear-gradient(135deg, #0097b2, #00b4d8);
+  color: white;
+}
+
+.proButton:hover {
+  background: linear-gradient(135deg, #00b4d8, #02475e);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 151, 178, 0.3);
+}
+
+.premiumButton {
+  background: linear-gradient(135deg, #ff6b35, #ff8c00);
+  color: white;
+}
+
+.premiumButton:hover {
+  background: linear-gradient(135deg, #ff8c00, #ff6b35);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(255, 107, 53, 0.3);
+}
+
 .joinSection {
   position: relative;
   width: 100%;
@@ -317,8 +521,8 @@
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.561);
-  backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
   z-index: 1;
 }
 
@@ -332,8 +536,8 @@
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   color: white;
   text-align: center;
-  backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   margin: 1rem 0;
 }
@@ -490,6 +694,42 @@
     max-width: 220px;
   }
 
+  /* Pricing Section Tablet Styles */
+  .pricingSection {
+    padding: 4rem 8%;
+  }
+
+  .pricingTitle {
+    font-size: 2.3rem;
+  }
+
+  .pricingSubtitle {
+    font-size: 1.1rem;
+  }
+
+  .pricingCards {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+  }
+
+  .pricingCard {
+    width: calc(50% - 1.5rem);
+    max-width: none;
+    padding: 1.8rem;
+  }
+
+  .proCard {
+    order: -1;
+    width: 100%;
+    max-width: 350px;
+  }
+
+  .featureItem {
+    font-size: 0.88rem;
+  }
+
   .getStartedCard {
     padding: 2rem;
     max-width: 500px;
@@ -520,6 +760,7 @@
   }
 }
 
+/* Desktop Styles */
 @media (min-width: 1024px) {
   .introContent {
     flex-direction: row;
@@ -638,6 +879,49 @@
     width: auto;
   }
 
+  /* Pricing Section Desktop Styles */
+  .pricingSection {
+    padding: 4rem 5%;
+  }
+
+  .pricingTitle {
+    font-size: 2.5rem;
+  }
+
+  .pricingSubtitle {
+    font-size: 1.1rem;
+  }
+
+  .pricingCards {
+    flex-direction: row;
+    justify-content: center;
+    align-items: stretch;
+    gap: 1.5rem;
+  }
+
+  .pricingCard {
+    width: 100%;
+    max-width: 320px;
+    padding: 2rem;
+  }
+
+  .proCard {
+    transform: scale(1.05);
+    margin: 0 0.5rem;
+  }
+
+  .featureItem {
+    font-size: 0.85rem;
+  }
+
+  .cardHeader h3 {
+    font-size: 1.5rem;
+  }
+
+  .priceAmount {
+    font-size: 2.5rem;
+  }
+
   .joinSection {
     padding: 40px 5%;
   }
@@ -659,8 +943,7 @@
 
   .benefitsList li {
     justify-content: flex-start;
-        font-size: 17px;
-
+    font-size: 17px;
   }
 
   .benefitIcon {

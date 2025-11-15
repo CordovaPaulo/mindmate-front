@@ -15,6 +15,7 @@ import api from "@/lib/axios";
 import styles from './mentor.module.css';
 import { toast } from 'react-toastify';
 import Pusher from 'pusher-js';
+import ChatbotWidget from '@/components/ChatbotWidget';
 
 interface User {
   id: number | null;
@@ -348,7 +349,7 @@ export default function MentorPage() {
       
       try {
         const res = await api.get('/api/mentor/profile', {
-          timeout: 100000,
+          timeout: 50000,
           withCredentials: true,
         });
 
@@ -556,7 +557,7 @@ export default function MentorPage() {
       console.log("Fetching learners from API...");
       const token = getCookie('MindMateToken');
       const res = await api.get('/api/mentor/learners', {
-        timeout: 100000,
+        timeout: 50000,
         withCredentials: true,
         headers: {
           'Content-Type': 'application/json',
@@ -582,7 +583,7 @@ export default function MentorPage() {
       console.log("Fetching schedules from API...");
       const token = getCookie('MindMateToken');
       const res = await api.get('/api/mentor/schedules', {
-        timeout: 100000,
+        timeout: 50000,
         withCredentials: true,
         headers: {
           'Content-Type': 'application/json',
@@ -609,7 +610,7 @@ export default function MentorPage() {
       console.log("Fetching feedbacks from API...");
       const token = getCookie('MindMateToken');
       const res = await api.get('/api/mentor/feedbacks', {
-        timeout: 100000,
+        timeout: 50000,
         withCredentials: true,
         headers: {
           'Content-Type': 'application/json',
@@ -631,7 +632,7 @@ export default function MentorPage() {
     try {
       console.log("Fetching forum data...");
       const res = await api.get('/api/forum/posts', {
-        timeout: 100000,
+        timeout: 50000,
         withCredentials: true,
       });
       
@@ -667,7 +668,7 @@ export default function MentorPage() {
     try {
       console.log("Fetching analytics data...");
       const res = await api.get('/api/mentor/session/analytics', {
-        timeout: 100000,
+        timeout: 50000,
         withCredentials: true,
       });
       
@@ -1618,6 +1619,8 @@ export default function MentorPage() {
           </div>
         </div>
       )}
+
+      <ChatbotWidget />
     </div>
   );
 }

@@ -11,9 +11,7 @@ import {
   faUser, 
   faClock, 
   faMapMarkerAlt,
-  faVideo,
-  faUsers,
-  faUserPlus
+  faVideo
 } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from 'next/navigation';
 import RescheduleDialog from '../RescheduleDialog/page';
@@ -238,12 +236,6 @@ export default function SessionComponent({ schedule = [], upcomingSchedule = [],
       case 'cancel':
         setShowCancelConfirmation(true);
         break;
-      case 'invite':
-        // Handle inviting to group session - will be implemented with modal
-        if (userData?.onOpenGroupInvite) {
-          userData.onOpenGroupInvite(item.id);
-        }
-        break;
     }
     setActivePopup({ type: null, index: null });
   };
@@ -304,23 +296,16 @@ export default function SessionComponent({ schedule = [], upcomingSchedule = [],
                     <div className={styles.sessionCardHeader}>
                       <div className={styles.sessionTitleContainer}>
                         <h1>{item.subject}</h1>
-                        {item.sessionType === 'group' && (
-                          <span className={styles.sessionGroupBadge}>
-                            <FontAwesomeIcon icon={faUsers} /> Group
-                          </span>
-                        )}
                       </div>
                       <div className={styles.sessionHeaderActions}>
-                        {/* Join Meeting button - only for online sessions */}
-                        {isOnlineSession(item.location) && (
-                          <button
-                            className={styles.sessionJoinBtn}
-                            onClick={(e) => handleJoinMeeting(item.id, e)}
-                            title="Join Online Meeting"
-                          >
-                            <FontAwesomeIcon icon={faVideo} style={{ color: '#4CAF50', fontSize: '1.5rem' }} />
-                          </button>
-                        )}
+                        {/* Join Meeting button - available for all sessions */}
+                        <button
+                          className={styles.sessionJoinBtn}
+                          onClick={(e) => handleJoinMeeting(item.id, e)}
+                          title="Join Online Meeting"
+                        >
+                          <FontAwesomeIcon icon={faVideo} style={{ color: '#4CAF50', fontSize: '1.5rem' }} />
+                        </button>
                         <div 
                           className={styles.sessionEllipsisContainer} 
                           ref={el => { todayPopupRefs.current[index] = el; }}
@@ -332,15 +317,6 @@ export default function SessionComponent({ schedule = [], upcomingSchedule = [],
                           />
                           {activePopup.type === `today-${index}` && (
                             <div className={styles.sessionPopupMenu} onClick={(e) => e.stopPropagation()}>
-                              {item.sessionType === 'group' && (
-                                <div 
-                                  className={styles.sessionPopupOption}
-                                  onClick={(e) => handleOptionClick('invite', item, e)}
-                                >
-                                  <FontAwesomeIcon icon={faUserPlus} className={styles.sessionOptionIcon} />
-                                  <p className={styles.sessionOptionText}>Invite Learner</p>
-                                </div>
-                              )}
                               <div 
                                 className={styles.sessionPopupOption}
                                 onClick={(e) => handleOptionClick('remind', item, e)}
@@ -369,13 +345,7 @@ export default function SessionComponent({ schedule = [], upcomingSchedule = [],
                     </div>
                     <div className={styles.sessionInfo}>
                       <FontAwesomeIcon icon={faUser} style={{ color: '#533566', fontSize: '1.2rem' }} />
-                      {item.sessionType === 'group' ? (
-                        <h2>
-                          {item.groupName || 'Group Session'} ({item.learners?.length || 0} participants)
-                        </h2>
-                      ) : (
-                        <h2>{item.learner?.name || "Unknown User"}</h2>
-                      )}
+                      <h2>{item.learner?.name || "Unknown User"}</h2>
                     </div>
                     <div className={styles.sessionInfo}>
                       <FontAwesomeIcon icon={faCalendarAlt} style={{ color: '#0084ce', fontSize: '1.2rem' }} />
@@ -409,11 +379,6 @@ export default function SessionComponent({ schedule = [], upcomingSchedule = [],
                     <div className={styles.sessionCardHeader}>
                       <div className={styles.sessionTitleContainer}>
                         <h1>{item.subject}</h1>
-                        {item.sessionType === 'group' && (
-                          <span className={styles.sessionGroupBadge}>
-                            <FontAwesomeIcon icon={faUsers} /> Group
-                          </span>
-                        )}
                       </div>
                       <div 
                         className={styles.sessionEllipsisContainer} 
@@ -426,15 +391,6 @@ export default function SessionComponent({ schedule = [], upcomingSchedule = [],
                         />
                         {activePopup.type === `upcoming-${index}` && (
                           <div className={styles.sessionPopupMenu} onClick={(e) => e.stopPropagation()}>
-                            {item.sessionType === 'group' && (
-                              <div 
-                                className={styles.sessionPopupOption}
-                                onClick={(e) => handleOptionClick('invite', item, e)}
-                              >
-                                <FontAwesomeIcon icon={faUserPlus} className={styles.sessionOptionIcon} />
-                                <p className={styles.sessionOptionText}>Invite Learner</p>
-                              </div>
-                            )}
                             <div 
                               className={styles.sessionPopupOption}
                               onClick={(e) => handleOptionClick('remind', item, e)}
@@ -462,13 +418,7 @@ export default function SessionComponent({ schedule = [], upcomingSchedule = [],
                     </div>
                     <div className={styles.sessionInfo}>
                       <FontAwesomeIcon icon={faUser} style={{ color: '#533566', fontSize: '1.2rem' }} />
-                      {item.sessionType === 'group' ? (
-                        <h2>
-                          {item.groupName || 'Group Session'} ({item.learners?.length || 0} participants)
-                        </h2>
-                      ) : (
-                        <h2>{item.learner?.name || "Unknown User"}</h2>
-                      )}
+                      <h2>{item.learner?.name || "Unknown User"}</h2>
                     </div>
                     <div className={styles.sessionInfo}>
                       <FontAwesomeIcon icon={faCalendarAlt} style={{ color: '#0084ce', fontSize: '1.2rem' }} />

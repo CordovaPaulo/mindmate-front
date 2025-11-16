@@ -104,11 +104,11 @@ export default function ChatbotWidget() {
           style={{
             position: 'fixed',
             right: 16,
-            bottom: 72,
-            width: 360,
-            maxWidth: '90vw',
-            height: 480,
-            maxHeight: '70vh',
+            bottom: 88,
+            width: 480,
+            maxWidth: '95vw',
+            height: 620,
+            maxHeight: '80vh',
             background: '#fff',
             borderRadius: 12,
             boxShadow: '0 12px 30px rgba(0,0,0,0.2)',
@@ -120,29 +120,37 @@ export default function ChatbotWidget() {
           role="dialog"
           aria-label="MindMate AI Assistant"
         >
-          <div style={{ padding: 12, borderBottom: '1px solid #eee', fontWeight: 600 }}>MindMate AI Assistant</div>
+          <div style={{ padding: 14, borderBottom: '1px solid #eee', fontWeight: 600 }}>MindMate AI Assistant</div>
 
           {/* Messages */}
-          <div style={{ flex: 1, overflowY: 'auto', padding: 12, background: '#fafafa' }}>
-            {history.map((m, i) => (
-              <div key={i} style={{ marginBottom: 8 }}>
-                <div style={{ fontSize: 12, color: '#666' }}>{m.role === 'user' ? 'You' : m.role === 'assistant' ? 'Assistant' : 'System'}</div>
-                <div
-                  style={{
-                    display: 'inline-block',
-                    padding: '8px 10px',
-                    borderRadius: 8,
-                    background: m.role === 'user' ? '#E0E7FF' : '#fff',
-                    border: '1px solid #e5e7eb',
-                    maxWidth: '100%',
-                    whiteSpace: 'pre-wrap',
-                    wordBreak: 'break-word',
-                  }}
-                >
-                  {m.content}
+          <div style={{ flex: 1, overflowY: 'auto', padding: 14, background: '#fafafa' }}>
+            {history.map((m, i) => {
+              const isUser = m.role === 'user';
+              return (
+                <div key={i} style={{ display: 'flex', justifyContent: isUser ? 'flex-end' : 'flex-start', marginBottom: 10 }}>
+                  <div style={{ maxWidth: '85%' }}>
+                    <div style={{ fontSize: 13, color: '#666', marginBottom: 4, textAlign: isUser ? 'right' : 'left' }}>
+                      {m.role === 'user' ? 'You' : m.role === 'assistant' ? 'Assistant' : 'System'}
+                    </div>
+                    <div
+                      style={{
+                        padding: '10px 12px',
+                        borderRadius: 12,
+                        background: isUser ? '#E0E7FF' : '#fff',
+                        border: '1px solid #e5e7eb',
+                        whiteSpace: 'pre-wrap',
+                        wordBreak: 'break-word',
+                        fontSize: 14,
+                        lineHeight: '1.35',
+                        textAlign: 'left',
+                      }}
+                    >
+                      {m.content}
+                    </div>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           {/* Quick actions */}

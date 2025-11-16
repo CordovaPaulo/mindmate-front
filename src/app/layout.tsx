@@ -2,7 +2,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import Providers from '@/components/Providers';
-import BotpressInit from '@/components/BotpressInit';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -23,8 +22,7 @@ export default function RootLayout({
           rel="stylesheet" 
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" 
         />
-        <script src="https://cdn.botpress.cloud/webchat/v3.4/inject.js"></script>
-        <script src="https://files.bpcontent.cloud/2025/11/16/18/20251116183045-2WU3A1QR.js" defer></script>
+        {/* Botpress removed: using local ChatbotWidget instead on learner/mentor pages */}
       </head>
       <body suppressHydrationWarning /* optional: disable Grammarly */ data-gramm="false">
         {/* Skip link for keyboard users */}
@@ -35,7 +33,6 @@ export default function RootLayout({
           <Providers>
             {children}
           </Providers>
-          <BotpressInit />
           <ToastContainer />
         </main>
       </body>

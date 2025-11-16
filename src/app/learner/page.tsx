@@ -328,9 +328,29 @@ export default function LearnerPage() {
 
     Pusher.logToConsole = true;
 
+    // Use a custom authorizer so the browser will include httpOnly cookies
+    // (credentials: 'include') when calling the auth endpoint. This avoids
+    // reading httpOnly cookies from JavaScript (not allowed) and ensures the
+    // backend `authenticateToken()` middleware can read the cookie.
     const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY!, {
       cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER!,
-      authEndpoint: `/api/pusher-auth`,
+      authorizer: (channel, options) => ({
+        authorize: (socketId, callback) => {
+          const body = `socket_id=${encodeURIComponent(socketId)}&channel_name=${encodeURIComponent(channel.name)}`;
+          fetch('/api/pusher-auth', {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body,
+          })
+            .then(async (res) => {
+              if (!res.ok) throw new Error(`Auth failed: ${res.status}`);
+              return res.json();
+            })
+            .then((data) => callback(null, data))
+            .catch((err) => callback(err, null));
+        },
+      }),
     });
 
     const channelName = `private-user-${userData.userId}`;

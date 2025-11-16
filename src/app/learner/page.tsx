@@ -15,7 +15,6 @@ import { checkAuth } from '@/lib/auth';
 import styles from './learner.module.css';
 import { toast } from 'react-toastify';
 import Pusher from 'pusher-js';
-import ChatbotWidget from '@/components/ChatbotWidget';
 
 interface RoleData{
   role: string;
@@ -1106,8 +1105,6 @@ export default function LearnerPage() {
       {confirmLogout && (
         <LogoutComponent onCancel={handleCancelLogout} />
       )}
-
-      <ChatbotWidget />
     </>
   );
 }

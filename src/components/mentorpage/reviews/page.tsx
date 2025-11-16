@@ -43,7 +43,7 @@ export default function ReviewsComponent({ feedbacks = [] }: ReviewsComponentPro
   const fetchReviewer = async () => {
     try {
       const token = getCookie('MindMateToken');
-      // Fetch feedbacks
+      // Fetch feedbacks with populated learner data
       const feedbackRes = await api.get('/api/mentor/feedbacks', {
         headers: {
           ...(token ? { Authorization: `Bearer ${token}` } : {}),
@@ -53,47 +53,29 @@ export default function ReviewsComponent({ feedbacks = [] }: ReviewsComponentPro
 
       const feedbacksData = feedbackRes.data || [];
 
-      // For each feedback, fetch the learner (reviewer) details using the learner field
-      const reviewerPromises = feedbacksData.map((fb: any) =>
-        api.get(`/api/mentor/learners/${fb.learner}`, {
-          headers: {
-            ...(token ? { Authorization: `Bearer ${token}` } : {}),
-          },
-          withCredentials: true,
-        }).then(res => ({
-          id: fb.learner,
-          name: res.data.name,
-          course: res.data.program,
-          year: res.data.yearLevel,
-          image: res.data.image,
-        }))
-        .catch(() => ({
-          id: fb.learner,
-          name: 'Unknown',
-          course: 'N/A',
-          year: 'N/A',
-          image: '',
-        }))
-      );
-
-      const reviewersData = await Promise.all(reviewerPromises);
-
-      // Map reviewer data to feedbacks
+      // Map feedback data with populated learner information
       const feedbacksWithReviewer = feedbacksData.map((fb: any) => {
-        const reviewer = reviewersData.find((r: any) => r.id === fb.learner);
+        // Check if learner is populated (object) or just an ID (string)
+        const learnerData = typeof fb.learner === 'object' ? fb.learner : null;
+        
         return {
           id: fb._id || fb.id,
           rating: fb.rating,
           comment: fb.comments || fb.comment,
-          reviewerId: fb.learner,
-          reviewer: reviewer
+          reviewerId: learnerData?._id || fb.learner,
+          reviewer: learnerData
             ? {
-                name: reviewer.name,
-                course: reviewer.course,
-                year: reviewer.year,
-                image: reviewer.image,
+                name: learnerData.name || 'Unknown',
+                course: learnerData.program || 'N/A',
+                year: learnerData.yearLevel || 'N/A',
+                image: learnerData.image || '',
               }
-            : undefined,
+            : {
+                name: 'Unknown',
+                course: 'N/A',
+                year: 'N/A',
+                image: '',
+              },
         };
       });
 

@@ -167,13 +167,12 @@ export default function Home() {
         <button className={styles.learnMoreBtn} onClick={goToLearnMore}>LEARN MORE</button>
       </section>
 
-      <section id="pricing" className={styles.pricingSection}>
+      {/* <section id="pricing" className={styles.pricingSection}>
         <div className={styles.pricingContainer}>
           <h2 className={styles.pricingTitle}>CHOOSE YOUR PLAN</h2>
           <p className={styles.pricingSubtitle}>Free access with premium features for everyone</p>
           
           <div className={styles.pricingCards}>
-            {/* Free Plan Card */}
             <div className={`${styles.pricingCard} ${styles.freeCard}`}>
               <div className={styles.cardHeader}>
                 <h3>Free Plan</h3>
@@ -211,7 +210,6 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Pro Plan Card */}
             <div className={`${styles.pricingCard} ${styles.proCard}`}>
               <div className={styles.cardBadge}>Most Popular</div>
               <div className={styles.cardHeader}>
@@ -254,7 +252,6 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Premium Plan Card */}
             <div className={`${styles.pricingCard} ${styles.premiumCard}`}>
               <div className={styles.cardHeader}>
                 <h3>Premium Plan</h3>
@@ -297,7 +294,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
       
       <section className={styles.joinSection} id="get-started">
         <div className={styles.getStartedCard}>

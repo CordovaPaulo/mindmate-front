@@ -1,3 +1,4 @@
+// src/components/mentorpage/offer/page.tsx
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
@@ -40,6 +41,9 @@ export default function Offer({ info, mentorId, onClose, onConfirm }: OfferProps
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
   const [sessionType, setSessionType] = useState<'in-person'|'online'>('in-person');
+  const [offerType, setOfferType] = useState<'one-on-one'|'group'>('one-on-one');
+  const [groupName, setGroupName] = useState('');
+  const [maxParticipants, setMaxParticipants] = useState<string>('');
   const [notes, setNotes] = useState('');
   const [meetingLocation, setMeetingLocation] = useState('');
   const [selectedSubject, setSelectedSubject] = useState('');
@@ -140,6 +144,10 @@ export default function Offer({ info, mentorId, onClose, onConfirm }: OfferProps
       notify.warn('Please enter a meeting location');
       return;
     }
+    if (offerType === 'group' && maxParticipants && parseInt(maxParticipants) < 1) {
+      notify.warn('Max participants must be at least 1');
+      return;
+    }
     const match = selectedTime.match(/(\d+):(\d+)\s*(AM|PM)/i);
     if (!match) {
       notify.error('Invalid time format');
@@ -150,7 +158,7 @@ export default function Offer({ info, mentorId, onClose, onConfirm }: OfferProps
     if (period === 'AM' && h === 12) h = 0;
     const formattedTime = `${String(h).padStart(2, '0')}:${minutes}`;
 
-    const body = {
+    const body: any = {
       date: selectedDate,                 // YYYY-MM-DD
       time: formattedTime,               // HH:mm (24h)
       location: sessionType === 'in-person' ? meetingLocation : 'online',
@@ -158,12 +166,23 @@ export default function Offer({ info, mentorId, onClose, onConfirm }: OfferProps
       message: notes || ''
     };
 
+    // Add group-specific fields
+    if (offerType === 'group') {
+      if (groupName) body.groupName = groupName;
+      if (maxParticipants) body.maxParticipants = parseInt(maxParticipants);
+    }
+
     setIsSubmitting(true);
     try {
-      const res = await api.post(`/api/mentor/send-offer/${encodeURIComponent(info.learnerId)}`, body, { withCredentials: true });
+      // Use different endpoint for group offers
+      const endpoint = offerType === 'group' 
+        ? `/api/mentor/send-offer/group/${encodeURIComponent(info.learnerId)}`
+        : `/api/mentor/send-offer/${encodeURIComponent(info.learnerId)}`;
+      
+      const res = await api.post(endpoint, body, { withCredentials: true });
       if (res.status >= 200 && res.status < 300) {
-        notify.success('Offer sent!');
-        onConfirm({ ...body, learnerId: info.learnerId, mentorId });
+        notify.success(`${offerType === 'group' ? 'Group' : ''} Offer sent!`);
+        onConfirm({ ...body, learnerId: info.learnerId, mentorId, offerType });
         onClose();
       } else {
         notify.error(res.data?.message || 'Failed to send offer');
@@ -195,6 +214,56 @@ export default function Offer({ info, mentorId, onClose, onConfirm }: OfferProps
 
       <div className={styles.offerContent}>
         <div className={styles.offerLeft}>
+          {/* Session Type Selection */}
+          <div className={styles.offerSessionTypeSection}>
+            <h3 className={styles.offerSessionTypeHeader}>Session Type</h3>
+            <div className={styles.offerSessionTypeButtons}>
+              <button
+                type="button"
+                onClick={() => setOfferType('one-on-one')}
+                className={`${styles.offerSessionTypeBtn} ${offerType === 'one-on-one' ? styles.offerSessionTypeActive : ''}`}
+              >
+                <span>One-on-One</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setOfferType('group')}
+                className={`${styles.offerSessionTypeBtn} ${offerType === 'group' ? styles.offerSessionTypeActive : ''}`}
+              >
+                <span>Group Session</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Group Session Options */}
+          {offerType === 'group' && (
+            <div className={styles.offerGroupOptions}>
+              <div className={styles.offerGroupField}>
+                <label htmlFor="groupName" className={styles.offerGroupLabel}>Group Name (Optional)</label>
+                <input
+                  id="groupName"
+                  type="text"
+                  value={groupName}
+                  onChange={(e) => setGroupName(e.target.value)}
+                  placeholder="e.g., Math Study Group"
+                  className={styles.offerGroupInput}
+                />
+              </div>
+              <div className={styles.offerGroupField}>
+                <label htmlFor="maxParticipants" className={styles.offerGroupLabel}>Max Participants (Optional)</label>
+                <input
+                  id="maxParticipants"
+                  type="number"
+                  min="1"
+                  value={maxParticipants}
+                  onChange={(e) => setMaxParticipants(e.target.value)}
+                  placeholder="e.g., 5"
+                  className={styles.offerGroupInput}
+                />
+              </div>
+            </div>
+          )}
+
           <div className={styles.offerTimeHeader}>
             <h2>Select Time Slots</h2>
             <p>({info.sessionDur} duration)</p>
@@ -267,12 +336,14 @@ export default function Offer({ info, mentorId, onClose, onConfirm }: OfferProps
           <div className={styles.offerSubjectSelect}>
             <h3 className={styles.offerSubjectHeader}>Select Subject</h3>
             <select value={selectedSubject} onChange={(e) => setSelectedSubject(e.target.value)}
-              className={styles.offerSubjectDropdown} required
-              aria-label='Dropdown for Subjects'
-              >
+              className={styles.offerSubjectDropdown} required>
               <option value="" disabled>Choose a subject</option>
               {subjectOptions.map((s) => (<option key={s} value={s}>{s}</option>))}
             </select>
+          </div>
+
+          <div className={styles.offerNotes}>
+            <textarea placeholder="Notes or message (optional)" value={notes} onChange={(e)=>setNotes(e.target.value)} />
           </div>
         </div>
       </div>

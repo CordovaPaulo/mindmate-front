@@ -3,6 +3,7 @@
 
 import { useState, useEffect } from 'react';
 import Offer, { OfferInfo } from '../offer/page';
+import GroupSessionInvite from '../GroupSessionInvite/page';
 import styles from './view.module.css';
 import api from '@/lib/axios';
 
@@ -36,6 +37,7 @@ export default function ViewUser({ userId, mentorData, onClose }: ViewUserProps)
   const [isLoading, setIsLoading] = useState(true);
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [showOffer, setShowOffer] = useState(false);
+  const [showGroupInvite, setShowGroupInvite] = useState(false);
   const [offerInfo, setOfferInfo] = useState<OfferInfo | null>(null);
 
   const [userInfo, setUserInfo] = useState<UserInfo>({
@@ -273,6 +275,13 @@ export default function ViewUser({ userId, mentorData, onClose }: ViewUserProps)
                   Close
                 </button>
                 <button 
+                  className={styles.viewGroupInviteBtn} 
+                  onClick={() => setShowGroupInvite(true)}
+                  title="Invite to existing group session"
+                >
+                  <i className="fas fa-users"></i> Invite to Group
+                </button>
+                <button 
                   className={styles.viewSendOfferBtn} 
                   onClick={() => setShowConfirmationModal(true)}
                 >
@@ -313,6 +322,22 @@ export default function ViewUser({ userId, mentorData, onClose }: ViewUserProps)
               mentorId={String(mentorData?.user?.id || mentorData?.user?._id || '')}
               onClose={() => setShowOffer(false)}
               onConfirm={handleOfferConfirm}
+            />
+          </div>
+        )}
+
+        {/* Group Session Invite Modal */}
+        {showGroupInvite && offerInfo && (
+          <div className={styles.viewPopupOverlay}>
+            <GroupSessionInvite
+              learnerId={offerInfo.learnerId}
+              learnerName={offerInfo.name}
+              preSelectedSessionId={null}
+              onClose={() => setShowGroupInvite(false)}
+              onInviteSent={() => {
+                setShowGroupInvite(false);
+                onClose();
+              }}
             />
           </div>
         )}

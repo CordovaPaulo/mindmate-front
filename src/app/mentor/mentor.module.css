@@ -1251,3 +1251,36 @@
   width: min(920px, 92vw);
   overflow: auto;
 }
+
+/* Group Invite Button */
+.groupInviteBtn {
+  background: linear-gradient(135deg, #4CAF50, #2E7D32);
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: auto;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+}
+
+.groupInviteBtn:hover {
+  background: linear-gradient(135deg, #45a049, #27632a);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+  transform: translateY(-2px);
+}
+
+.groupInviteBtn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(76, 175, 80, 0.3);
+}
+
+.groupInviteBtn span {
+  font-size: 1.1rem;
+}

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { splineCurve } from 'chart.js/helpers';
 import api from '@/lib/axios';
+import { checkAuth } from '@/lib/auth';
 import Dashboard from '@/components/adminpage/dashboard/page';
 import Applications from '@/components/adminpage/applications/page';
 import Users from '@/components/adminpage/users/page'; 
@@ -69,6 +70,32 @@ const AdminProfile: React.FC = () => {
   const [usersFetch, setUsersFetch] = useState<User[]>([]);
   const [applicantsList, setApplicantsList] = useState<any[]>([]);
   const [showLogoutModal, setShowLogoutModal] = useState<boolean>(false);
+
+  // Authentication guard - check if user is logged in and has admin role
+  useEffect(() => {
+    const verifyAuth = async () => {
+      try {
+        const auth = await checkAuth();
+        
+        if (!auth.authenticated) {
+          toast.error('Please log in to access this page');
+          router.replace('/auth/login');
+          return;
+        }
+
+        if (auth.user?.role !== 'admin') {
+          toast.error('Access denied. This page is for administrators only.');
+          router.replace('/auth/login');
+          return;
+        }
+      } catch (error) {
+        console.error('Auth check error:', error);
+        router.replace('/auth/login');
+      }
+    };
+
+    verifyAuth();
+  }, [router]);
 
   // Effects
   useEffect(() => {

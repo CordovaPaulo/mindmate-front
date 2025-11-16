@@ -298,14 +298,16 @@ export default function SessionComponent({ schedule = [], upcomingSchedule = [],
                         <h1>{item.subject}</h1>
                       </div>
                       <div className={styles.sessionHeaderActions}>
-                        {/* Join Meeting button - available for all sessions */}
-                        <button
-                          className={styles.sessionJoinBtn}
-                          onClick={(e) => handleJoinMeeting(item.id, e)}
-                          title="Join Online Meeting"
-                        >
-                          <FontAwesomeIcon icon={faVideo} style={{ color: '#4CAF50', fontSize: '1.5rem' }} />
-                        </button>
+                        {/* Join Meeting button - only for online sessions */}
+                        {isOnlineSession(item.location) && (
+                          <button
+                            className={styles.sessionJoinBtn}
+                            onClick={(e) => handleJoinMeeting(item.id, e)}
+                            title="Join Online Meeting"
+                          >
+                            <FontAwesomeIcon icon={faVideo} style={{ color: '#4CAF50', fontSize: '1.5rem' }} />
+                          </button>
+                        )}
                         <div 
                           className={styles.sessionEllipsisContainer} 
                           ref={el => { todayPopupRefs.current[index] = el; }}

@@ -6,9 +6,9 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.08);
   display: flex;
-  justify-content: flex-end; 
+  justify-content: flex-end;
   align-items: center;
   z-index: 1000;
   padding: 2rem;
@@ -27,17 +27,51 @@
   z-index: 100;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  margin-right: 13rem; 
+  margin-right: 8.5rem;
 }
 
 .viewWrapper::-webkit-scrollbar {
   display: none;
 }
 
-.viewStickyHeader {
-  position: sticky;
+.viewLoadingContainer {
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.08);
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  z-index: 1000;
+  padding: 2rem;
+}
+
+/* inner wrapper that matches `.viewWrapper` width and offset so spinner
+   sits in the same visual column */
+.viewSpinnerWrap {
+  width: 900px;
+  max-width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 8.5rem;
+}
+
+.viewSpinner {
   z-index: 150;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #006981;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: viewSpin 1s linear infinite;
+}
+
+@keyframes viewSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 .viewWrapText {
@@ -320,7 +354,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.12);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -474,27 +508,7 @@
   font-size: 1rem;
 }
 
-/* Loading Styles */
-.viewLoadingContainer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 200px;
-}
-
-.viewSpinner {
-  border: 4px solid #f3f3f3;
-  border-top: 4px solid #006981;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  animation: viewSpin 1s linear infinite;
-}
-
-@keyframes viewSpin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
+/* Loading Styles (overrides moved into main loader defs and media queries) */
 
 /* Large Tablets (769px - 1024px) */
 @media (max-width: 1024px) {
@@ -516,6 +530,15 @@
   
   .viewInfoGrid {
     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  }
+  .viewLoadingContainer {
+    justify-content: center;
+    padding: 1.5rem;
+  }
+  .viewSpinnerWrap {
+    width: 90%;
+    max-width: 850px;
+    margin-right: 0;
   }
 }
 

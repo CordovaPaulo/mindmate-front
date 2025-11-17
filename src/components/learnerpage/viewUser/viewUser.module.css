@@ -1,8 +1,26 @@
 .loadingContainer {
+  /* full-screen overlay so loader aligns with modal positioning */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.06);
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  z-index: 5000;
+  padding: 2rem;
+}
+
+/* inner wrapper sized like `.wrapper` so spinner sits in the same column */
+.spinnerWrap {
+  width: 900px;
+  max-width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 200px;
+  margin-right: 8.5rem;
 }
 
 .spinner {
@@ -52,6 +70,19 @@
 .wrapper::-webkit-scrollbar {
   display: none;
 }
+
+  /* Responsive: collapse spinner wrap to modal width on narrower screens */
+  @media (max-width: 1024px) {
+    .loadingContainer {
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    .spinnerWrap {
+      width: 90%;
+      max-width: 850px;
+      margin-right: 0;
+    }
+  }
 
 .stickyHeader {
   position: sticky;

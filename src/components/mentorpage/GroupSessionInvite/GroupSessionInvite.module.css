@@ -7,9 +7,10 @@
   background: rgba(0, 0, 0, 0.6);
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
   z-index: 10000;
   backdrop-filter: blur(4px);
+  padding: 2rem;
 }
 
 .modalContent {
@@ -23,6 +24,9 @@
   flex-direction: column;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
   animation: slideUp 0.3s ease-out;
+}
+.modalContent {
+  margin-right: 18rem;
 }
 
 @keyframes slideUp {

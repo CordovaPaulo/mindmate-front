@@ -165,7 +165,9 @@ export default function ViewUser({ user, onClose, isOpen }: ViewUserProps) {
   if (isLoading) {
     return (
       <div className={styles.loadingContainer}>
-        <div className={styles.spinner}></div>
+        <div className={styles.spinnerWrap}>
+          <div className={styles.spinner}></div>
+        </div>
       </div>
     );
   }

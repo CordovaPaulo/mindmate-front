@@ -108,8 +108,10 @@ export default function ViewUser({ userId, mentorData, onClose }: ViewUserProps)
   if (isLoading) {
     return (
       <div className={styles.viewLoadingContainer}>
-        <div className={styles.viewSpinner}></div>
-        <p>Loading learner details...</p>
+        <div className={styles.viewSpinnerWrap}>
+          <div className={styles.viewSpinner}></div>
+        </div>
+        {/* <p>Loading learner details...</p> */}
       </div>
     );
   }

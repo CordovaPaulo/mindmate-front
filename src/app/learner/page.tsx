@@ -332,22 +332,18 @@ export default function LearnerPage() {
     // (credentials: 'include') when calling the auth endpoint. This avoids
     // reading httpOnly cookies from JavaScript (not allowed) and ensures the
     // backend `authenticateToken()` middleware can read the cookie.
+    const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
     const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY!, {
       cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER!,
       authorizer: (channel, options) => ({
         authorize: (socketId, callback) => {
           const body = `socket_id=${encodeURIComponent(socketId)}&channel_name=${encodeURIComponent(channel.name)}`;
-          fetch('/api/pusher-auth', {
-            method: 'POST',
-            credentials: 'include',
+          // Call the backend auth endpoint directly so the browser will send
+          // the httpOnly cookie that was set by the backend (same host).
+          api.post(`${backendUrl}/api/pusher/pusher/auth`, body, {
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body,
           })
-            .then(async (res) => {
-              if (!res.ok) throw new Error(`Auth failed: ${res.status}`);
-              return res.json();
-            })
-            .then((data) => callback(null, data))
+            .then((res) => callback(null, res.data))
             .catch((err) => callback(err, null));
         },
       }),

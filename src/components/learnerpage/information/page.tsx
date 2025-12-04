@@ -14,7 +14,6 @@ interface User {
 
 interface Mentor {
   address: string;
-  proficiency: string;
   year: string;
   course: string;
   availability: string[];
@@ -54,7 +53,6 @@ const programOptions = [
 ];
 const genderOptions = ['Male', 'Female'];
 const teachingModalityOptions = ['Online', 'In-person', 'Hybrid'];
-const proficiencyOptions = ['Beginner', 'Intermediate', 'Advanced'];
 const durationOptions = ['1 hour', '2 hours', '3 hours'];
 
 const daysOptions = [
@@ -86,10 +84,9 @@ const inputFieldPersonalInformation = [
 const inputFieldProfileInformation = [
   { field: 'Teaching Modality', type: 'select', options: teachingModalityOptions, placeholder: 'Select preferred teaching method' },
   { field: 'Days of Availability', type: 'checkbox', options: daysOptions, placeholder: 'Choose days you are available' },
-  { field: 'Proficiency Level', type: 'select', options: proficiencyOptions, placeholder: 'Select your expertise level' },
   { field: 'Teaching Style', type: 'checkbox', options: teachingStyleOptions, placeholder: 'Choose your teaching approaches' },
   { field: 'Preferred Session Duration', type: 'select', options: durationOptions, placeholder: 'Select session length preference' },
-  { field: 'Course Offered', type: 'select', placeholder: 'Select subjects you can teach' },
+  { field: 'Specialization', type: 'select', placeholder: 'Select subjects you can teach' },
 ];
 
 const bioAndExperienceFields = [
@@ -139,7 +136,6 @@ export default function EditInformationComponent({
     tutoringExperience: userData?.goals || '',
     teachingModality: userData?.modality || '',
     daysOfAvailability: userData?.availability || [] as string[],
-    proficiencyLevel: '',
     teachingStyle: userData?.style || [] as string[],
     preferredSessionDuration: userData?.sessionDur || '',
   });
@@ -177,10 +173,9 @@ export default function EditInformationComponent({
       profile: {
         'Teaching Modality': userData?.modality,
         'Days of Availability': userData?.availability?.join(', '),
-        'Proficiency Level': '',
         'Teaching Style': userData?.style?.join(', ') || '',
         'Preferred Session Duration': userData?.sessionDur,
-        'Course Offered': userData?.subjects?.join(', '),
+        'Specialization': userData?.subjects?.join(', '),
         'Short Bio': userData?.bio,
         'Tutoring Experience': userData?.goals,
       },
@@ -196,177 +191,43 @@ export default function EditInformationComponent({
       case 'Bachelor of Science in Information Technology (BSIT)':
         setAvailableSubjects({
           coreSubjects: [
-            'Application Development and Emerging Technologies',
+            'Web and Mobile Application Development',
+            'Network Administration and Security Management',
+            'Data Science and Software Design',
+            'Service Management for Business Process Outsourcing',
             'Business Analytics',
-            'Computer Programming 1',
-            'Computer Programming 2',
-            'Data Structures and Algorithms',
-            'Digital Design with Multimedia Systems',
-            'Discrete Structures 1',
-            'Event Driven Programming',
-            'Fundamentals of Database Systems',
-            'Information Assurance and Security 1',
-            'Information Assurance and Security 2',
-            'Information Management 1',
-            'Integrative Programming and Technologies',
-            'Introduction to Computing',
-            'Introduction to Human-Computer Interaction',
-            'IT Elective 1',
-            'IT Elective 2',
-            'IT Elective 3',
-            'IT Elective 4',
-            'IT Elective 5',
-            'IT Research Methods',
-            'IT Seminars and Educational Trips',
-            'Networking 1',
-            'Networking 2',
-            'Object-Oriented Programming',
-            'PC Troubleshooting with Basic Electronics',
-            'Platform Technologies',
-            'Quantitative Methods (Inc. Modelling & Simulation)',
-            'Social Issues and Professional Practice in Computing',
-            'System Administration and Maintenance',
-            'Systems Integration and Architecture 1',
+            'Cloud Computing'
           ],
-          gecSubjects: [
-            'Art Appreciation',
-            'Ethics',
-            'Mathematics in the Modern World',
-            'People and Earth\'s Ecosystem',
-            'Purposive Communication',
-            'Reading Visual Arts',
-            'Readings in Philippine History with Indigenous People Studies',
-            'Science, Technology and Society',
-            'The Contemporary World with Peace Studies',
-            'The Entrepreneurial Mind',
-            'The Life and Works of Rizal',
-            'Understanding the Self',
-          ],
-          peNstpSubjects: [
-            'National Service Training Program with Anti-Smoking and Environmental Education',
-            'National Service Training Program with GAD and Peace Education',
-            'Physical Activities Toward Health and Fitness 1 (PATHFit 1): Movement Competency',
-            'Physical Activities Toward Health and Fitness 2 (PATHFit 2): Exercise-Based Fitness Activities',
-            'Physical Activities Toward Health and Fitness 3 (PATHFit 3)',
-            'Physical Activities Toward Health and Fitness 4 (PATHFit 4)',
-          ],
+          gecSubjects: [],
+          peNstpSubjects: []
         });
         break;
 
       case 'Bachelor of Science in Computer Science (BSCS)':
         setAvailableSubjects({
           coreSubjects: [
-            'Computer Programming 1',
-            'Computer Programming 2',
-            'Introduction to Computing',
-            'PC Troubleshooting with Basic Electronics',
-            'Data Structures and Algorithms',
-            'Algorithms and Complexity 1',
-            'Software Engineering 1',
-            'Software Engineering 2',
-            'Operating Systems',
-            'Object-Oriented Programming',
-            'Information Management 1',
-            'Discrete Structures 1',
-            'Discrete Structures 2',
-            'Principles of Statistics and Probability',
-            'Graphics and Visual Computing',
-            'Automata Theory',
-            'Intelligent Systems',
-            'Programming Languages',
-            'Parallel and Distributed Computing',
-            'Architecture and Organization',
-            'Information Assurance and Security',
-            'CS Thesis Writing 1',
-            'CS Thesis Writing 2',
-            'CS Elective 1',
-            'CS Elective 2',
-            'CS Elective 3',
-            'CS Elective 4',
-            'CS Elective 5',
-            'CS Seminars and Educational Trips',
+            'Software Engineering',
+            'Artificial Intelligence and Machine Learning',
+            'Data Science',
+            'Cloud Computing',
+            'Cybersecurity'
           ],
-          gecSubjects: [
-            'Art Appreciation',
-            'Ethics',
-            'Mathematics in the Modern World',
-            'People and Earth\'s Ecosystem',
-            'Purposive Communication',
-            'Reading Visual Arts',
-            'Readings in Philippine History with Indigenous People Studies',
-            'Science, Technology and Society',
-            'The Contemporary World with Peace Studies',
-            'The Entrepreneurial Mind',
-            'The Life and Works of Rizal',
-            'Understanding the Self',
-          ],
-          peNstpSubjects: [
-            'National Service Training Program 1',
-            'National Service Training Program 2',
-            'Physical Activities Toward Health and Fitness 1 (PATHFit 1): Movement Competency',
-            'Physical Activities Toward Health and Fitness 2 (PATHFit 2): Exercise-Based Fitness Activities',
-            'Physical Activities Toward Health and Fitness 3 (PATHFit 3)',
-            'Physical Activities Toward Health and Fitness 4 (PATHFit 4)',
-          ],
+          gecSubjects: [],
+          peNstpSubjects: []
         });
         break;
 
       case 'Bachelor of Science in Entertainment and Multimedia Computing (BSEMC)':
         setAvailableSubjects({
           coreSubjects: [
-            'Introduction to EM Computing',
-            'Computer Programming 1',
-            'PC Troubleshooting with Basic Electronics',
-            'Computer Programming 2',
-            'Usability, HCI, UI Design',
-            'Free Hand and Digital Drawing',
-            'Data Structures and Algorithms',
-            'Information Management 1',
-            'Introduction to Game Design and Development',
-            'Computer Graphics Programming',
-            'Image and Video Processing',
-            'Script Writing and Storyboard Design',
-            'Applications Development and Emerging Technologies',
-            'Principles of 2D Animation',
-            'Audio Design and Sound Engineering Modelling and Rigging',
-            'Texture and Mapping',
-            'Social Issues and Professional Practice in Computing',
-            'Lighting and Effects',
-            'Principles of 3D Animation',
-            'Design and Production Process',
-            'Advanced Sound Production',
-            'Advanced 2D Animation',
-            'EMC Professional Elective 1',
-            'Research Methods',
-            'Advanced 3D Animation and Scripting',
-            'Compositing and Rendering',
-            'EMC Professional Elective 2',
-            'Animation Design and Production',
-            'EMC Professional Elective 3',
-            'Computing Seminars and Educational Trips',
+            'Game Development',
+            'Digital Animation Technology',
+            'Interactive Media and Web Development',
+            'Virtual Reality and Augmented Reality',
+            'Multimedia Design'
           ],
-          gecSubjects: [
-            'Art Appreciation',
-            'Ethics',
-            'Mathematics in the Modern World',
-            'People and Earth\'s Ecosystem',
-            'Purposive Communication',
-            'Reading Visual Arts',
-            'Readings in Philippine History with Indigenous People Studies',
-            'Science, Technology and Society',
-            'The Contemporary World with Peace Studies',
-            'The Entrepreneurial Mind',
-            'The Life and Works of Rizal',
-            'Understanding the Self',
-          ],
-          peNstpSubjects: [
-            'National Service Training Program with Anti-Smoking and Environmental Education',
-            'National Service Training Program with GAD and Peace Education',
-            'Physical Activities Toward Health and Fitness 1 (PATHFit 1): Movement Competency',
-            'Physical Activities Toward Health and Fitness 2 (PATHFit 2): Exercise-Based Fitness Activities',
-            'Physical Activities Toward Health and Fitness 3 (PATHFit 3)',
-            'Physical Activities Toward Health and Fitness 4 (PATHFit 4)',
-          ],
+          gecSubjects: [],
+          peNstpSubjects: []
         });
         break;
 
@@ -599,9 +460,6 @@ export default function EditInformationComponent({
       if (profileData.courseOffered.length && JSON.stringify(profileData.courseOffered) !== JSON.stringify(userData?.subjects)) {
         payload.subjects = profileData.courseOffered;
       }
-      if (profileData.proficiencyLevel && profileData.proficiencyLevel !== '') {
-        payload.proficiency = profileData.proficiencyLevel.toLowerCase();
-      }
       if (profileData.teachingModality && profileData.teachingModality !== userData?.modality) {
         payload.modality = profileData.teachingModality.toLowerCase();
       }
@@ -723,7 +581,6 @@ export default function EditInformationComponent({
       daysOfAvailability: userData?.availability || [],
       teachingStyle: userData?.style || [],
       teachingModality: userData?.modality || '',
-      proficiencyLevel: '',
       preferredSessionDuration: userData?.sessionDur || '',
       shortBio: userData?.bio || '',
       tutoringExperience: userData?.goals || '',
@@ -1008,7 +865,7 @@ export default function EditInformationComponent({
                     <div key={index} className={styles.inputFields}>
                       <label className={styles.label}>{item.field}</label>
 
-                      {item.type === 'select' && item.field !== 'Course Offered' ? (
+                      {item.type === 'select' && item.field !== 'Specialization' ? (
                         <div className={styles.customDropdown}>
                           <div
                             ref={el => { inputRefs.current[globalIndex] = el as HTMLDivElement | null; }}
@@ -1046,7 +903,7 @@ export default function EditInformationComponent({
                             </div>
                           )}
                         </div>
-                      ) : item.field === 'Course Offered' ? (
+                      ) : item.field === 'Specialization' ? (
                         <div className={styles.customDropdown}>
                           <div
                             ref={el => { inputRefs.current[globalIndex] = el as HTMLDivElement | null; }}
@@ -1068,7 +925,7 @@ export default function EditInformationComponent({
                             <div className={`${styles.dropdownOptions} ${styles.checkboxOptions}`}>
                               {availableSubjects.coreSubjects.length > 0 && (
                                 <div className={styles.categorySection}>
-                                  <h4 className={styles.categoryH4}>Core Subjects</h4>
+                                  <h4 className={styles.categoryH4}>Specializations</h4>
                                   {availableSubjects.coreSubjects.map((option, i) => (
                                     <div key={`core-${i}`} className={styles.checkboxOption}>
                                       <input
@@ -1080,42 +937,6 @@ export default function EditInformationComponent({
                                         onChange={() => handleCourseOfferedChange(option)}
                                       />
                                       <label htmlFor={`core-${i}`} className={styles.checkboxLabel}>{option}</label>
-                                    </div>
-                                  ))}
-                                </div>
-                              )}
-                              {availableSubjects.gecSubjects.length > 0 && (
-                                <div className={styles.categorySection}>
-                                  <h4 className={styles.categoryH4}>GEC Subjects</h4>
-                                  {availableSubjects.gecSubjects.map((option, i) => (
-                                    <div key={`gec-${i}`} className={styles.checkboxOption}>
-                                      <input
-                                        type="checkbox"
-                                        id={`gec-${i}`}
-                                        className={styles.checkboxInput}
-                                        value={option}
-                                        checked={profileData.courseOffered.includes(option)}
-                                        onChange={() => handleCourseOfferedChange(option)}
-                                      />
-                                      <label htmlFor={`gec-${i}`} className={styles.checkboxLabel}>{option}</label>
-                                    </div>
-                                  ))}
-                                </div>
-                              )}
-                              {availableSubjects.peNstpSubjects.length > 0 && (
-                                <div className={styles.categorySection}>
-                                  <h4 className={styles.categoryH4}>NSTP & PE Subjects</h4>
-                                  {availableSubjects.peNstpSubjects.map((option, i) => (
-                                    <div key={`pe-${i}`} className={styles.checkboxOption}>
-                                      <input
-                                        type="checkbox"
-                                        id={`pe-${i}`}
-                                        className={styles.checkboxInput}
-                                        value={option}
-                                        checked={profileData.courseOffered.includes(option)}
-                                        onChange={() => handleCourseOfferedChange(option)}
-                                      />
-                                      <label htmlFor={`pe-${i}`} className={styles.checkboxLabel}>{option}</label>
                                     </div>
                                   ))}
                                 </div>

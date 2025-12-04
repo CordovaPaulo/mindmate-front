@@ -32,8 +32,7 @@
   gap:0.75rem;
   order:-3;
 }
-.header-icon {
-}
+
 .filter-buttons {
   order:-1;
   display:flex;
@@ -609,8 +608,8 @@
   border-bottom-left-radius:12px;
   border-bottom-right-radius:12px;
   z-index:20;
-  backdrop-filter:blur(8px);
   -webkit-backdrop-filter: blur(8px);
+  backdrop-filter:blur(8px);
   background-color:rgba(249,250,251,0.95);
 }
 .footer-btn {

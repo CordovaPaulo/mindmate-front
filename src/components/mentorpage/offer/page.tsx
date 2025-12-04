@@ -25,6 +25,7 @@ export interface OfferInfo {
   availability: MaybeStrArr;
   profilePic: string;
   subjects: MaybeStrArr;
+  rank?: string;
 }
 
 interface OfferProps {
@@ -36,6 +37,72 @@ interface OfferProps {
 
 export default function Offer({ info, mentorId, onClose, onConfirm }: OfferProps) {
   const subjectOptions = useMemo(() => toArray(info.subjects), [info.subjects]);
+  const [relatedSubjectOptions, setRelatedSubjectOptions] = useState<string[]>([]);
+
+  useEffect(() => {
+    const fetchRelated = async () => {
+      try {
+        const specs = toArray(info.subjects);
+        if (!specs || specs.length === 0) return;
+        const res = await api.get('/api/mentor/subjects', {
+          params: { specializations: JSON.stringify(specs) },
+          withCredentials: true,
+          // headers: { ...(token ? { Authorization: `Bearer ${token}` } : {}) }
+        });
+
+        const subjects = res.data?.subjects || [];
+        const seen = new Set<string>();
+        const options: string[] = [];
+
+        // Normalize rank and determine which difficulty tiers to show.
+        // Mapping: empty rank -> show all; Beginner -> beginner only; Intermediate -> beginner+intermediate; Advanced/Expert/Professional -> all tiers
+        const r = (info.rank || '').toLowerCase();
+        const isBeginner = r.includes('beginner');
+        const isIntermediate = r.includes('intermediate');
+        const isAdvanced = r.includes('advanced') || r.includes('expert') || r.includes('professional');
+
+        const showBeginner = r === '' || isBeginner || isIntermediate || isAdvanced;
+        const showIntermediate = r === '' || isIntermediate || isAdvanced;
+        const showAdvanced = r === '' || isAdvanced;
+
+        subjects.forEach((doc: any) => {
+          const spec = doc.specialization || '';
+          const difficulty = doc.difficulty || {};
+          if (showBeginner && Array.isArray(difficulty.beginner)) {
+            difficulty.beginner.forEach((topic: string) => {
+              const label = spec ? `${spec} — ${topic}` : topic;
+              if (!seen.has(label)) { seen.add(label); options.push(label); }
+            });
+          }
+          if (showIntermediate && Array.isArray(difficulty.intermediate)) {
+            difficulty.intermediate.forEach((topic: string) => {
+              const label = spec ? `${spec} — ${topic}` : topic;
+              if (!seen.has(label)) { seen.add(label); options.push(label); }
+            });
+          }
+          if (showAdvanced && Array.isArray(difficulty.advanced)) {
+            difficulty.advanced.forEach((topic: string) => {
+              const label = spec ? `${spec} — ${topic}` : topic;
+              if (!seen.has(label)) { seen.add(label); options.push(label); }
+            });
+          }
+        });
+
+        setRelatedSubjectOptions(options);
+      } catch (err: any) {
+        // If unauthorized, quietly fallback to legacy subject list
+        const status = err?.response?.status;
+        if (status === 403 || status === 401) {
+          console.debug('No permission to fetch related subjects (status', status, '). Falling back to provided subjects.');
+          setRelatedSubjectOptions([]);
+          return;
+        }
+        console.error('Error fetching related subjects for offer:', err);
+      }
+    };
+
+    fetchRelated();
+  }, [info.subjects, info.rank]);
   const availDays = useMemo(() => toArray(info.availability).map(d => d.toLowerCase()), [info.availability]);
 
   const [selectedDate, setSelectedDate] = useState('');
@@ -334,17 +401,19 @@ export default function Offer({ info, mentorId, onClose, onConfirm }: OfferProps
           </div>
 
           <div className={styles.offerSubjectSelect}>
-            <h3 className={styles.offerSubjectHeader}>Select Subject</h3>
+            <h3 className={styles.offerSubjectHeader}>Select Specialization</h3>
             <select value={selectedSubject} onChange={(e) => setSelectedSubject(e.target.value)}
               className={styles.offerSubjectDropdown} required>
-              <option value="" disabled>Choose a subject</option>
-              {subjectOptions.map((s) => (<option key={s} value={s}>{s}</option>))}
+              <option value="" disabled>Choose a specialization</option>
+              {(relatedSubjectOptions.length > 0 ? relatedSubjectOptions : subjectOptions).map((s) => (
+                <option key={s} value={s}>{s}</option>
+              ))}
             </select>
           </div>
 
-          <div className={styles.offerNotes}>
+          {/* <div className={styles.offerNotes}>
             <textarea placeholder="Notes or message (optional)" value={notes} onChange={(e)=>setNotes(e.target.value)} />
-          </div>
+          </div> */}
         </div>
       </div>
 

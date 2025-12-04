@@ -439,7 +439,7 @@ export default function SessionAnalyticsComponent({
           <div className={styles.chartHeader}>
             <div className={styles.chartTitle}>
               <Icons.Book />
-              Top Subjects
+              Top Specialization
             </div>
           </div>
           <div className={styles.subjectsList}>
@@ -458,7 +458,7 @@ export default function SessionAnalyticsComponent({
               ))
             ) : (
               <div className={styles.noData}>
-                No subject data available
+                No Specialization data available
               </div>
             )}
           </div>
@@ -587,7 +587,7 @@ export default function SessionAnalyticsComponent({
                   className={styles.sortableHeader}
                 >
                   <div className={styles.headerContent}>
-                    SUBJECT {getSortArrow('subject')}
+                    SPECIALIZATION {getSortArrow('subject')}
                   </div>
                 </th>
                 <th 

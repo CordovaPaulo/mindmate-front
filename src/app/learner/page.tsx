@@ -6,10 +6,11 @@ import { useRouter } from 'next/navigation';
 import MainComponent from '@/components/learnerpage/main/page';
 import SessionComponent from '@/components/learnerpage/session/page';
 import ReviewsComponent from '@/components/learnerpage/reviews/page';
+import ChallengesComponent from '@/components/learnerpage/challenges/page';
 import EditInformation from '@/components/learnerpage/information/page';
 import LogoutComponent from '@/components/learnerpage/logout/page';
 import CommunityForumComponent from '@/components/learnerpage/community/page';
-import SessionAnalyticsComponent from '@/components/learnerpage/analytics/page'; // Add this import
+import SessionAnalyticsComponent from '@/components/learnerpage/analytics/page';
 import api from "@/lib/axios";
 import { checkAuth } from '@/lib/auth';
 import styles from './learner.module.css';
@@ -34,6 +35,7 @@ interface UserData {
   sessionDur: string;
   bio: string;
   subjects: string[];
+  specializations?: string[];
   image: string;
   phoneNumber: string;
   style: string[];
@@ -120,16 +122,16 @@ interface TransformedMentor {
 }
 
 interface ForumData {
-  id: string; // MongoDB ObjectId as string
+  id: string;
   title: string;
   content: string;
-  author: string; // MongoDB ObjectId as string
+  author: string;
   authorName: string;
   createdAt: string;
   upvotes: number;
   downvotes: number;
-  commentsCount: number; // backend uses commentsCount, not commentCount
-  topics?: string; // backend uses topics, not category
+  commentsCount: number;
+  topics?: string;
   tags?: string[];
   userVote?: 'up' | 'down' | null;
 }
@@ -140,7 +142,6 @@ interface ProgressData {
   progress: number;
 }
 
-// Add this
 interface RankData {
   rank: string;
   progress: number;
@@ -148,7 +149,6 @@ interface RankData {
   sessionsToNextRank: number | null;
 }
 
-// Update the AnalyticsData interface to match the backend response exactly
 interface AnalyticsData {
   totalSessions: number;
   oneOnOneSessions: number;
@@ -167,6 +167,39 @@ interface AnalyticsSchedule {
   type: string;
   location: string;
   status: string;
+}
+
+interface Challenge {
+  _id: string;
+  title: string;
+  description: string;
+  requirements: string[];
+  mentor: string;
+  mentorName: string;
+  specialization: string;
+  skill?: string;
+  difficulty: 'beginner' | 'intermediate' | 'advanced';
+  xpReward: number;
+  isActive: boolean;
+  submissions: Submission[];
+  hasSubmitted?: boolean;
+  submissionStatus?: 'pending' | 'approved' | 'rejected';
+  mySubmission?: Submission;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+interface Submission {
+  _id: string;
+  learner: string;
+  learnerName: string;
+  submittedAt: string;
+  submissionUrl?: string;
+  submissionText?: string;
+  status: 'pending' | 'approved' | 'rejected';
+  feedback?: string;
+  reviewedAt?: string;
+  reviewedBy?: string;
 }
 
 const transformSchedulesForReview = (schedules: any[]): any[] => {
@@ -224,6 +257,7 @@ export default function LearnerPage() {
     sessionDur: "",
     bio: "",
     subjects: [],
+    specializations: [],
     image: "",
     phoneNumber: "",
     style: [],
@@ -234,6 +268,9 @@ export default function LearnerPage() {
     createdAt: "",
     __v: 0
   });
+
+  // prefer explicit specializations state (derived from profile)
+  const [userSpecializations, setUserSpecializations] = useState<string[]>([]);
   
   const [schedForReview, setSchedForReview] = useState<Schedule[]>([]);
   const [todaySchedule, setTodaySchedule] = useState<Schedule[]>([]);
@@ -246,7 +283,8 @@ export default function LearnerPage() {
   const [transformedMentors, setTransformedMentors] = useState<TransformedMentor[]>([]);
   const [schedules, setSchedules] = useState<Schedule[]>([]);
   const [forumData, setForumData] = useState<ForumData[]>([]);
-  const [analyticsData, setAnalyticsData] = useState<AnalyticsData | null>(null); // Add analytics data state
+  const [analyticsData, setAnalyticsData] = useState<AnalyticsData | null>(null);
+  const [challenges, setChallenges] = useState<Challenge[]>([]);
   const [isLoadingMentors, setIsLoadingMentors] = useState(false);
   const [isLoadingSchedules, setIsLoadingSchedules] = useState(false);
   
@@ -265,23 +303,22 @@ export default function LearnerPage() {
   const [isTopbarFocused, setIsTopbarFocused] = useState(false);
   const topbarRef = useRef<HTMLDivElement>(null);
 
-  // Progress Data State - Simplified to just session attendance
   const [progressData, setProgressData] = useState<ProgressData>({
     sessionsAttended: 0,
     totalSessions: 0,
     progress: 0
   });
 
-  // Add this state
   const [rankData, setRankData] = useState<RankData | null>(null);
 
-  // Update topbarItems to include Analytics
+  // Update topbarItems to include Challenges
   const topbarItems = [
     { key: 'main', label: 'Mentors', icon: '/main.svg' },
     { key: 'session', label: 'Schedules', icon: '/calendar.svg' },
     { key: 'records', label: 'Reviews', icon: '/records.svg' },
+    { key: 'challenges', label: 'Challenges', icon: '/challenges.svg' },
     { key: 'community', label: 'Community', icon: '/community.svg' },
-    { key: 'analytics', label: 'Analytics', icon: '/analytics.svg' } // Add Analytics
+    { key: 'analytics', label: 'Analytics', icon: '/analytics.svg' }
   ];
 
   // Authentication guard - check if user is logged in and has learner role
@@ -328,18 +365,12 @@ export default function LearnerPage() {
 
     Pusher.logToConsole = true;
 
-    // Use a custom authorizer so the browser will include httpOnly cookies
-    // (credentials: 'include') when calling the auth endpoint. This avoids
-    // reading httpOnly cookies from JavaScript (not allowed) and ensures the
-    // backend `authenticateToken()` middleware can read the cookie.
     const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
     const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY!, {
       cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER!,
       authorizer: (channel, options) => ({
         authorize: (socketId, callback) => {
           const body = `socket_id=${encodeURIComponent(socketId)}&channel_name=${encodeURIComponent(channel.name)}`;
-          // Call the backend auth endpoint directly so the browser will send
-          // the httpOnly cookie that was set by the backend (same host).
           api.post(`${backendUrl}/api/pusher/pusher/auth`, body, {
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
           })
@@ -396,7 +427,6 @@ export default function LearnerPage() {
     };
   }, [userData.userId]);
 
-  // Update progress based on completed sessions
   useEffect(() => {
     const updateProgress = () => {
       const sessionsAttended = schedForReview.filter(session => session.has_feedback).length;
@@ -429,7 +459,6 @@ export default function LearnerPage() {
     }
   };
 
-  // Add fetchAnalyticsData function
   const fetchAnalyticsData = async () => {
     try {
       console.log("Fetching analytics data...");
@@ -440,13 +469,34 @@ export default function LearnerPage() {
       
       console.log("Analytics API Response:", res.data);
       if (res.data?.data) {
-        // Mount the data exactly as received from backend
         setAnalyticsData(res.data.data);
       }
       
     } catch (error) {
       console.error('Error fetching analytics data:', error);
       toast.error('Error fetching analytics data');
+    }
+  };
+
+  const fetchChallenges = async () => {
+    try {
+      console.log("Fetching challenges...");
+      const res = await api.get('/api/challenge/all/challenges', {
+        timeout: 50000,
+        withCredentials: true,
+      });
+      
+      console.log("Challenges API Response:", res.data);
+      if (res.data?.challenges && Array.isArray(res.data.challenges)) {
+        setChallenges(res.data.challenges);
+      } else {
+        setChallenges([]);
+      }
+      
+    } catch (error) {
+      console.error('Error fetching challenges:', error);
+      toast.error('Error fetching challenges');
+      setChallenges([]);
     }
   };
 
@@ -566,7 +616,6 @@ export default function LearnerPage() {
       if (res.status === 200) {
         const newRole = res.data?.newRole;
         toast.success(`Role switched to ${newRole}. Please log in again.`);
-        // httpOnly cookie is cleared by backend logout endpoint
         localStorage.removeItem('auth_token');
         router.replace('/auth/login');
       } else {
@@ -636,19 +685,19 @@ export default function LearnerPage() {
     setIsLoading(true);
     try {
       console.log("Starting fetchUserData...");
-      // const token = getCookie('MindMateToken');
-      // console.log("Token:", token ? "Found" : "Not found");
       
       const res = await api.get('/api/learner/profile', {
         withCredentials: true,
       });
       
       setUserData(res.data.userData);
+      // derive specializations (backward-compatible with older 'subjects' field)
+      const specs = res.data.userData?.specialization || res.data.userData?.specializations || res.data.userData?.subjects || [];
+      setUserSpecializations(Array.isArray(specs) ? specs : (typeof specs === 'string' ? JSON.parse(specs) : []));
       setRoleData({
         role: res.data.roleData.role,
         altRole: res.data.roleData.altRole
       });
-      // Mount rank data from payload
       setRankData(res.data.rankData || null);
       console.log(res.data);
       
@@ -663,7 +712,6 @@ export default function LearnerPage() {
     setIsLoadingMentors(true);
     try {
       console.log("Fetching mentors from API...");
-      // const token = getCookie('MindMateToken');
       const res = await api.get('/api/learner/mentors', {
         withCredentials: true,
       });
@@ -684,7 +732,6 @@ export default function LearnerPage() {
   const fetchSchedules = async () => {
     setIsLoadingSchedules(true);
     try {
-      // const token = getCookie('MindMateToken');
       const res = await api.get('/api/learner/schedules', {
         withCredentials: true,
       });
@@ -731,7 +778,8 @@ export default function LearnerPage() {
           fetchMentors(),
           fetchSchedules(),
           fetchForumData(),
-          fetchAnalyticsData() // Add analytics data fetch
+          fetchAnalyticsData(),
+          fetchChallenges()
         ]);
       } catch (error) {
         console.error('Error during initialization:', error);
@@ -753,10 +801,9 @@ export default function LearnerPage() {
     console.log("Current userData state:", userData);
   }, [userData]);
 
-  // Helper for rank progress percentage
   const rankProgressPct = (() => {
     if (!rankData) return 0;
-    if (rankData.requiredSessions == null) return 100; // top rank
+    if (rankData.requiredSessions == null) return 100;
     const req = Math.max(Number(rankData.requiredSessions) || 0, 1);
     const prog = Math.max(Number(rankData.progress) || 0, 0);
     return Math.min(Math.round((prog / req) * 100), 100);
@@ -827,6 +874,15 @@ export default function LearnerPage() {
             data={{ schedForReview: schedForReview }}
           />
         );
+      case 'challenges':
+        return (
+          <ChallengesComponent 
+            userData={userData} 
+            userSpecializations={userSpecializations}
+            challenges={challenges}
+            onChallengesUpdate={fetchChallenges}
+          />
+        );
       case 'community':
         return (
           <CommunityForumComponent 
@@ -835,7 +891,7 @@ export default function LearnerPage() {
             onForumUpdate={fetchForumData}
           />
         );
-      case 'analytics': // Add analytics case
+      case 'analytics':
         return (
           <SessionAnalyticsComponent 
             analyticsData={analyticsData}
@@ -951,9 +1007,9 @@ export default function LearnerPage() {
           </div>
 
           <div className={styles['subject-interest']}>
-            <h1>Subject of Interest</h1>
+            <h1>Specialization</h1>
             <div className={styles['course-grid']}>
-              {userData.subjects?.slice(0, 5).map((subject, index) => (
+              {userSpecializations?.slice(0, 5).map((subject, index) => (
                 <div key={index} className={styles['course-card']}>
                   <div className={styles.lines}>
                     <div>
@@ -962,7 +1018,7 @@ export default function LearnerPage() {
                   </div>
                 </div>
               )) || []}
-              {(userData.subjects?.length || 0) > 5 && (
+              {(userSpecializations?.length || 0) > 5 && (
                 <div
                   className={[
                     styles['course-card'],
@@ -972,7 +1028,7 @@ export default function LearnerPage() {
                 >
                   <div className={styles.lines}>
                     <div>
-                      <p>+{(userData.subjects?.length || 0) - 5}</p>
+                      <p>+{(userSpecializations?.length || 0) - 5}</p>
                     </div>
                   </div>
                 </div>
@@ -986,9 +1042,9 @@ export default function LearnerPage() {
                   onClick={() => setShowAllCourses(false)}
                 />
                 <div className={styles['popup-content']}>
-                  <h3>All Subject of Interest</h3>
+                  <h3>All Specializations</h3>
                   <div className={styles['popup-courses']}>
-                    {userData.subjects?.map((subject, index) => (
+                    {userSpecializations?.map((subject, index) => (
                       <div key={index} className={styles['popup-course']}>
                         {subject}
                       </div>
@@ -1109,9 +1165,7 @@ export default function LearnerPage() {
             onCancel={() => setIsEdit(false)}
             onSave={(updatedData) => {
               console.log('Data saved:', updatedData);
-              // Update the user data with the saved changes
               handleUpdateUserData(updatedData);
-              // Close the modal
               setIsEdit(false);
             }}
             onUpdateUserData={handleUpdateUserData}
@@ -1123,7 +1177,6 @@ export default function LearnerPage() {
         <LogoutComponent onCancel={handleCancelLogout} />
       )}
 
-      {/* Chatbot visible only on learner page */}
       <ChatbotWidget />
     </>
   );

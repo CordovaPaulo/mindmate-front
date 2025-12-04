@@ -71,6 +71,53 @@ export default function Schedule({ info, onClose, onConfirm }: ScheduleProps) {
     }
   }, [mentorSubjects]);
 
+  // fetched related subject options (topics) based on mentor specializations
+  const [relatedSubjectOptions, setRelatedSubjectOptions] = useState<string[]>([]);
+
+  useEffect(() => {
+    const fetchRelatedSubjects = async () => {
+      try {
+        let specs: string[] = [];
+        if (Array.isArray(mentorSubjects)) specs = mentorSubjects as string[];
+        else if (typeof mentorSubjects === 'string') specs = JSON.parse(mentorSubjects) as string[];
+        if (!specs || specs.length === 0) return;
+
+        const token = getCookie('MindMateToken');
+        const res = await api.get('/api/learner/subjects', {
+          params: { specializations: JSON.stringify(specs) },
+          headers: {
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          },
+        });
+
+        const subjects = res.data?.subjects || [];
+        const seen = new Set<string>();
+        const options: string[] = [];
+
+        subjects.forEach((doc: any) => {
+          const spec = doc.specialization || '';
+          const difficulty = doc.difficulty || {};
+          ['beginner', 'intermediate', 'advanced'].forEach((level) => {
+            const arr = difficulty[level] || [];
+            arr.forEach((topic: string) => {
+              const label = spec ? `${spec} — ${topic}` : topic;
+              if (!seen.has(label)) {
+                seen.add(label);
+                options.push(label);
+              }
+            });
+          });
+        });
+
+        setRelatedSubjectOptions(options);
+      } catch (err) {
+        console.error('Error fetching related subjects for schedule:', err);
+      }
+    };
+
+    fetchRelatedSubjects();
+  }, [mentorSubjects]);
+
   const availableDays = useMemo(() => {
     try {
       if (Array.isArray(mentorAvailability)) {
@@ -398,7 +445,9 @@ export default function Schedule({ info, onClose, onConfirm }: ScheduleProps) {
               className={styles.subjectDropdown} required
                 aria-label="Select subject">
               <option value="" disabled>Choose a subject</option>
-              {subjectOptions.map((s, index) => (<option key={`${s}-${index}`} value={s}>{s}</option>))}
+              {(relatedSubjectOptions.length > 0 ? relatedSubjectOptions : subjectOptions).map((s, index) => (
+                <option key={`${s}-${index}`} value={s}>{s}</option>
+              ))}
             </select>
           </div>
         </div>

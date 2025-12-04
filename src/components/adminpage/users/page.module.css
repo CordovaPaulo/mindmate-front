@@ -178,12 +178,7 @@
   font-weight:600;
   color:white;
 }
-.role-badge.mentor {
-  /* kept for reference if needed; module will use separate .mentor class */
-}
-.role-badge.learner {
-  /* kept for reference if needed */
-}
+
 .mentor { background-color:#3b9aa9; }
 .learner { background-color:#4caf50; }
 .secondary-role-badge {
@@ -194,15 +189,7 @@
   font-weight:600;
   color:white;
 }
-.secondary-role-badge.mentor {
-  /* kept for reference */
-}
-.secondary-role-badge.learner {
-  /* kept for reference */
-}
-.secondary-role-badge.na {
-  /* kept for reference */
-}
+
 .na { background-color:#8a8a8f; }
 .credentials-btn {
   display:inline-flex;
@@ -463,8 +450,8 @@
   border-bottom-left-radius:12px;
   border-bottom-right-radius:12px;
   z-index:20;
-  backdrop-filter:blur(8px);
   -webkit-backdrop-filter: blur(8px);
+  backdrop-filter:blur(8px);
   background-color:rgba(249,250,251,0.95);
 }
 .footer-actions {

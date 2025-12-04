@@ -519,7 +519,7 @@ const Users: React.FC<UsersProps> = ({ users, onUpdateUsers }) => {
                             </span>
                           </div>
                           <div className={styles['detail-item']}>
-                            <span className={styles['detail-label']}>Subjects:</span>
+                            <span className={styles['detail-label']}>Specialization:</span>
                             <span className={styles['detail-value']}>
                               {parseArrayString(currentUser.subjects)}
                             </span>
@@ -584,7 +584,7 @@ const Users: React.FC<UsersProps> = ({ users, onUpdateUsers }) => {
                             </span>
                           </div>
                           <div className={styles['detail-item']}>
-                            <span className={styles['detail-label']}>Subject of Interest:</span>
+                            <span className={styles['detail-label']}>Specialization:</span>
                             <span className={styles['detail-value']}>
                               {parseArrayString(currentUser.subjects)}
                             </span>

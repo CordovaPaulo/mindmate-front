@@ -1,0 +1,252 @@
+.presetSchedulesContainer {
+  margin-top: 24px;
+  margin-bottom: 32px;
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.header {
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #f3f4f6;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 8px 0;
+}
+
+.title i {
+  color: #006981;
+  font-size: 1.1rem;
+}
+
+.subtitle {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+.schedulesList {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+}
+
+.schedulesList::-webkit-scrollbar {
+  height: 8px;
+}
+
+.schedulesList::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 4px;
+}
+
+.schedulesList::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.schedulesList::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+.scheduleCard {
+  min-width: 320px;
+  flex-shrink: 0;
+  padding: 16px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.scheduleCard:hover {
+  border-color: #006981;
+  box-shadow: 0 2px 8px rgba(0, 105, 129, 0.1);
+}
+
+.scheduleHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+  gap: 12px;
+}
+
+.scheduleInfo {
+  flex: 1;
+}
+
+.subject {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 8px 0;
+}
+
+.subject i {
+  color: #6366f1;
+  font-size: 0.95rem;
+}
+
+.badges {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.specializationBadge {
+  display: inline-block;
+  padding: 4px 12px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.courseBadge {
+  display: inline-block;
+  padding: 4px 12px;
+  background: #dbeafe;
+  color: #1e40af;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.participantCount {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  color: #4b5563;
+  white-space: nowrap;
+}
+
+.participantCount i {
+  color: #006981;
+  font-size: 0.9rem;
+}
+
+.scheduleDetails {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.detailItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: #4b5563;
+}
+
+.detailItem i {
+  color: #6b7280;
+  font-size: 0.85rem;
+  width: 16px;
+  text-align: center;
+}
+
+.scheduleActions {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 12px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.actionButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.actionButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.joinButton {
+  background: #006981;
+  color: white;
+}
+
+.joinButton:hover:not(:disabled) {
+  background: #005266;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 105, 129, 0.3);
+}
+
+.leaveButton {
+  background: #ef4444;
+  color: white;
+}
+
+.leaveButton:hover:not(:disabled) {
+  background: #dc2626;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+}
+
+.actionButton i {
+  font-size: 0.85rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .presetSchedulesContainer {
+    padding: 16px;
+  }
+
+  .scheduleHeader {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .participantCount {
+    align-self: flex-start;
+  }
+
+  .scheduleDetails {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .scheduleActions {
+    justify-content: stretch;
+  }
+
+  .actionButton {
+    flex: 1;
+    justify-content: center;
+  }
+}

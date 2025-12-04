@@ -5,6 +5,7 @@ import styles from './reviews.module.css';
 import api from '@/lib/axios'; // Make sure you have your axios instance here
 
 interface Reviewer {
+  _id?: string;
   name: string;
   course: string;
   year: string;
@@ -17,6 +18,22 @@ interface Feedback {
   comment: string;
   reviewerId: string;
   reviewer?: Reviewer;
+  specialization?: string;
+  sessionDate?: string | null;
+  evaluation?: {
+    knowledge?: number;
+    pacing?: number;
+    communication?: number;
+    engagement?: number;
+    feedbackQuality?: number;
+    professionalism?: number;
+    resources?: number;
+    accessibility?: number;
+    learningOutcomes?: number;
+    whatHelped?: string;
+    suggestions?: string;
+    categoryAverage?: number;
+  };
 }
 
 interface ReviewsComponentProps {
@@ -36,11 +53,13 @@ export default function ReviewsComponent({ feedbacks = [] }: ReviewsComponentPro
   const [recordView, setRecordView] = useState<Feedback | null>(null);
   const [isFeedback, setIsFeedback] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
 
   const baseURL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
   // Fetch feedbacks and reviewers from API
   const fetchReviewer = async () => {
+    setIsLoading(true);
     try {
       const token = getCookie('MindMateToken');
       // Fetch feedbacks with populated learner data
@@ -52,37 +71,37 @@ export default function ReviewsComponent({ feedbacks = [] }: ReviewsComponentPro
       });
 
       const feedbacksData = feedbackRes.data || [];
+      console.log('Fetched feedbacks with learner info:', feedbacksData);
 
-      // Map feedback data with populated learner information
+      // Map feedback data - learner info is already populated by backend
       const feedbacksWithReviewer = feedbacksData.map((fb: any) => {
-        // Check if learner is populated (object) or just an ID (string)
-        const learnerData = typeof fb.learner === 'object' ? fb.learner : null;
+        console.log('Processing feedback:', fb);
         
         return {
           id: fb._id || fb.id,
           rating: fb.rating,
           comment: fb.comments || fb.comment,
-          reviewerId: learnerData?._id || fb.learner,
-          reviewer: learnerData
-            ? {
-                name: learnerData.name || 'Unknown',
-                course: learnerData.program || 'N/A',
-                year: learnerData.yearLevel || 'N/A',
-                image: learnerData.image || '',
-              }
-            : {
-                name: 'Unknown',
-                course: 'N/A',
-                year: 'N/A',
-                image: '',
-              },
+          reviewerId: fb.learner?._id || fb.learner,
+          evaluation: fb.evaluation || null,
+          reviewer: {
+            _id: fb.learner?._id || fb.learner,
+            name: fb.learnerName || fb.learner?.name || 'Unknown',
+            course: fb.learnerProgram || fb.learner?.program || 'N/A',
+            year: fb.learnerYearLevel || fb.learner?.yearLevel || 'N/A',
+            image: fb.learnerImage || fb.learner?.image || '',
+          },
+          specialization: fb.specialization || 'N/A',
+          sessionDate: fb.sessionDate || null
         };
       });
 
+      console.log('Mapped feedbacks:', feedbacksWithReviewer);
       setRecords(feedbacksWithReviewer);
     } catch (error) {
-      console.error('Error fetching feedbacks or reviewers:', error);
+      console.error('Error fetching feedbacks:', error);
       setRecords([]);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -139,7 +158,7 @@ export default function ReviewsComponent({ feedbacks = [] }: ReviewsComponentPro
           <svg className={styles.reviewsHeaderIcon} viewBox="0 0 24 24" width="24" height="24">
             <path fill="currentColor" d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/>
           </svg>
-          Session Records
+          Session Reviews
         </h2>
 
         <div className={styles.reviewsSearchContainer}>
@@ -149,7 +168,7 @@ export default function ReviewsComponent({ feedbacks = [] }: ReviewsComponentPro
             </svg>
             <input
               type="text"
-              placeholder="Search records..."
+              placeholder="Search reviews..."
               className={styles.reviewsSearchInput}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -159,11 +178,17 @@ export default function ReviewsComponent({ feedbacks = [] }: ReviewsComponentPro
       </div>
 
       <div className={styles.reviewsTableScrollContainer}>
+        {isLoading ? (
+          <div className={styles.reviewsLoadingContainer}>
+            <div className={styles.reviewsLoader}></div>
+            <p className={styles.reviewsLoadingText}>Loading feedbacks...</p>
+          </div>
+        ) : (
         <table className={styles.reviewsDataTable}>
           <thead>
             <tr>
               <th>LEARNER&apos;S NAME</th>
-              <th>COURSE</th>
+              <th>PROGRAM</th>
               <th>YEAR</th>
               <th>RATING</th>
               <th>ACTIONS</th>
@@ -191,15 +216,16 @@ export default function ReviewsComponent({ feedbacks = [] }: ReviewsComponentPro
                 </td>
               </tr>
             ))}
-            {filteredRecords.length === 0 && (
+            {filteredRecords.length === 0 && !isLoading && (
               <tr>
                 <td colSpan={5} className={styles.reviewsNoUsers}>
-                  No records to display
+                  No reviews to display
                 </td>
               </tr>
             )}
           </tbody>
         </table>
+        )}
       </div>
 
       {isFeedback && recordView && (
@@ -238,8 +264,8 @@ export default function ReviewsComponent({ feedbacks = [] }: ReviewsComponentPro
                   <h4>{getReviewerName(recordView.reviewer)}</h4>
                   <div className={styles.reviewsProfileDetails}>
                     <div className={styles.reviewsDetailItem}>
-                      <span className={styles.reviewsLabel}>Course:</span>
-                      <span className={styles.reviewsValue}>{getReviewerCourse(recordView.reviewer)}</span>
+                      <span className={styles.reviewsLabel}>Specialization:</span>
+                      <span className={styles.reviewsValue}>{recordView.specialization || getReviewerCourse(recordView.reviewer)}</span>
                     </div>
                     <div className={styles.reviewsDetailItem}>
                       <span className={styles.reviewsLabel}>Year Level:</span>
@@ -258,11 +284,68 @@ export default function ReviewsComponent({ feedbacks = [] }: ReviewsComponentPro
 
               <div className={styles.reviewsFeedbackSection}>
                 <div className={styles.reviewsFeedbackCard}>
-                  <h5>Feedback</h5>
+                  <h5>Overall Feedback</h5>
                   <div className={styles.reviewsFeedbackContent}>
                     <p>{recordView.comment || "No feedback provided"}</p>
                   </div>
                 </div>
+
+                {/* Display evaluation details if available */}
+                {recordView.evaluation && (
+                  <>
+                    <div className={styles.reviewsFeedbackCard} style={{ marginTop: '1.5rem' }}>
+                      <h5>Detailed Evaluation</h5>
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginTop: '1rem' }}>
+                        {[
+                          { key: 'knowledge', label: 'Knowledge & Clarity' },
+                          { key: 'pacing', label: 'Session Pacing' },
+                          { key: 'communication', label: 'Communication Skills' },
+                          { key: 'engagement', label: 'Engagement & Motivation' },
+                          { key: 'feedbackQuality', label: 'Feedback Quality' },
+                          { key: 'professionalism', label: 'Professionalism' },
+                          { key: 'resources', label: 'Use of Resources' },
+                          { key: 'accessibility', label: 'Accessibility & Inclusivity' },
+                          { key: 'learningOutcomes', label: 'Learning Outcomes' }
+                        ].map(({ key, label }) => {
+                          const value = recordView.evaluation?.[key as keyof typeof recordView.evaluation];
+                          if (typeof value !== 'number') return null;
+                          return (
+                            <div key={key} style={{ padding: '0.75rem', background: 'white', borderRadius: '8px', border: '1px solid #e9ecef' }}>
+                              <div style={{ fontSize: '0.85rem', color: '#6b7280', marginBottom: '0.5rem' }}>{label}</div>
+                              <div style={{ display: 'flex', gap: '0.25rem' }}>
+                                {[1, 2, 3, 4, 5].map((i) => (
+                                  <span key={i} style={{ color: i <= value ? '#ffd700' : '#e0e0e0', fontSize: '1.2rem' }}>★</span>
+                                ))}
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    {(recordView.evaluation.whatHelped || recordView.evaluation.suggestions) && (
+                      <div className={styles.reviewsFeedbackCard} style={{ marginTop: '1.5rem' }}>
+                        <h5>Additional Feedback</h5>
+                        {recordView.evaluation.whatHelped && (
+                          <div style={{ marginBottom: '1rem' }}>
+                            <div style={{ fontSize: '0.9rem', fontWeight: '600', color: '#0b3e8a', marginBottom: '0.5rem' }}>What helped you learn:</div>
+                            <div style={{ padding: '1rem', background: 'white', borderRadius: '8px', borderLeft: '4px solid #4CAF50', fontSize: '0.9rem', color: '#495057' }}>
+                              {recordView.evaluation.whatHelped}
+                            </div>
+                          </div>
+                        )}
+                        {recordView.evaluation.suggestions && (
+                          <div>
+                            <div style={{ fontSize: '0.9rem', fontWeight: '600', color: '#0b3e8a', marginBottom: '0.5rem' }}>Suggestions for improvement:</div>
+                            <div style={{ padding: '1rem', background: 'white', borderRadius: '8px', borderLeft: '4px solid #FF9800', fontSize: '0.9rem', color: '#495057' }}>
+                              {recordView.evaluation.suggestions}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </>
+                )}
               </div>
             </div>
           </div>

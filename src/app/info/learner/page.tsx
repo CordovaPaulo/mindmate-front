@@ -27,17 +27,6 @@ interface ValidationErrors {
   [key: string]: string | undefined;
 }
 
-interface Category {
-  type: string;
-  name: string;
-}
-
-interface AvailableSubjects {
-  coreSubjects: string[];
-  gecSubjects: string[];
-  peNstpSubjects: string[];
-}
-
 // Constants
 const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 const sessionStyles = [
@@ -53,11 +42,6 @@ const programs = [
   'Bachelor of Science in Information Technology (BSIT)',
   'Bachelor of Science in Computer Science (BSCS)',
   'Bachelor of Science in Entertainment and Multimedia Computing (BSEMC)'
-];
-const categories: Category[] = [
-  { type: 'core', name: 'Core Subjects' },
-  { type: 'gec', name: 'General Education Course' },
-  { type: 'peNstp', name: 'Physical Education & NSTP' }
 ];
 
 const validationRules = {
@@ -119,20 +103,10 @@ const LearnerInfo = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isButtonActive, setIsButtonActive] = useState(false);
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>({});
-  const [showCategories, setShowCategories] = useState(false);
   const [showSubjectsDropdown, setShowSubjectsDropdown] = useState(false);
-  const [currentSubjects, setCurrentSubjects] = useState<string[]>([]);
-  const [selectedSubjectCategory, setSelectedSubjectCategory] = useState('');
-  const [selectedSubjectsCount, setSelectedSubjectsCount] = useState({
-    core: 0,
-    gec: 0,
-    peNstp: 0
-  });
-  const [availableSubjects, setAvailableSubjects] = useState<AvailableSubjects>({
-    coreSubjects: [],
-    gecSubjects: [],
-    peNstpSubjects: []
-  });
+  
+  // Subjects state
+  const [availableSubjects, setAvailableSubjects] = useState<string[]>([]);
 
   // Refs
   const profileInputRef = useRef<HTMLInputElement>(null);
@@ -144,7 +118,6 @@ const LearnerInfo = () => {
     availability: useRef<HTMLDivElement>(null),
     learningStyle: useRef<HTMLDivElement>(null),
     sessionDuration: useRef<HTMLDivElement>(null),
-    subjects: useRef<HTMLDivElement>(null)
   };
   const addressRef = useRef<HTMLInputElement>(null);
   const contactNumberRef = useRef<HTMLInputElement>(null);
@@ -173,10 +146,6 @@ const LearnerInfo = () => {
   useEffect(() => {
     updateAvailableSubjects();
   }, [program]);
-  
-  useEffect(() => {
-    updateSelectedCounts();
-  }, [selectedSubjects]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -194,7 +163,6 @@ const LearnerInfo = () => {
           learningStyle: false,
           sessionDuration: false,
         });
-        setShowCategories(false);
         setShowSubjectsDropdown(false);
       }
     };
@@ -221,14 +189,12 @@ const LearnerInfo = () => {
     });
     
     if (type !== 'availability' && type !== 'learningStyle') {
-      setShowCategories(false);
       setShowSubjectsDropdown(false);
     }
   };
   
   const toggleSubjectDropdown = () => {
-    setShowCategories(!showCategories);
-    setShowSubjectsDropdown(false);
+    setShowSubjectsDropdown(!showSubjectsDropdown);
     
     setDropdownOpen({
       gender: false,
@@ -294,218 +260,41 @@ const LearnerInfo = () => {
   const updateAvailableSubjects = () => {
     switch (program) {
       case 'Bachelor of Science in Information Technology (BSIT)':
-        setAvailableSubjects({
-          coreSubjects: [
-            'Application Development and Emerging Technologies',
-            'Business Analytics',
-            'Computer Programming 1',
-            'Computer Programming 2',
-            'Data Structures and Algorithms',
-            'Digital Design with Multimedia Systems',
-            'Discrete Structures 1',
-            'Event Driven Programming',
-            'Fundamentals of Database Systems',
-            'Information Assurance and Security 1',
-            'Information Assurance and Security 2',
-            'Information Management 1',
-            'Integrative Programming and Technologies',
-            'Introduction to Computing',
-            'Introduction to Human-Computer Interaction',
-            'IT Elective 1',
-            'IT Elective 2',
-            'IT Elective 3',
-            'IT Elective 4',
-            'IT Elective 5',
-            'IT Research Methods',
-            'IT Seminars and Educational Trips',
-            'Networking 1',
-            'Networking 2',
-            'Object-Oriented Programming',
-            'PC Troubleshooting with Basic Electronics',
-            'Platform Technologies',
-            'Quantitative Methods (Inc. Modelling & Simulation)',
-            'Social Issues and Professional Practice in Computing',
-            'System Administration and Maintenance',
-            'Systems Integration and Architecture 1',
-          ],
-          gecSubjects: [
-            'Art Appreciation',
-            'Ethics',
-            'Mathematics in the Modern World',
-            'People and Earth\'s Ecosystem',
-            'Purposive Communication',
-            'Reading Visual Arts',
-            'Readings in Philippine History with Indigenous People Studies',
-            'Science, Technology and Society',
-            'The Contemporary World with Peace Studies',
-            'The Entrepreneurial Mind',
-            'The Life and Works of Rizal',
-            'Understanding the Self',
-          ],
-          peNstpSubjects: [
-            'National Service Training Program with Anti-Smoking and Environmental Education',
-            'National Service Training Program with GAD and Peace Education',
-            'Physical Activities Toward Health and Fitness 1 (PATHFit 1): Movement Competency',
-            'Physical Activities Toward Health and Fitness 2 (PATHFit 2): Exercise-Based Fitness Activities',
-            'Physical Activities Toward Health and Fitness 3 (PATHFit 3)',
-            'Physical Activities Toward Health and Fitness 4 (PATHFit 4)',
-          ]
-        });
+        setAvailableSubjects([
+          'Web and Mobile Application Development',
+          'Network Administration and Security Management',
+          'Data Science and Software Design',
+          'Service Management for Business Process Outsourcing',
+          'Business Analytics',
+          'Cloud Computing'
+        ]);
         break;
 
       case 'Bachelor of Science in Computer Science (BSCS)':
-        setAvailableSubjects({
-          coreSubjects: [
-            'Computer Programming 1',
-            'Computer Programming 2',
-            'Data Structures and Algorithms',
-            'Algorithms and Complexity 1',
-            'Software Engineering 1',
-            'Software Engineering 2',
-            'Operating Systems',
-            'Object-Oriented Programming',
-            'Information Management 1',
-            'Discrete Structures 1',
-            'Discrete Structures 2',
-            'Principles of Statistics and Probability',
-            'Graphics and Visual Computing',
-            'Automata Theory',
-            'Intelligent Systems',
-            'Programming Languages',
-            'Parallel and Distributed Computing',
-            'Architecture and Organization',
-            'Information Assurance and Security',
-            'CS Thesis Writing 1',
-            'CS Thesis Writing 2',
-            'CS Elective 1',
-            'CS Elective 2',
-            'CS Elective 3',
-            'CS Elective 4',
-            'CS Elective 5',
-            'CS Seminars and Educational Trips',
-          ],
-          gecSubjects: [
-            'Introduction to Computing',
-            'PC Troubleshooting with Basic Electronics',
-            'Understanding the SELF',
-            'Readings in Philippine History with Indigenous People Studies',
-            'The Life and Works of Jose Rizal',
-            'People and Earth\'s Ecosystem',
-            'Mathematics in the Modern World',
-            'Science, Technology and Society',
-            'Reading Visual Arts',
-            'Art Appreciation',
-            'Purposive Communication',
-            'Ethics',
-            'The Contemporary World With Peace Studies',
-          ],
-          peNstpSubjects: [
-            'National Service Training Program 1',
-            'National Service Training Program 2',
-            'Physical Activities Toward Health and Fitness 1 (PATHFit 1): Movement Competency',
-            'Physical Activities Toward Health and Fitness 2 (PATHFit 2): Exercise-Based Fitness Activities',
-            'Physical Activities Toward Health and Fitness 3 (PATHFit 3)',
-            'Physical Activities Toward Health and Fitness 4 (PATHFit 4)',
-          ]
-        });
+        setAvailableSubjects([
+          'Software Engineering',
+          'Artificial Intelligence and Machine Learning',
+          'Data Science',
+          'Cloud Computing',
+          'Cybersecurity'
+        ]);
         break;
 
       case 'Bachelor of Science in Entertainment and Multimedia Computing (BSEMC)':
-        setAvailableSubjects({
-          coreSubjects: [
-            'Introduction to EM Computing',
-            'Computer Programming 1',
-            'PC Troubleshooting with Basic Electronics',
-            'Computer Programming 2',
-            'Usability, HCI, UI Design',
-            'Free Hand and Digital Drawing',
-            'Data Structures and Algorithms',
-            'Information Management 1',
-            'Introduction to Game Design and Development',
-            'Computer Graphics Programming',
-            'Image and Video Processing',
-            'Script Writing and Storyboard Design',
-            'Applications Development and Emerging Technologies',
-            'Principles of 2D Animation',
-            'Audio Design and Sound Engineering Modelling and Rigging',
-            'Texture and Mapping',
-            'Social Issues and Professional Practice in Computing',
-            'Lighting and Effects',
-            'Principles of 3D Animation',
-            'Design and Production Process',
-            'Advanced Sound Production',
-            'Advanced 2D Animation',
-            'EMC Professional Elective 1',
-            'Research Methods',
-            'Advanced 3D Animation and Scripting',
-            'Compositing and Rendering',
-            'EMC Professional Elective 2',
-            'Animation Design and Production',
-            'EMC Professional Elective 3',
-            'Computing Seminars and Educational Trips',
-          ],
-          gecSubjects: [
-            'Art Appreciation',
-            'Ethics',
-            'Mathematics in the Modern World',
-            'People and Earth\'s Ecosystem',
-            'Purposive Communication',
-            'Reading Visual Arts',
-            'Readings in Philippine History with Indigenous People Studies',
-            'Science, Technology and Society',
-            'The Contemporary World with Peace Studies',
-            'The Entrepreneurial Mind',
-            'The Life and Works of Rizal',
-            'Understanding the Self',
-          ],
-          peNstpSubjects: [
-            'National Service Training Program with Anti-Smoking and Environmental Education',
-            'National Service Training Program with GAD and Peace Education',
-            'Physical Activities Toward Health and Fitness 1 (PATHFit 1): Movement Competency',
-            'Physical Activities Toward Health and Fitness 2 (PATHFit 2): Exercise-Based Fitness Activities',
-            'Physical Activities Toward Health and Fitness 3 (PATHFit 3)',
-            'Physical Activities Toward Health and Fitness 4 (PATHFit 4)',
-          ]
-        });
+        setAvailableSubjects([
+          'Game Development',
+          'Digital Animation Technology',
+          'Interactive Media and Web Development',
+          'Virtual Reality and Augmented Reality',
+          'Multimedia Design'
+        ]);
         break;
 
       default:
-        setAvailableSubjects({
-          coreSubjects: [],
-          gecSubjects: [],
-          peNstpSubjects: []
-        });
+        setAvailableSubjects([]);
     }
-  };
-  
-  const selectCategory = (category: Category) => {
-    setSelectedSubjectCategory(category.name);
-    setShowCategories(false);
-    showSubjects(category.type);
-    updateSelectedCounts();
-  };
-  
-  const showSubjects = (categoryType: string) => {
-    switch (categoryType) {
-      case 'core':
-        setCurrentSubjects(availableSubjects.coreSubjects);
-        break;
-      case 'gec':
-        setCurrentSubjects(availableSubjects.gecSubjects);
-        break;
-      case 'peNstp':
-        setCurrentSubjects(availableSubjects.peNstpSubjects);
-        break;
-    }
-    setShowSubjectsDropdown(true);
-  };
-  
-  const updateSelectedCounts = () => {
-    setSelectedSubjectsCount({
-      core: selectedSubjects.filter(sub => availableSubjects.coreSubjects.includes(sub)).length,
-      gec: selectedSubjects.filter(sub => availableSubjects.gecSubjects.includes(sub)).length,
-      peNstp: selectedSubjects.filter(sub => availableSubjects.peNstpSubjects.includes(sub)).length
-    });
+    // Clear selected subjects when program changes
+    setSelectedSubjects([]);
   };
 
   // Navigation functions
@@ -670,12 +459,11 @@ const LearnerInfo = () => {
   const handleSubjectsKeyNavigation = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
-      if (!showCategories) {
+      if (!showSubjectsDropdown) {
         toggleSubjectDropdown();
       }
-    } else if (e.key === 'Escape' && (showCategories || showSubjectsDropdown)) {
+    } else if (e.key === 'Escape' && showSubjectsDropdown) {
       e.preventDefault();
-      setShowCategories(false);
       setShowSubjectsDropdown(false);
     }
   };
@@ -1031,7 +819,7 @@ const LearnerInfo = () => {
                 )}
                 {validationErrors.gender && (
                   <span className={styles['validation-message']}>
-                    {validationErrors.gender}
+                  {validationErrors.gender}
                   </span>
                 )}
               </div>
@@ -1222,8 +1010,9 @@ const LearnerInfo = () => {
               </div>
             </div>
 
+            {/* Updated Subjects Dropdown - Direct Checkboxes without Category Selection */}
             <div className={styles['profile-field']}>
-              <label className={`${styles['profile-label']} ${styles.required}`}>SUBJECTS OF INTEREST</label>
+              <label className={`${styles['profile-label']} ${styles.required}`}>SPECIALIZATION</label>
               <div ref={subjectsRef} className={styles['dropdown-wrapper']} tabIndex={0} onKeyDown={handleSubjectsKeyNavigation}>
                 <div className={styles['dropdown-trigger']} onClick={(e) => { e.stopPropagation(); toggleSubjectDropdown(); }}>
                   <input
@@ -1241,35 +1030,10 @@ const LearnerInfo = () => {
                   <i className={`fas fa-chevron-down ${styles['dropdown-icon']}`}></i>
                 </div>
 
-                {showCategories && (
-                  <div className={`${styles['dropdown-menu']} ${styles.categories}`}>
-                    {categories.map(category => (
-                      <div
-                        key={category.type}
-                        className={styles['dropdown-item']}
-                        onClick={() => selectCategory(category)}
-                        tabIndex={0}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter' || e.key === ' ') {
-                            selectCategory(category);
-                          }
-                        }}
-                      >
-                        {category.name}
-                        {selectedSubjectsCount[category.type as keyof typeof selectedSubjectsCount] > 0 && (
-                          <span className={styles['count-badge']}>
-                            {selectedSubjectsCount[category.type as keyof typeof selectedSubjectsCount]}
-                          </span>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                )}
-
                 {showSubjectsDropdown && (
                   <div className={`${styles['dropdown-menu']} ${styles.subjects}`}>
-                    {currentSubjects.length > 0 ? (
-                      currentSubjects.map(subject => (
+                    {availableSubjects.length > 0 ? (
+                      availableSubjects.map(subject => (
                         <div key={subject} className={`${styles['dropdown-item']} ${styles['subject-item']}`}>
                           <input
                             type="checkbox"
@@ -1291,7 +1055,7 @@ const LearnerInfo = () => {
                       ))
                     ) : (
                       <div className={`${styles['dropdown-item']} ${styles['no-subjects']}`}>
-                        No subjects available
+                        {program ? 'No subjects available for selected program' : 'Please select a program first'}
                       </div>
                     )}
                   </div>

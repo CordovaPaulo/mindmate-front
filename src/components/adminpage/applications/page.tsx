@@ -646,7 +646,7 @@ const Applications: React.FC<ApplicationsProps> = ({
                         </span>
                       </div>
                       <div className={styles['detail-item']}>
-                        <span className={styles['detail-label']}>Subjects Offered:</span>
+                        <span className={styles['detail-label']}>Specialization:</span>
                         <span className={styles['detail-value']}>
                           {currentApp.subjects || 'Web Development, Database Management'}
                         </span>

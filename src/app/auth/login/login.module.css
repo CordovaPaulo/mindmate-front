@@ -51,8 +51,8 @@
   background: rgba(6, 102, 120, 0.5);
   padding: 2rem;
   border-radius: 30px;
-  backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
   box-shadow: 0 4px 10px rgba(46, 34, 34, 0.6);
   transition: all 0.3s ease;
 }

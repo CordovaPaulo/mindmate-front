@@ -1,0 +1,700 @@
+/* preset.module.css */
+
+.presetWrapper {
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(26, 79, 159, 0.5);
+  width: 90%;
+  margin: 2rem auto 2rem 2.5rem;
+  padding: 0;
+  height: 37.4rem;
+  max-height: 37.5rem;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.presetContent {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 2rem;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.3) transparent;
+}
+
+.presetContent::-webkit-scrollbar {
+  width: 6px;
+}
+
+.presetContent::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.presetContent::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 3px;
+}
+
+.presetContent::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.presetHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.presetHeaderContent {
+  flex: 1;
+}
+
+.presetTitle {
+  color: #0b2548;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.presetHeaderIcon {
+  font-size: 1.6rem;
+  color: #006981;
+}
+
+.presetSubtitle {
+  color: #666;
+  font-size: 1rem;
+  margin: 0;
+}
+
+.createButton {
+  background: linear-gradient(135deg, #006981, #3b9aa9);
+  color: white;
+  border: none;
+  padding: 0.9rem 1.8rem;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  box-shadow: 0 4px 12px rgba(0, 105, 129, 0.3);
+}
+
+.createButton:hover:not(:disabled) {
+  background: linear-gradient(135deg, #004d5a, #006981);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 105, 129, 0.4);
+}
+
+.createButton:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Analytics Cards */
+.analyticsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.analyticsCard {
+  background: white;
+  border-radius: 15px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e8e8e8;
+  transition: all 0.3s ease;
+}
+
+.analyticsCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.analyticsIcon {
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.analyticsInfo {
+  flex: 1;
+}
+
+.analyticsInfo h3 {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #666;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.analyticsValue {
+  margin: 0.3rem 0 0 0;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #0b2548;
+}
+
+/* Schedules Container */
+.schedulesContainer {
+  min-height: 300px;
+}
+
+.loadingMessage {
+  text-align: center;
+  padding: 3rem;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #666;
+}
+
+.emptyIcon {
+  font-size: 4rem;
+  color: #d0d0d0;
+  margin-bottom: 1.5rem;
+}
+
+.emptyState h3 {
+  color: #0b2548;
+  font-size: 1.5rem;
+  margin: 0 0 0.5rem 0;
+}
+
+.emptyState p {
+  color: #999;
+  font-size: 1rem;
+  margin: 0 0 2rem 0;
+}
+
+.createButtonLarge {
+  background: linear-gradient(135deg, #006981, #3b9aa9);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  box-shadow: 0 4px 12px rgba(0, 105, 129, 0.3);
+}
+
+.createButtonLarge:hover {
+  background: linear-gradient(135deg, #004d5a, #006981);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 105, 129, 0.4);
+}
+
+/* Schedules Grid */
+.schedulesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.scheduleCard {
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.scheduleCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  border-color: #006981;
+}
+
+.scheduleHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.2rem;
+}
+
+.scheduleIcon {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #006981, #3b9aa9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.3rem;
+}
+
+.scheduleActions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.actionButton {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid #e0e0e0;
+  padding: 0.6rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #006981;
+  font-size: 0.9rem;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.actionButton:hover {
+  background: white;
+  transform: scale(1.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.deleteButton {
+  color: #f44336;
+}
+
+.deleteButton:hover {
+  background: rgba(244, 67, 54, 0.1);
+}
+
+.scheduleContent {
+  background: white;
+  border-radius: 12px;
+  padding: 1.2rem;
+}
+
+.scheduleSubject {
+  color: #0b2548;
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  word-wrap: break-word;
+}
+
+.scheduleDetail {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin: 0.8rem 0;
+  color: #555;
+  font-size: 0.95rem;
+}
+
+.detailIcon {
+  color: #006981;
+  font-size: 1rem;
+  width: 20px;
+}
+
+.participantsSection {
+  margin-top: 1.2rem;
+  padding-top: 1rem;
+  border-top: 2px solid #e8e8e8;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.participantsIcon {
+  color: #4CAF50;
+  font-size: 1.1rem;
+}
+
+.participantsCount {
+  color: #0b2548;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+/* Modal Styles */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3000;
+  padding: 1rem;
+  backdrop-filter: blur(4px);
+}
+
+.modal {
+  background: white;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 550px;
+  max-height: 90vh;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+}
+
+.modalHeader {
+  background: linear-gradient(135deg, #006981, #3b9aa9);
+  color: white;
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.modalHeader h3 {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.closeButton {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  font-size: 1.3rem;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.closeButton:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+.modalBody {
+  padding: 2rem;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.formGroup {
+  margin-bottom: 1.5rem;
+}
+
+.formGroup label {
+  display: block;
+  margin-bottom: 0.6rem;
+  color: #0b2548;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.input,
+.select {
+  width: 100%;
+  padding: 0.9rem 1rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.input:focus,
+.select:focus {
+  outline: none;
+  border-color: #006981;
+  box-shadow: 0 0 0 3px rgba(0, 105, 129, 0.1);
+}
+
+.daysGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+  gap: 0.6rem;
+}
+
+.dayButton {
+  padding: 0.8rem 0.4rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  background: white;
+  color: #666;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dayButton:hover {
+  border-color: #006981;
+  background: rgba(0, 105, 129, 0.05);
+}
+
+.dayButtonActive {
+  background: linear-gradient(135deg, #006981, #3b9aa9);
+  color: white;
+  border-color: #006981;
+}
+
+.infoBox {
+  background: #e3f2fd;
+  border-left: 4px solid #2196F3;
+  padding: 1rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  color: #1565C0;
+  font-size: 0.95rem;
+  margin-top: 1.5rem;
+}
+
+.warningBox {
+  background: #fff3cd;
+  border-left: 4px solid #FF9800;
+  padding: 1.2rem;
+  border-radius: 8px;
+}
+
+.warningBox p {
+  margin: 0.5rem 0;
+  color: #333;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.warningText {
+  color: #f44336;
+  font-weight: 600;
+  margin-top: 1rem !important;
+}
+
+.warningTextSmall {
+  color: #666;
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+.modalFooter {
+  padding: 1.5rem;
+  background: #f8f9fa;
+  border-top: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  flex-shrink: 0;
+}
+
+.cancelButton {
+  background: #f5f5f5;
+  color: #666;
+  border: 2px solid #ddd;
+  padding: 0.8rem 1.5rem;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cancelButton:hover {
+  background: #e0e0e0;
+  border-color: #ccc;
+}
+
+.saveButton {
+  background: linear-gradient(135deg, #006981, #3b9aa9);
+  color: white;
+  border: none;
+  padding: 0.8rem 1.8rem;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.saveButton:hover:not(:disabled) {
+  background: linear-gradient(135deg, #004d5a, #006981);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 105, 129, 0.3);
+}
+
+.saveButton:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.deleteButtonLarge {
+  background: #f44336;
+  color: white;
+  border: none;
+  padding: 0.8rem 1.8rem;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.deleteButtonLarge:hover:not(:disabled) {
+  background: #d32f2f;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(244, 67, 54, 0.3);
+}
+
+.deleteButtonLarge:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .presetWrapper {
+    width: 95%;
+    margin: 1.5rem auto 1.5rem 1.5rem;
+    padding: 1.5rem;
+  }
+
+  .presetTitle {
+    font-size: 1.6rem;
+  }
+
+  .analyticsGrid {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.2rem;
+  }
+
+  .schedulesGrid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .presetWrapper {
+    width: 92%;
+    margin: 1rem auto;
+    padding: 1.2rem;
+  }
+
+  .presetHeader {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .createButton {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .presetTitle {
+    font-size: 1.4rem;
+  }
+
+  .analyticsGrid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .schedulesGrid {
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+  }
+
+  .daysGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .modalFooter {
+    flex-direction: column-reverse;
+    gap: 0.8rem;
+  }
+
+  .cancelButton,
+  .saveButton,
+  .deleteButtonLarge {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .presetWrapper {
+    width: 90%;
+    padding: 1rem;
+  }
+
+  .presetTitle {
+    font-size: 1.2rem;
+  }
+
+  .analyticsCard {
+    padding: 1rem;
+  }
+
+  .analyticsIcon {
+    width: 50px;
+    height: 50px;
+    font-size: 1.2rem;
+  }
+
+  .analyticsValue {
+    font-size: 1.5rem;
+  }
+
+  .scheduleCard {
+    padding: 1.2rem;
+  }
+
+  .scheduleSubject {
+    font-size: 1.1rem;
+  }
+
+  .modal {
+    max-width: 95%;
+  }
+
+  .modalBody {
+    padding: 1.5rem;
+  }
+
+  .daysGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

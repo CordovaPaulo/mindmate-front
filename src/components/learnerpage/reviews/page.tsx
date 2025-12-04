@@ -37,6 +37,20 @@ interface FeedbackFromAPI {
   comments: string;
   createdAt: string;
   updatedAt: string;
+  evaluation?: {
+    knowledge?: number;
+    pacing?: number;
+    communication?: number;
+    engagement?: number;
+    feedbackQuality?: number;
+    professionalism?: number;
+    resources?: number;
+    accessibility?: number;
+    learningOutcomes?: number;
+    whatHelped?: string;
+    suggestions?: string;
+    categoryAverage?: number;
+  };
 }
 
 interface ReviewsComponentProps {
@@ -57,6 +71,21 @@ export default function ReviewsComponent({ schedForReview = [], userData, data }
   const [feedbackText, setFeedbackText] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [existingFeedbacks, setExistingFeedbacks] = useState<FeedbackFromAPI[]>([]);
+  
+  // Evaluation form state
+  const [evaluation, setEvaluation] = useState({
+    knowledge: 0,
+    pacing: 0,
+    communication: 0,
+    engagement: 0,
+    feedbackQuality: 0,
+    professionalism: 0,
+    resources: 0,
+    accessibility: 0,
+    learningOutcomes: 0,
+    whatHelped: '',
+    suggestions: ''
+  });
 
   const baseURL = process.env.NEXT_PUBLIC_API_URL
 
@@ -168,6 +197,38 @@ export default function ReviewsComponent({ schedForReview = [], userData, data }
     setRecordView(record);
     setTempRating(record.rating || 0);
     setFeedbackText(record.comment || '');
+    
+    // Load existing evaluation data if feedback exists, otherwise reset
+    if (record.feedback?.evaluation) {
+      setEvaluation({
+        knowledge: record.feedback.evaluation.knowledge || 0,
+        pacing: record.feedback.evaluation.pacing || 0,
+        communication: record.feedback.evaluation.communication || 0,
+        engagement: record.feedback.evaluation.engagement || 0,
+        feedbackQuality: record.feedback.evaluation.feedbackQuality || 0,
+        professionalism: record.feedback.evaluation.professionalism || 0,
+        resources: record.feedback.evaluation.resources || 0,
+        accessibility: record.feedback.evaluation.accessibility || 0,
+        learningOutcomes: record.feedback.evaluation.learningOutcomes || 0,
+        whatHelped: record.feedback.evaluation.whatHelped || '',
+        suggestions: record.feedback.evaluation.suggestions || ''
+      });
+    } else {
+      // Reset evaluation form for new feedback
+      setEvaluation({
+        knowledge: 0,
+        pacing: 0,
+        communication: 0,
+        engagement: 0,
+        feedbackQuality: 0,
+        professionalism: 0,
+        resources: 0,
+        accessibility: 0,
+        learningOutcomes: 0,
+        whatHelped: '',
+        suggestions: ''
+      });
+    }
   };
 
   const closeFeedback = () => {
@@ -176,15 +237,78 @@ export default function ReviewsComponent({ schedForReview = [], userData, data }
     setTempRating(0);
     setHoverRating(0);
     setFeedbackText('');
+    
+    // Reset evaluation
+    setEvaluation({
+      knowledge: 0,
+      pacing: 0,
+      communication: 0,
+      engagement: 0,
+      feedbackQuality: 0,
+      professionalism: 0,
+      resources: 0,
+      accessibility: 0,
+      learningOutcomes: 0,
+      whatHelped: '',
+      suggestions: ''
+    });
   };
 
   const handleSetRating = (rating: number) => {
     setTempRating(rating);
   };
 
+  // Check if all required fields are filled
+  const isFormComplete = () => {
+    // Check overall rating
+    if (tempRating === 0) return false;
+
+    // Check all evaluation categories
+    const requiredCategories: (keyof typeof evaluation)[] = [
+      'knowledge', 'pacing', 'communication', 'engagement', 
+      'feedbackQuality', 'professionalism', 'resources', 
+      'accessibility', 'learningOutcomes'
+    ];
+    
+    for (const category of requiredCategories) {
+      if (evaluation[category] === 0) return false;
+    }
+
+    // Check text fields
+    if (!evaluation.whatHelped || evaluation.whatHelped.trim() === '') return false;
+    if (!evaluation.suggestions || evaluation.suggestions.trim() === '') return false;
+
+    return true;
+  };
+
   const handleSubmitFeedback = async () => {
     if (tempRating === 0) {
-      alert('Please provide a rating before submitting feedback.');
+      alert('Please provide an overall rating before submitting feedback.');
+      return;
+    }
+
+    // Validate all evaluation categories are filled
+    const requiredCategories = [
+      'knowledge', 'pacing', 'communication', 'engagement', 
+      'feedbackQuality', 'professionalism', 'resources', 
+      'accessibility', 'learningOutcomes'
+    ];
+    
+    for (const category of requiredCategories) {
+      if (evaluation[category as keyof typeof evaluation] === 0) {
+        alert(`Please rate all evaluation categories. Missing: ${category.replace(/([A-Z])/g, ' $1').trim()}`);
+        return;
+      }
+    }
+
+    // Validate text fields are filled
+    if (!evaluation.whatHelped || evaluation.whatHelped.trim() === '') {
+      alert('Please describe what helped you learn.');
+      return;
+    }
+
+    if (!evaluation.suggestions || evaluation.suggestions.trim() === '') {
+      alert('Please provide suggestions for improvement.');
       return;
     }
 
@@ -213,14 +337,16 @@ export default function ReviewsComponent({ schedForReview = [], userData, data }
         mentorId: mentorId,
         scheduleId: scheduleId,
         rating: tempRating,
-        comments: feedbackText
+        comments: feedbackText,
+        evaluation: evaluation
       });
 
       // Use the axios instance which will automatically handle the token
       const response = await api.post(`/api/learner/feedback/${scheduleId}`, {
-        schedule: scheduleId, // Use the schedule ID from the record
+        schedule: scheduleId,
         rating: tempRating,
-        comments: feedbackText
+        comments: feedbackText,
+        evaluation: evaluation
       });
 
       console.log('Feedback submitted successfully:', response.data);
@@ -237,7 +363,6 @@ export default function ReviewsComponent({ schedForReview = [], userData, data }
       await fetchExistingFeedbacks();
       
       closeFeedback();
-      // alert('Feedback submitted successfully!');
       notify.success('Feedback submitted successfully!');
 
     } catch (error: any) {
@@ -321,7 +446,7 @@ export default function ReviewsComponent({ schedForReview = [], userData, data }
           <svg className="header-icon" viewBox="0 0 24 24" width="24" height="24">
             <path fill="currentColor" d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/>
           </svg>
-          Session Records
+          Session Reviews
         </h2>
 
         <div className="search-container">
@@ -331,7 +456,7 @@ export default function ReviewsComponent({ schedForReview = [], userData, data }
             </svg>
             <input
               type="text"
-              placeholder="Search records..."
+              placeholder="Search reviews..."
               className="search-input"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -345,7 +470,7 @@ export default function ReviewsComponent({ schedForReview = [], userData, data }
           <thead>
             <tr>
               <th>MENTOR&apos;S NAME</th>
-              <th>SUBJECT</th>
+              <th>SPECIALIZATION</th>
               <th>DATE</th>
               <th>RATING</th>
               <th>ACTIONS</th>
@@ -376,7 +501,7 @@ export default function ReviewsComponent({ schedForReview = [], userData, data }
             {filteredRecords.length === 0 && (
               <tr>
                 <td colSpan={5} className="no-records">
-                  No records to display
+                  No review to display
                 </td>
               </tr>
             )}
@@ -420,7 +545,7 @@ export default function ReviewsComponent({ schedForReview = [], userData, data }
                   <h4>{getReviewerName(recordView.reviewer)}</h4>
                   <div className="profile-details">
                     <div className="detail-item">
-                      <span className="detail-label">Subject:</span>
+                      <span className="detail-label">Specialization:</span>
                       <span className="detail-value">{recordView.subject || 'N/A'}</span>
                     </div>
                     <div className="detail-item">
@@ -435,51 +560,442 @@ export default function ReviewsComponent({ schedForReview = [], userData, data }
                 </div>
               </div>
 
-              <div className="feedback-section">
-                <div className="feedback-card">
-                  <h5>
-                    <svg viewBox="0 0 24 24" width="16" height="16" style={{ marginRight: '0.5rem' }}>
-                      <path fill="currentColor" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                    </svg>
-                    Rate This Session
-                  </h5>
-                  <div className="rating-stars">
-                    {[1, 2, 3, 4, 5].map((i) => (
-                      <span
-                        key={i}
-                        onClick={() => !hasFeedback(recordView) && handleSetRating(i)}
-                        onMouseEnter={() => !hasFeedback(recordView) && setHoverRating(i)}
-                        onMouseLeave={() => !hasFeedback(recordView) && setHoverRating(0)}
-                        className={`star ${i <= (hoverRating || tempRating) ? 'filled' : ''} ${hasFeedback(recordView) ? 'disabled' : ''}`}
-                      >
-                        ★
-                      </span>
-                    ))}
+              {!hasFeedback(recordView) ? (
+                <div className="feedback-section">
+                  {/* Overall Rating */}
+                  <div className="feedback-card">
+                    <h5>
+                      <svg viewBox="0 0 24 24" width="16" height="16" style={{ marginRight: '0.5rem' }}>
+                        <path fill="currentColor" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                      </svg>
+                      Overall Session Rating
+                    </h5>
+                    <div className="rating-stars">
+                      {[1, 2, 3, 4, 5].map((i) => (
+                        <span
+                          key={i}
+                          onClick={() => handleSetRating(i)}
+                          onMouseEnter={() => setHoverRating(i)}
+                          onMouseLeave={() => setHoverRating(0)}
+                          className={`star ${i <= (hoverRating || tempRating) ? 'filled' : ''}`}
+                        >
+                          ★
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                  {hasFeedback(recordView) && (
+
+                  {/* Evaluation Categories */}
+                  <div className="feedback-card">
+                    <h5 style={{ marginBottom: '1rem' }}>Detailed Evaluation</h5>
+                    <p style={{ fontSize: '0.875rem', color: '#666', marginBottom: '1.5rem' }}>
+                      Please rate each aspect of your mentoring session on a scale of 1-5 stars.
+                    </p>
+                    
+                    <div style={{ display: 'grid', gap: '1.25rem' }}>
+                      {[
+                        { 
+                          key: 'knowledge', 
+                          label: 'Subject Matter Expertise', 
+                          description: 'How well did the mentor demonstrate knowledge and explain concepts clearly?' 
+                        },
+                        { 
+                          key: 'pacing', 
+                          label: 'Session Pacing', 
+                          description: 'Was the session pace appropriate - not too fast or too slow?' 
+                        },
+                        { 
+                          key: 'communication', 
+                          label: 'Communication & Explanation', 
+                          description: 'How effectively did the mentor communicate and explain difficult topics?' 
+                        },
+                        { 
+                          key: 'engagement', 
+                          label: 'Engagement & Interaction', 
+                          description: 'Did the mentor keep you engaged and encourage active participation?' 
+                        },
+                        { 
+                          key: 'feedbackQuality', 
+                          label: 'Quality of Feedback', 
+                          description: 'How helpful and constructive was the feedback you received?' 
+                        },
+                        { 
+                          key: 'professionalism', 
+                          label: 'Professionalism & Respect', 
+                          description: 'Was the mentor professional, respectful, and punctual?' 
+                        },
+                        { 
+                          key: 'resources', 
+                          label: 'Learning Materials & Resources', 
+                          description: 'How effective were the materials, examples, and resources used?' 
+                        },
+                        { 
+                          key: 'accessibility', 
+                          label: 'Approachability & Support', 
+                          description: 'Did you feel comfortable asking questions and seeking help?' 
+                        },
+                        { 
+                          key: 'learningOutcomes', 
+                          label: 'Achievement of Learning Goals', 
+                          description: 'Did you achieve your learning objectives and gain new understanding?' 
+                        }
+                      ].map(({ key, label, description }) => (
+                        <div key={key} style={{ 
+                          padding: '1rem', 
+                          borderRadius: '8px', 
+                          backgroundColor: '#f8f9fa',
+                          border: '1px solid #e9ecef'
+                        }}>
+                          <label style={{ 
+                            display: 'block', 
+                            marginBottom: '0.375rem', 
+                            fontSize: '0.9375rem', 
+                            fontWeight: '600',
+                            color: '#2c3e50'
+                          }}>
+                            {label}
+                          </label>
+                          <p style={{ 
+                            fontSize: '0.8125rem', 
+                            color: '#6c757d', 
+                            marginBottom: '0.625rem',
+                            lineHeight: '1.4'
+                          }}>
+                            {description}
+                          </p>
+                          <div className="rating-stars" style={{ fontSize: '1.5rem' }}>
+                            {[1, 2, 3, 4, 5].map((i) => (
+                              <span
+                                key={i}
+                                onClick={() => setEvaluation(prev => ({ ...prev, [key]: i }))}
+                                className={`star ${i <= (evaluation[key as keyof typeof evaluation] as number) ? 'filled' : ''}`}
+                                style={{ 
+                                  cursor: 'pointer', 
+                                  marginRight: '0.375rem',
+                                  transition: 'transform 0.2s'
+                                }}
+                                onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.2)'}
+                                onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                              >
+                                ★
+                              </span>
+                            ))}
+                            <span style={{ 
+                              marginLeft: '0.5rem', 
+                              fontSize: '0.875rem', 
+                              color: '#495057',
+                              fontWeight: '500'
+                            }}>
+                              {(evaluation[key as keyof typeof evaluation] as number) > 0 
+                                ? `${evaluation[key as keyof typeof evaluation]}/5` 
+                                : 'Not rated'}
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Open-ended Questions */}
+                  <div className="feedback-card">
+                    <h5 style={{ marginBottom: '0.5rem' }}>Written Feedback</h5>
+                    <p style={{ fontSize: '0.875rem', color: '#666', marginBottom: '1.5rem' }}>
+                      Share specific examples and insights to help improve future sessions.
+                    </p>
+                    
+                    <div style={{ marginBottom: '1.5rem' }}>
+                      <label style={{ 
+                        display: 'block', 
+                        marginBottom: '0.625rem', 
+                        fontSize: '0.9375rem', 
+                        fontWeight: '600',
+                        color: '#2c3e50'
+                      }}>
+                        What Helped You Learn Most?
+                      </label>
+                      <p style={{ 
+                        fontSize: '0.8125rem', 
+                        color: '#6c757d', 
+                        marginBottom: '0.625rem',
+                        lineHeight: '1.4'
+                      }}>
+                        Describe specific teaching methods, explanations, examples, or resources that were particularly effective. 
+                        What made the difficult concepts click for you?
+                      </p>
+                      <textarea
+                        value={evaluation.whatHelped}
+                        onChange={(e) => setEvaluation(prev => ({ ...prev, whatHelped: e.target.value }))}
+                        placeholder="Example: The mentor used real-world analogies to explain the algorithm, which made it much easier to understand. The step-by-step breakdown on the whiteboard was particularly helpful..."
+                        className="feedback-input"
+                        rows={4}
+                        style={{ 
+                          width: '100%', 
+                          padding: '0.75rem', 
+                          borderRadius: '8px', 
+                          border: '1px solid #dee2e6',
+                          fontSize: '0.9375rem',
+                          lineHeight: '1.5'
+                        }}
+                      />
+                    </div>
+
+                    <div style={{ marginBottom: '0.5rem' }}>
+                      <label style={{ 
+                        display: 'block', 
+                        marginBottom: '0.625rem', 
+                        fontSize: '0.9375rem', 
+                        fontWeight: '600',
+                        color: '#2c3e50'
+                      }}>
+                        Suggestions for Future Improvement
+                      </label>
+                      <p style={{ 
+                        fontSize: '0.8125rem', 
+                        color: '#6c757d', 
+                        marginBottom: '0.625rem',
+                        lineHeight: '1.4'
+                      }}>
+                        What could make future sessions even better? Be constructive - suggest specific areas for growth, 
+                        additional topics to cover, or different teaching approaches that might help.
+                      </p>
+                      <textarea
+                        value={evaluation.suggestions}
+                        onChange={(e) => setEvaluation(prev => ({ ...prev, suggestions: e.target.value }))}
+                        placeholder="Example: It would be helpful to have more practice problems during the session. Perhaps we could spend a bit more time on error handling. Overall, maybe start with a quick review of previous topics..."
+                        className="feedback-input"
+                        rows={4}
+                        style={{ 
+                          width: '100%', 
+                          padding: '0.75rem', 
+                          borderRadius: '8px', 
+                          border: '1px solid #dee2e6',
+                          fontSize: '0.9375rem',
+                          lineHeight: '1.5'
+                        }}
+                      />
+                    </div>
+                  </div>
+
+                  {/* General Comments */}
+                  <div className="feedback-card">
+                    <h5>
+                      <svg viewBox="0 0 24 24" width="16" height="16" style={{ marginRight: '0.5rem' }}>
+                        <path fill="currentColor" d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>
+                      </svg>
+                      General Comments
+                    </h5>
+                    <textarea
+                      value={feedbackText}
+                      onChange={(e) => setFeedbackText(e.target.value)}
+                      placeholder="Any other comments or feedback you'd like to share..."
+                      className="feedback-input"
+                      rows={4}
+                    />
+                  </div>
+                </div>
+              ) : (
+                <div className="feedback-section">
+                  {/* Overall Rating - View Mode */}
+                  <div className="feedback-card">
+                    <h5>
+                      <svg viewBox="0 0 24 24" width="16" height="16" style={{ marginRight: '0.5rem' }}>
+                        <path fill="currentColor" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                      </svg>
+                      Overall Session Rating
+                    </h5>
+                    <div className="rating-stars">
+                      {[1, 2, 3, 4, 5].map((i) => (
+                        <span
+                          key={i}
+                          className={`star ${i <= tempRating ? 'filled' : ''} disabled`}
+                        >
+                          ★
+                        </span>
+                      ))}
+                    </div>
                     <div className="current-rating">
                       Your rating: {recordView.rating} stars
                     </div>
-                  )}
-                </div>
+                  </div>
 
-                <div className="feedback-card">
-                  <h5>
-                    <svg viewBox="0 0 24 24" width="16" height="16" style={{ marginRight: '0.5rem' }}>
-                      <path fill="currentColor" d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>
-                    </svg>
-                    Feedback
-                  </h5>
-                  <textarea
-                    value={feedbackText}
-                    onChange={(e) => setFeedbackText(e.target.value)}
-                    placeholder={hasFeedback(recordView) ? '' : 'Enter your feedback here...'}
-                    className="feedback-input"
-                    disabled={hasFeedback(recordView)}
-                    rows={4}
-                  />
+                  {/* Evaluation Categories - View Mode */}
+                  <div className="feedback-card">
+                    <h5 style={{ marginBottom: '1rem' }}>Your Detailed Evaluation</h5>
+                    
+                    <div style={{ display: 'grid', gap: '1rem' }}>
+                      {[
+                        { 
+                          key: 'knowledge', 
+                          label: 'Subject Matter Expertise', 
+                          description: 'Knowledge and explanation clarity' 
+                        },
+                        { 
+                          key: 'pacing', 
+                          label: 'Session Pacing', 
+                          description: 'Appropriateness of session speed' 
+                        },
+                        { 
+                          key: 'communication', 
+                          label: 'Communication & Explanation', 
+                          description: 'Effectiveness in teaching difficult topics' 
+                        },
+                        { 
+                          key: 'engagement', 
+                          label: 'Engagement & Interaction', 
+                          description: 'Student involvement and participation' 
+                        },
+                        { 
+                          key: 'feedbackQuality', 
+                          label: 'Quality of Feedback', 
+                          description: 'Helpfulness and constructiveness' 
+                        },
+                        { 
+                          key: 'professionalism', 
+                          label: 'Professionalism & Respect', 
+                          description: 'Conduct and punctuality' 
+                        },
+                        { 
+                          key: 'resources', 
+                          label: 'Learning Materials & Resources', 
+                          description: 'Effectiveness of materials used' 
+                        },
+                        { 
+                          key: 'accessibility', 
+                          label: 'Approachability & Support', 
+                          description: 'Comfort in asking questions' 
+                        },
+                        { 
+                          key: 'learningOutcomes', 
+                          label: 'Achievement of Learning Goals', 
+                          description: 'Success in meeting objectives' 
+                        }
+                      ].map(({ key, label, description }) => (
+                        <div key={key} style={{ 
+                          padding: '0.875rem', 
+                          borderRadius: '8px', 
+                          backgroundColor: '#f8f9fa',
+                          border: '1px solid #e9ecef'
+                        }}>
+                          <label style={{ 
+                            display: 'block', 
+                            marginBottom: '0.25rem', 
+                            fontSize: '0.9375rem', 
+                            fontWeight: '600',
+                            color: '#2c3e50'
+                          }}>
+                            {label}
+                          </label>
+                          <p style={{ 
+                            fontSize: '0.8125rem', 
+                            color: '#6c757d', 
+                            marginBottom: '0.5rem',
+                            lineHeight: '1.4'
+                          }}>
+                            {description}
+                          </p>
+                          <div className="rating-stars" style={{ fontSize: '1.25rem' }}>
+                            {[1, 2, 3, 4, 5].map((i) => (
+                              <span
+                                key={i}
+                                className={`star ${i <= (evaluation[key as keyof typeof evaluation] as number) ? 'filled' : ''} disabled`}
+                                style={{ marginRight: '0.25rem' }}
+                              >
+                                ★
+                              </span>
+                            ))}
+                            <span style={{ 
+                              marginLeft: '0.5rem', 
+                              fontSize: '0.875rem', 
+                              color: '#495057',
+                              fontWeight: '600'
+                            }}>
+                              {(evaluation[key as keyof typeof evaluation] as number) || 0}/5
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Written Feedback - View Mode */}
+                  <div className="feedback-card">
+                    <h5 style={{ marginBottom: '1rem' }}>Your Written Feedback</h5>
+                    
+                    <div style={{ marginBottom: '1.5rem' }}>
+                      <label style={{ 
+                        display: 'block', 
+                        marginBottom: '0.5rem', 
+                        fontSize: '0.9375rem', 
+                        fontWeight: '600',
+                        color: '#2c3e50'
+                      }}>
+                        What Helped You Learn Most
+                      </label>
+                      <div style={{ 
+                        padding: '0.75rem', 
+                        borderRadius: '8px', 
+                        backgroundColor: '#f8f9fa',
+                        border: '1px solid #dee2e6',
+                        fontSize: '0.9375rem',
+                        lineHeight: '1.6',
+                        color: '#495057',
+                        minHeight: '4rem',
+                        whiteSpace: 'pre-wrap'
+                      }}>
+                        {evaluation.whatHelped || 'No response provided'}
+                      </div>
+                    </div>
+
+                    <div style={{ marginBottom: '1.5rem' }}>
+                      <label style={{ 
+                        display: 'block', 
+                        marginBottom: '0.5rem', 
+                        fontSize: '0.9375rem', 
+                        fontWeight: '600',
+                        color: '#2c3e50'
+                      }}>
+                        Suggestions for Future Improvement
+                      </label>
+                      <div style={{ 
+                        padding: '0.75rem', 
+                        borderRadius: '8px', 
+                        backgroundColor: '#f8f9fa',
+                        border: '1px solid #dee2e6',
+                        fontSize: '0.9375rem',
+                        lineHeight: '1.6',
+                        color: '#495057',
+                        minHeight: '4rem',
+                        whiteSpace: 'pre-wrap'
+                      }}>
+                        {evaluation.suggestions || 'No response provided'}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* General Comments - View Mode */}
+                  <div className="feedback-card">
+                    <h5>
+                      <svg viewBox="0 0 24 24" width="16" height="16" style={{ marginRight: '0.5rem' }}>
+                        <path fill="currentColor" d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>
+                      </svg>
+                      General Comments
+                    </h5>
+                    <div style={{ 
+                      padding: '0.75rem', 
+                      borderRadius: '8px', 
+                      backgroundColor: '#f8f9fa',
+                      border: '1px solid #dee2e6',
+                      fontSize: '0.9375rem',
+                      lineHeight: '1.6',
+                      color: '#495057',
+                      minHeight: '4rem',
+                      whiteSpace: 'pre-wrap'
+                    }}>
+                      {feedbackText || 'No additional comments'}
+                    </div>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
 
             <div className="modal-footer">
@@ -487,13 +1003,13 @@ export default function ReviewsComponent({ schedForReview = [], userData, data }
                 <svg viewBox="0 0 24 24" width="16" height="16" style={{ marginRight: '0.5rem' }}>
                   <path fill="currentColor" d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
                 </svg>
-                Back to Records
+                Back to Reviews
               </button>
               {!hasFeedback(recordView) && (
                 <button
                   onClick={handleSubmitFeedback}
                   className="modal-btn submit"
-                  disabled={tempRating === 0 || isSubmitting}
+                  disabled={!isFormComplete() || isSubmitting}
                 >
                   <svg viewBox="0 0 24 24" width="16" height="16" style={{ marginRight: '0.5rem' }}>
                     <path fill="currentColor" d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>

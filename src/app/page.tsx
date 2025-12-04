@@ -19,7 +19,7 @@ export default function Home() {
   return (
     <div className={styles.homeContainer}>
       <Navbar />
-      <main className={styles.introSection} id="home">
+      <section className={styles.introSection} id="home">
         <div className={styles.introContent}>
           <Image 
             alt="Illustration" 
@@ -34,7 +34,7 @@ export default function Home() {
             <p>A Peer-Assisted Educational Sessions</p>
           </div>
         </div>
-      </main>
+      </section>
 
       <section id="learners" className={`${styles.contentSection} ${styles.learnersSection}`}>
         <div className={`${styles.contentBox} ${styles.learnersContentBox}`}>

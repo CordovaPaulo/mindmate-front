@@ -8,10 +8,10 @@ import { checkAuth } from '@/lib/auth';
 import Dashboard from '@/components/adminpage/dashboard/page';
 import Applications from '@/components/adminpage/applications/page';
 import Users from '@/components/adminpage/users/page'; 
+import ForumMonitoring from '@/components/adminpage/forumMonitoring/page';
 import styles from './admin.module.css';
 import { toast } from 'react-toastify';
 
-// Interfaces
 interface User {
   roleId: any;
   name: any;
@@ -31,7 +31,6 @@ interface Applicant {
   name: any;
   email: any;
   program: any;
-  // applied_on?: any;
   status: any;
 }
 
@@ -50,7 +49,6 @@ interface ChartData {
 const AdminProfile: React.FC = () => {
   const router = useRouter();
 
-  // State declarations
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<string>('dashboard');
   const [isSidebarVisible, setIsSidebarVisible] = useState<boolean>(false);
@@ -71,7 +69,6 @@ const AdminProfile: React.FC = () => {
   const [applicantsList, setApplicantsList] = useState<any[]>([]);
   const [showLogoutModal, setShowLogoutModal] = useState<boolean>(false);
 
-  // Authentication guard - check if user is logged in and has admin role
   useEffect(() => {
     const verifyAuth = async () => {
       try {
@@ -97,16 +94,13 @@ const AdminProfile: React.FC = () => {
     verifyAuth();
   }, [router]);
 
-  // Effects
   useEffect(() => {
     const initializeData = async (): Promise<void> => {
       setIsLoading(true);
       
-      // Check screen size
       checkMobileView();
       window.addEventListener('resize', checkMobileView);
 
-      // Set current date
       setCurrentDate(new Date().toLocaleDateString('en-US', {
         weekday: 'long',
         year: 'numeric',
@@ -114,7 +108,6 @@ const AdminProfile: React.FC = () => {
         day: 'numeric',
       }));
 
-      // Fetch all data
       try {
         await Promise.all([fetchAll(), fetchApplicants(), fetchAdminName()]);
       } catch (error) {
@@ -131,7 +124,6 @@ const AdminProfile: React.FC = () => {
     };
   }, []);
 
-  // Helper functions
   const checkMobileView = () => {
     const mobile = window.innerWidth <= 768;
     setIsMobileView(mobile);
@@ -144,22 +136,7 @@ const AdminProfile: React.FC = () => {
     setIsSidebarVisible(!isSidebarVisible);
   };
 
-  // API functions
-  // // Fetch admin profile
   const fetchAdminName = async (): Promise<void> => {
-  //   try {
-  //     const response = await api.get('/api/admin/profile', {
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         Accept: 'application/json',
-  //       },
-  //     });
-  //     if (response.status === 200) {
-  //       setAdminNameValue(response.data.name || 'Admin');
-  //     }
-  //   } catch (error) {
-  //     console.error('Error fetching admin name:', error);
-  //   }
     try {
       const response = await api.get('/api/admin/profile');
       if (response.status === 200) {
@@ -170,18 +147,15 @@ const AdminProfile: React.FC = () => {
     }
   };
 
-  // Fetch all data
   const fetchAll = async (): Promise<void> => {
     try {
       const statsResponse = await api.get('/api/admin/stats');
       const learnerResponse = await api.get('/api/admin/learners');
       const mentorResponse = await api.get('/api/admin/mentors');
 
-      // Tag source so we can prioritize the primary role
       const learners = (learnerResponse.data || []).map((u: any) => ({ ...u, _profileType: 'learner' }));
       const mentors  = (mentorResponse.data  || []).map((u: any) => ({ ...u, _profileType: 'mentor'  }));
 
-      // Build map of unique users, prioritize record whose profileType matches primary role
       const byUser = new Map<string, any>();
       const pushWithPriority = (u: any) => {
         const key = String(u.userId || u.roleId || u.email);
@@ -195,13 +169,11 @@ const AdminProfile: React.FC = () => {
 
         const existingMatchesPrimary = existing.role === existing._profileType;
 
-        // Replace only if this one matches primary and existing does not
         if (thisMatchesPrimary && !existingMatchesPrimary) {
           byUser.set(key, u);
         }
       };
 
-      // Process all; primary-matching ones can replace tentative ones
       [...learners, ...mentors].forEach(pushWithPriority);
 
       const deduped = Array.from(byUser.values());
@@ -210,8 +182,8 @@ const AdminProfile: React.FC = () => {
         roleId: user.roleId,
         name: user.name,
         email: user.email,
-        role: user.role,             // primary role
-        secondRole: user.secondRole, // secondary (altRole) if provided by backend
+        role: user.role,
+        secondRole: user.secondRole,
         yearLevel: user.yearLevel,
         program: user.program,
         studentId: user.studentId,
@@ -222,14 +194,12 @@ const AdminProfile: React.FC = () => {
 
       setUsersFetch(usersData);
 
-      // Update stats
       setStats({
         activeLearners: statsResponse.data.learnerCount || 0,
         approvedMentors: statsResponse.data.approvedMentorCount || 0,
         pendingMentors: statsResponse.data.pendingMentorCount || 0,
       });
 
-      // Update chart data
       setChartData({
         userCounts: { 
           activeLearners: statsResponse.data.learnerCount,
@@ -250,7 +220,6 @@ const AdminProfile: React.FC = () => {
     }
   };
 
-  // Fetch applicants
   const fetchApplicants = async (): Promise<void> => {
     try {
       const response = await api.get('/api/admin/mentors');
@@ -260,7 +229,6 @@ const AdminProfile: React.FC = () => {
     }
   };
 
-  // Logout handler
   const handleLogout = async (): Promise<void> => {
     try {
       setIsLoading(true);
@@ -276,7 +244,6 @@ const AdminProfile: React.FC = () => {
     }
   };
 
-  // Components
   const LoadingOverlay: React.FC<{ isLoading: boolean }> = ({ isLoading }) => {
     if (!isLoading) return null;
     return (
@@ -286,14 +253,11 @@ const AdminProfile: React.FC = () => {
     );
   };
 
-  // JSX Return
   return (
     <>
       <div className={styles.profilePage}>
-        {/* Loading Overlay */}
         <LoadingOverlay isLoading={isLoading} />
 
-        {/* Mobile Sidebar Toggle Button */}
         {isMobileView && (
           <button
             className={styles.sidebarToggle}
@@ -310,12 +274,10 @@ const AdminProfile: React.FC = () => {
 
         )}
 
-        {/* Overlay to close sidebar on mobile */}
         {isMobileView && isSidebarVisible && (
           <div className={styles.sidebarOverlay} onClick={toggleSidebar}></div>
         )}
 
-        {/* App Header */}
         <header className={`${styles.appHeader} ${isMobileView && !isSidebarVisible ? styles.headerExpanded : ''}`}>
           <div className={styles.profileSection}>
             <div className={styles.avatarContainer}>
@@ -340,9 +302,7 @@ const AdminProfile: React.FC = () => {
           </div>
         </header>
 
-        {/* Main Content */}
         <div className={styles.mainContainer}>
-          {/* Sidebar Navigation */}
           <aside className={`${styles.sidebar} ${isMobileView ? styles.sidebarMobile : ''} ${isSidebarVisible ? styles.sidebarMobileVisible : ''}`}>
             <nav className={styles.appNavigation}>
               <button
@@ -381,8 +341,19 @@ const AdminProfile: React.FC = () => {
                 </svg>
                 Users
               </button>
+              <button
+                className={`${styles.navBtn} ${activeTab === 'forumposts' ? styles.navBtnActive : ''}`}
+                onClick={() => setActiveTab('forumposts')}
+              >
+                <svg className={styles.navIcon} viewBox="0 0 24 24">
+                  <path
+                    fill="currentColor"
+                    d="M21,6V8H3V6H21M3,18H12V16H3V18M3,13H21V11H3V13Z"
+                  />
+                </svg>
+                Forum Posts
+              </button>
 
-              {/* Logout button */}
               <div className={styles.navBottom}>
                 <button 
                   className={`${styles.navBtn} ${styles.logoutBtn}`} 
@@ -400,7 +371,6 @@ const AdminProfile: React.FC = () => {
             </nav>
           </aside>
 
-          {/* Content Area */}
           <main className={`${styles.contentArea} ${isMobileView && !isSidebarVisible ? styles.contentExpanded : ''}`}>
             {activeTab === 'dashboard' && (
               <Dashboard stats={stats} chartData={chartData} />
@@ -417,10 +387,12 @@ const AdminProfile: React.FC = () => {
                 onUpdateUsers={fetchAll}
               />
             )}
+            {activeTab === 'forumposts' && (
+              <ForumMonitoring />
+            )}
           </main>
         </div>
 
-        {/* Logout Modal */}
         {showLogoutModal && (
           <div className={styles.modalOverlay}>
             <div className={styles.modalContent}>

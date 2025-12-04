@@ -11,10 +11,12 @@ import {
   faUser, 
   faClock, 
   faMapMarkerAlt,
-  faVideo
+  faVideo,
+  faCalendarDays
 } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from 'next/navigation';
 import RescheduleDialog from '../RescheduleDialog/page';
+import PresetScheduleComponent from './PresetSchedule';
 import api from '@/lib/axios';
 import notify from '@/lib/toast';
 import styles from './session.module.css';
@@ -67,6 +69,7 @@ function getCookie(name: string) {
 export default function SessionComponent({ schedule = [], upcomingSchedule = [], userData, onScheduleCreated }: SessionComponentProps) {
   const router = useRouter();
   
+  const [activeTab, setActiveTab] = useState<'sessions' | 'presets'>('sessions');
   const [todaySchedule, setTodaySchedule] = useState<SessionItem[]>([]);
   const [upcommingSchedule, setUpcommingSchedule] = useState<SessionItem[]>([]);
   const [selectedSessionID, setSelectedSessionID] = useState<string | null>(null); // keep string|null
@@ -275,16 +278,35 @@ export default function SessionComponent({ schedule = [], upcomingSchedule = [],
 
   return (
     <div className={styles.sessionWrapper}>
-      {/* Header Section */}
+      {/* Header Section with Tabs */}
       <div className={styles.sessionTableHeader}>
         <h2 className={styles.sessionTableTitle}>
           <FontAwesomeIcon icon={faCalendar} className={styles.sessionHeaderIcon} />
-          Session Schedule
+          Schedules Management
         </h2>
       </div>
 
+      {/* Tabs */}
+      <div className={styles.tabsContainer}>
+        <button
+          className={`${styles.tabButton} ${activeTab === 'sessions' ? styles.tabButtonActive : ''}`}
+          onClick={() => setActiveTab('sessions')}
+        >
+          <FontAwesomeIcon icon={faCalendar} />
+          Session Schedules
+        </button>
+        <button
+          className={`${styles.tabButton} ${activeTab === 'presets' ? styles.tabButtonActive : ''}`}
+          onClick={() => setActiveTab('presets')}
+        >
+          <FontAwesomeIcon icon={faCalendarDays} />
+          Preset Schedules
+        </button>
+      </div>
+
       {/* Main Content Section */}
-      <div className={styles.sessionLowerElement}>
+      {activeTab === 'sessions' ? (
+        <div className={styles.sessionLowerElement}>
         <div className={styles.sessionGrid}>
           {/* Today Schedule */}
           <div className={styles.sessionCard}>
@@ -445,6 +467,14 @@ export default function SessionComponent({ schedule = [], upcomingSchedule = [],
           </div>
         </div>
       </div>
+      ) : (
+        <div style={{ padding: '0', marginTop: '-1rem' }}>
+          <PresetScheduleComponent 
+            userData={userData}
+            onUpdate={onScheduleCreated}
+          />
+        </div>
+      )}
 
       {/* Remind Confirmation Modal */}
       {showRemindConfirmation && (

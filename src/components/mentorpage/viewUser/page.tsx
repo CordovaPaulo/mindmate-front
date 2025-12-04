@@ -54,6 +54,16 @@ export default function ViewUser({ userId, mentorData, onClose }: ViewUserProps)
       const learner = payload.learner || payload;         // supports both old and new shapes
       const rankVal = payload.rank?.rank || learner.rank || ''; // new payload: { rank: { rank: '...' } }
 
+      // derive subjects/specializations in a backward-compatible way
+      let parsedSubjects: string[] = [];
+      try {
+        const rawSubjects = learner.specialization || learner.specializations || learner.subjects || [];
+        parsedSubjects = Array.isArray(rawSubjects) ? rawSubjects : (typeof rawSubjects === 'string' ? JSON.parse(rawSubjects) : []);
+      } catch (e) {
+        console.warn('Failed to parse learner subjects/specializations:', e);
+        parsedSubjects = learner.subjects || [];
+      }
+
       setUserInfo({
         name: learner.name || '',
         year: learner.yearLevel || '',
@@ -63,7 +73,7 @@ export default function ViewUser({ userId, mentorData, onClose }: ViewUserProps)
         email: learner.email || '',
         address: learner.address || '',
         bio: learner.bio || '',
-        subjects: learner.subjects || [],
+        subjects: parsedSubjects,
         learn_modality: learner.modality || '',
         learn_sty: learner.style || [],
         availability: learner.availability || [],
@@ -84,7 +94,8 @@ export default function ViewUser({ userId, mentorData, onClose }: ViewUserProps)
         learnStyle: learner.style || [],
         availability: learner.availability || [],
         profilePic: learner.image || '',
-        subjects: learner.subjects || []
+        subjects: parsedSubjects || [],
+        rank: rankVal || ''
       });
     } catch (error) {
       console.error('Error fetching learner details:', error);
@@ -213,7 +224,7 @@ export default function ViewUser({ userId, mentorData, onClose }: ViewUserProps)
                 <hr className={styles.viewDivider2} />
                 <div className={styles.viewDetailsContent}>
                   <div className={styles.viewDetailItem}>
-                    <span className={styles.viewDetailLabel}>Subjects of Interest:</span>
+                    <span className={styles.viewDetailLabel}>Specialization:</span>
                     <span className={`${styles.viewDetailValue} ${styles.viewWrapText}`}>
                       {Array.isArray(userInfo.subjects) ? userInfo.subjects.join(", ") : userInfo.subjects || "N/A"}
                     </span>

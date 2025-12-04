@@ -1,0 +1,1115 @@
+.challengesContainer {
+  padding: 30px 40px 50px;
+  max-width: 1600px;
+  margin: 0 auto;
+  min-height: calc(100vh - 100px);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 30px;
+  gap: 20px;
+}
+
+.headerContent h1 {
+  color: #1e3a8a;
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.headerContent p {
+  color: #666;
+  font-size: 1rem;
+  margin: 0;
+}
+
+.tabs {
+  display: flex;
+  border-bottom: 2px solid #e0e0e0;
+  margin-bottom: 30px;
+  background: white;
+  border-radius: 8px 8px 0 0;
+  padding: 0 4px;
+}
+
+.tab {
+  background: none;
+  border: none;
+  padding: 14px 24px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #666;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 6px 6px 0 0;
+  margin: 0 2px;
+}
+
+.tab:hover {
+  color: #006981;
+  background: #f8f9fa;
+}
+
+.activeTab {
+  color: #006981;
+  font-weight: 600;
+  background: white;
+}
+
+.activeTab::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 8px;
+  right: 8px;
+  height: 3px;
+  background: #006981;
+  border-radius: 2px 2px 0 0;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  gap: 20px;
+  flex-wrap: wrap;
+  padding-bottom: 10px;
+}
+
+.searchBox {
+  flex: 1;
+  min-width: 300px;
+  position: relative;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  color: #666;
+  pointer-events: none;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 12px 12px 12px 40px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: #006981;
+  box-shadow: 0 0 0 3px rgba(0, 105, 129, 0.1);
+}
+
+.filters {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.specializationFilter {
+  min-width: 180px;
+}
+
+.selectWrapper {
+  position: relative;
+  min-width: 150px;
+}
+
+.filterSelect {
+  width: 100%;
+  padding: 12px 40px 12px 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  background: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  appearance: none;
+  color: #333;
+}
+
+.filterSelect:focus {
+  outline: none;
+  border-color: #006981;
+  box-shadow: 0 0 0 3px rgba(0, 105, 129, 0.1);
+}
+
+.selectArrow {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  color: #666;
+  pointer-events: none;
+  transition: transform 0.2s ease;
+}
+
+.selectWrapper:focus-within .selectArrow {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+  padding-bottom: 10px;
+}
+
+.statCard {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  border: 1px solid #e0e0e0;
+  transition: transform 0.2s ease;
+}
+
+.statCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.statCard h3 {
+  color: #666;
+  font-size: 0.85rem;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.statNumber {
+  color: #006981;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.challengesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 30px;
+  margin-bottom: 40px;
+  padding: 10px 0;
+}
+
+.challengeCard {
+  background: white;
+  border-radius: 14px;
+  padding: 0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e8e8e8;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  min-height: 320px;
+  max-height: 350px;
+  overflow: hidden;
+}
+
+.challengeCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.challengeHeader {
+  padding: 24px 24px 20px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  border-bottom: 1px solid #f0f0f0;
+  background: #fafbfc;
+}
+
+.categoryIcon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.challengeInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.challengeTitle {
+  color: #333;
+  font-size: 1.1rem;
+  margin: 0 0 8px 0;
+  font-weight: 600;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.challengeMeta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.points {
+  font-size: 0.85rem;
+  color: #006981;
+  font-weight: 600;
+}
+
+.specializationTag {
+  font-size: 0.75rem;
+  color: #666;
+  background: #f8f9fa;
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid #e0e0e0;
+}
+
+.deadline {
+  font-size: 0.75rem;
+  color: #d32f2f;
+  background: #ffebee;
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid #ffcdd2;
+  font-weight: 500;
+}
+
+.challengeDescription {
+  color: #666;
+  line-height: 1.6;
+  margin: 0;
+  padding: 20px 24px;
+  flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 90px;
+  font-size: 0.95rem;
+}
+
+.challengeFooter {
+  padding: 18px 24px;
+  border-top: 1px solid #f0f0f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  background: #fafbfc;
+  margin-top: auto;
+}
+
+.submissionInfo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: #666;
+  flex: 1;
+}
+
+.submissionStatus {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.notSubmitted {
+  color: #666;
+  font-size: 0.8rem;
+  font-style: italic;
+}
+
+.pointsAwarded {
+  color: #28a745;
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+.statusBadge {
+  color: white;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+.challengeActions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.viewButton,
+.submitButton {
+  background: none;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.viewButton {
+  color: #006981;
+  background: rgba(0, 105, 129, 0.1);
+  border: 1px solid rgba(0, 105, 129, 0.2);
+}
+
+.viewButton:hover {
+  background: rgba(0, 105, 129, 0.2);
+  transform: translateY(-1px);
+}
+
+.submitButton {
+  background: #28a745;
+  color: white;
+  border: 1px solid #28a745;
+}
+
+.submitButton:hover {
+  background: #218838;
+  transform: translateY(-1px);
+}
+
+.buttonIcon {
+  width: 16px;
+  height: 16px;
+}
+
+.submissionsContainer {
+  background: white;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e0e0e0;
+  margin-bottom: 30px;
+}
+
+.submissionsList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.submissionCardCompact {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e0e0e0;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.submissionCardCompact:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.submissionHeaderCompact {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+  gap: 12px;
+}
+
+.submissionInfoCompact {
+  flex: 1;
+  min-width: 0;
+}
+
+.submissionInfoCompact h4 {
+  color: #333;
+  margin: 0 0 6px 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.submissionMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.challengeTitleCompact {
+  color: #006981;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.submissionDetailsRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  color: #666;
+  flex-wrap: wrap;
+}
+
+.submissionDate {
+  color: #999;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.fileCount {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #666;
+}
+
+.specializationBadge {
+  background: #e3f2fd;
+  color: #1976d2;
+  padding: 2px 6px;
+  border-radius: 8px;
+  font-size: 0.7rem;
+  font-weight: 500;
+}
+
+.submissionContent {
+  margin: 12px 0;
+  padding: 12px;
+  background: #f8f9fa;
+  border-radius: 6px;
+  border-left: 3px solid #006981;
+}
+
+.submissionContent p {
+  margin: 0;
+  line-height: 1.4;
+  color: #555;
+}
+
+.feedbackSection {
+  background: #f8f9fa;
+  padding: 12px;
+  border-radius: 6px;
+  margin: 12px 0;
+  border-left: 3px solid #28a745;
+}
+
+.feedbackSection strong {
+  color: #333;
+  display: block;
+  margin-bottom: 4px;
+  font-size: 0.9rem;
+}
+
+.feedbackSection p {
+  margin: 0;
+  color: #555;
+  line-height: 1.4;
+}
+
+.attachedFiles {
+  margin-top: 12px;
+}
+
+.attachedFiles strong {
+  color: #333;
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+}
+
+.fileList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.fileItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  background: #f8f9fa;
+  border-radius: 4px;
+  border: 1px solid #e0e0e0;
+  transition: all 0.2s ease;
+}
+
+.fileItem:hover {
+  background: white;
+  border-color: #006981;
+}
+
+.fileIcon {
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.fileName {
+  font-size: 0.8rem;
+  color: #333;
+  flex: 1;
+}
+
+.fileSize {
+  font-size: 0.7rem;
+  color: #666;
+  background: white;
+  padding: 2px 4px;
+  border-radius: 3px;
+}
+
+.downloadButton {
+  background: none;
+  border: none;
+  color: #006981;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.downloadButton:hover {
+  background: rgba(0, 105, 129, 0.1);
+}
+
+/* Modal Styles */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+}
+
+.modal {
+  background: white;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 700px;
+  max-height: 85vh;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 26px 30px;
+  border-bottom: 1px solid #e0e0e0;
+  background: #fafbfc;
+  flex-shrink: 0;
+}
+
+.modalHeader h3 {
+  color: #006981;
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+.modalTitleSection {
+  flex: 1;
+}
+
+.modalTitleSection h3 {
+  margin: 0 0 8px 0;
+  color: #006981;
+}
+
+.challengeMetaInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #666;
+  padding: 4px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.closeButton:hover {
+  background: #f5f5f5;
+  color: #333;
+}
+
+.closeButton svg {
+  width: 20px;
+  height: 20px;
+}
+
+.modalContent {
+  padding: 30px;
+  overflow-y: auto;
+  flex: 1;
+  max-height: calc(85vh - 160px);
+  min-height: 200px;
+}
+
+.modalContent::-webkit-scrollbar {
+  width: 10px;
+}
+
+.modalContent::-webkit-scrollbar-track {
+  background: #f5f5f5;
+  border-radius: 5px;
+  margin: 4px 0;
+}
+
+.modalContent::-webkit-scrollbar-thumb {
+  background: #b0b0b0;
+  border-radius: 5px;
+  border: 2px solid #f5f5f5;
+}
+
+.modalContent::-webkit-scrollbar-thumb:hover {
+  background: #909090;
+}
+
+/* Instructions Section */
+.instructionsSection {
+  margin-bottom: 24px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border-left: 4px solid #006981;
+}
+
+.sectionHeader {
+  margin-bottom: 12px;
+}
+
+.sectionHeader h4 {
+  color: #006981;
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.instructionsContent {
+  line-height: 1.6;
+}
+
+.instructionsContent p {
+  margin: 0 0 12px 0;
+  color: #555;
+}
+
+.instructionsText {
+  background: white;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  margin-top: 8px;
+  color: #555;
+}
+
+/* Form Styles */
+.formGroup {
+  margin-bottom: 24px;
+}
+
+.formGroup label {
+  display: block;
+  margin-bottom: 8px;
+  color: #333;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.submissionTextarea {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 120px;
+  line-height: 1.5;
+}
+
+.submissionTextarea:focus {
+  outline: none;
+  border-color: #006981;
+  box-shadow: 0 0 0 3px rgba(0, 105, 129, 0.1);
+}
+
+.fileUploadSection {
+  margin-bottom: 15px;
+}
+
+.fileInput {
+  display: none;
+}
+
+.fileUploadLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: #f8f9fa;
+  border: 2px dashed #dee2e6;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: 500;
+}
+
+.fileUploadLabel:hover {
+  background: #e9ecef;
+  border-color: #006981;
+  color: #006981;
+}
+
+.uploadIcon {
+  width: 18px;
+  height: 18px;
+}
+
+.fileUploadHint {
+  display: block;
+  margin-top: 6px;
+  font-size: 0.8rem;
+  color: #666;
+  font-style: italic;
+}
+
+.attachedFilesList {
+  margin-top: 15px;
+}
+
+.attachedFilesList h4 {
+  margin: 0 0 10px 0;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.removeFileButton {
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background 0.2s ease;
+  flex-shrink: 0;
+}
+
+.removeFileButton:hover {
+  background: #c82333;
+}
+
+.submissionGuidelines {
+  background: #f8f9fa;
+  padding: 16px;
+  border-radius: 8px;
+  border-left: 4px solid #006981;
+  margin-top: 20px;
+}
+
+.submissionGuidelines h4 {
+  margin: 0 0 10px 0;
+  color: #006981;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.submissionGuidelines ul {
+  margin: 0;
+  padding-left: 20px;
+  color: #666;
+  font-size: 0.85rem;
+}
+
+.submissionGuidelines li {
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 14px;
+  padding: 24px 30px;
+  border-top: 1px solid #e0e0e0;
+  background: #fafbfc;
+  flex-shrink: 0;
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.08);
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+}
+
+.cancelButton {
+  background: #6c757d;
+  color: white;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 600;
+  min-width: 100px;
+}
+
+.cancelButton:hover:not(:disabled) {
+  background: #5a6268;
+  transform: translateY(-1px);
+}
+
+.cancelButton:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.saveButton {
+  background: #006981;
+  color: white;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 600;
+  min-width: 100px;
+}
+
+.saveButton:hover:not(:disabled) {
+  background: #004d5a;
+  transform: translateY(-1px);
+}
+
+.saveButton:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.noResults {
+  text-align: center;
+  padding: 60px 20px;
+  color: #666;
+  grid-column: 1 / -1;
+}
+
+.noResults h3 {
+  font-size: 1.3rem;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.noResults p {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.loading {
+  text-align: center;
+  padding: 60px 20px;
+  color: #006981;
+  font-size: 1.1rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .challengesContainer {
+    padding: 15px;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 15px;
+  }
+
+  .headerContent h1 {
+    font-size: 1.7rem;
+  }
+
+  .controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 15px;
+  }
+
+  .searchBox {
+    min-width: auto;
+  }
+
+  .filters {
+    justify-content: stretch;
+  }
+
+  .selectWrapper {
+    flex: 1;
+    min-width: auto;
+  }
+
+  .challengesGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .submissionsList {
+    grid-template-columns: 1fr;
+  }
+
+  .challengeHeader {
+    padding: 16px;
+  }
+
+  .challengeFooter {
+    padding: 16px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .challengeActions {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .viewButton,
+  .submitButton {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .modal {
+    margin: 0;
+    max-height: calc(100vh - 40px);
+    border-radius: 12px 12px 0 0;
+  }
+
+  .modalHeader,
+  .modalActions {
+    padding: 16px 20px;
+  }
+
+  .modalContent {
+    padding: 20px;
+  }
+
+  .submissionHeaderCompact {
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+  }
+
+  .instructionsSection,
+  .submissionCardCompact {
+    padding: 16px;
+  }
+
+  .modalActions {
+    flex-direction: column;
+  }
+
+  .cancelButton,
+  .saveButton {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .challengesContainer {
+    padding: 12px;
+  }
+
+  .headerContent h1 {
+    font-size: 1.5rem;
+  }
+
+  .stats {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .statCard {
+    padding: 16px;
+  }
+
+  .modalHeader h3 {
+    font-size: 1.1rem;
+  }
+
+  .challengeCard {
+    height: 300px;
+  }
+
+  .tab {
+    padding: 12px 16px;
+    font-size: 0.9rem;
+  }
+}

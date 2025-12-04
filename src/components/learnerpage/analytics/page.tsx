@@ -387,7 +387,7 @@ export default function SessionAnalyticsComponent({
           <div className={styles.chartHeader}>
             <div className={styles.chartTitle}>
               <Icons.Book />
-              Completed Sessions per Subject of Interest
+              Completed Sessions per Specialization
             </div>
           </div>
           <div className={styles.subjectsList}>
@@ -464,7 +464,7 @@ export default function SessionAnalyticsComponent({
                 className={styles.filterSelect}
                 aria-label='Filter by subject'
               >
-                <option value="all">All Subjects</option>
+                <option value="all">All Specialization</option>
                 {uniqueValues.subjects.filter(s => s !== 'all').map(subject => (
                   <option key={subject} value={subject}>{subject}</option>
                 ))}
@@ -490,7 +490,7 @@ export default function SessionAnalyticsComponent({
                 </th>
                 <th onClick={() => handleSort('subject')} className={styles.sortableHeader}>
                   <div className={styles.headerContent}>
-                    SUBJECT {getSortArrow('subject')}
+                    SPECIALIZATION {getSortArrow('subject')}
                   </div>
                 </th>
                 <th onClick={() => handleSort('mentor')} className={styles.sortableHeader}>

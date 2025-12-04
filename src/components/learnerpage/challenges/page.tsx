@@ -11,15 +11,15 @@ interface Challenge {
   description: string;
   requirements: string[];
   specialization: string;
-  skill: string;
+  skill?: string;
   difficulty: 'beginner' | 'intermediate' | 'advanced';
   xpReward: number;
   isActive: boolean;
-  createdAt: string;
+  createdAt?: string;
   mentorName: string;
-  hasSubmitted: boolean;
-  submissionStatus: 'pending' | 'approved' | 'rejected' | null;
-  mySubmission: Submission | null;
+  hasSubmitted?: boolean;
+  submissionStatus?: 'pending' | 'approved' | 'rejected' | null;
+  mySubmission?: Submission | null;
 }
 
 interface Submission {
@@ -182,7 +182,7 @@ export default function ChallengesComponent({ userData, userSpecializations, cha
     return challenge.hasSubmitted;
   };
 
-  const getMySubmissionStatus = (challenge: Challenge): 'pending' | 'approved' | 'rejected' | null => {
+  const getMySubmissionStatus = (challenge: Challenge): 'pending' | 'approved' | 'rejected' | null | undefined => {
     return challenge.submissionStatus;
   };
 

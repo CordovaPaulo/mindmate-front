@@ -1,0 +1,769 @@
+.progressContainer {
+  padding: 24px;
+  min-height: 100vh;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 24px;
+  margin-bottom: 32px;
+  align-items: start;
+}
+
+.headerTitle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.headerTitle svg {
+  color: #2563eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.headerTitle h1 {
+  color: #0f172a;
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.specializationSelector {
+  position: relative;
+}
+
+.specializationSelect {
+  padding: 12px 16px;
+  padding-right: 40px;
+  border: 1.5px solid #e1e5e9;
+  border-radius: 12px;
+  background: white;
+  font-size: 14px;
+  font-weight: 500;
+  color: #1f2937;
+  cursor: pointer;
+  appearance: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  min-width: 200px;
+}
+
+.specializationSelect:hover {
+  border-color: #2563eb;
+}
+
+.specializationSelect:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 32px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.tab {
+  padding: 12px 24px;
+  border: none;
+  background: none;
+  font-size: 14px;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease;
+  border-bottom: 3px solid transparent;
+}
+
+.tab:hover {
+  color: #2563eb;
+}
+
+.activeTab {
+  color: #2563eb;
+  border-bottom-color: #2563eb;
+}
+
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  gap: 12px;
+  color: #475569;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.loading svg {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Roadmap Styles */
+.roadmapContent {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.completionOverview {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-bottom: 32px;
+}
+
+.statCard {
+  background: white;
+  border: 1px solid #f0f0f0;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.statCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  border-color: #e0e0e0;
+}
+
+.statContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.statMain {
+  flex: 1;
+}
+
+.statMain {
+  flex: 1;
+}
+
+.statValue {
+  font-size: 32px;
+  font-weight: 800;
+  color: #1a1a1a;
+  margin: 0 0 4px 0;
+  line-height: 1;
+}
+
+.statTitle {
+  color: #666;
+  margin: 0;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.statIcon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  opacity: 0.9;
+}
+
+.statFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.statSubtitle {
+  color: #888;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.circleProgress {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 12px;
+}
+
+.progressRing {
+  transform: rotate(-90deg);
+}
+
+.progressRingCircle {
+  transition: stroke-dashoffset 0.5s ease;
+}
+
+.progressText {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.progressPercentage {
+  display: block;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.progressLabel {
+  display: block;
+  font-size: 0.75rem;
+  opacity: 0.7;
+  color: #666;
+}
+
+.stagesContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.stageCard {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.stageCard:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+.stageHeader {
+  padding: 24px;
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 32px;
+}
+
+.stageInfo {
+  flex: 1;
+}
+
+.stageNumber {
+  display: inline-block;
+  padding: 4px 12px;
+  background: #dbeafe;
+  color: #1e40af;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.stageInfo h3 {
+  margin: 8px 0 0 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.stageProgress {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  min-width: 200px;
+}
+
+.stageCompletion {
+  font-weight: 700;
+  color: #2563eb;
+  font-size: 14px;
+}
+
+.stageProgressBar {
+  width: 100%;
+  height: 8px;
+  background: #f5f5f5;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.stageProgressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #2563eb, #1e40af);
+  transition: width 0.8s ease;
+  border-radius: 10px;
+}
+
+.chevronDown, .chevronUp {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #f1f5f9;
+  color: #475569;
+  transition: all 0.3s ease;
+}
+
+.chevronUp {
+  transform: rotate(180deg);
+}
+
+.stageHeader:hover .chevronDown,
+.stageHeader:hover .chevronUp {
+  background: #2563eb;
+  color: white;
+}
+
+.topicsList {
+  padding: 24px;
+  border-top: 1px solid #f0f0f0;
+  background: #fafbfc;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.topicItem {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
+
+.topicItem:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-color: #e2e8f0;
+}
+
+.topicLabel {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.topicCheckbox {
+  margin-top: 4px;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #2563eb;
+  flex-shrink: 0;
+}
+
+.topicCheckbox:disabled {
+  cursor: not-allowed;
+}
+
+.topicContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.topicTitle {
+  font-weight: 600;
+  color: #0f172a;
+  font-size: 14px;
+}
+
+.topicTitleCompleted {
+  font-weight: 500;
+  color: #94a3b8;
+  text-decoration: line-through;
+  font-size: 14px;
+}
+
+.completedInfo {
+  font-size: 12px;
+  color: #059669;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+/* Skills Styles */
+.skillsContent {
+  padding: 0;
+}
+
+.skillsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 20px;
+}
+
+.skillCard {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 24px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.skillCard:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+.skillHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.skillHeader h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.skillLevel {
+  padding: 8px 16px;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: white;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 12px;
+  min-width: 85px;
+  text-align: center;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
+}
+
+.starRating {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 20px;
+  justify-content: center;
+}
+
+.starFilled {
+  color: #fbbf24;
+  display: flex;
+  align-items: center;
+  filter: drop-shadow(0 1px 2px rgba(251, 191, 36, 0.3));
+}
+
+.starEmpty {
+  color: #e5e7eb;
+  display: flex;
+  align-items: center;
+}
+.xpBarContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.xpInfo {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #475569;
+  font-weight: 600;
+}
+
+.xpBar {
+  width: 100%;
+  height: 10px;
+  background: #f5f5f5;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.xpBarFill {
+  height: 100%;
+  background: linear-gradient(90deg, #3b82f6, #2563eb);
+  transition: width 0.8s ease;
+  border-radius: 10px;
+  position: relative;
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.2);
+}
+
+.xpLabel {
+  font-size: 12px;
+  color: #475569;
+  text-align: center;
+  font-weight: 500;
+}
+
+.levelDescriptions {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.currentLevelDesc {
+  font-size: 12px;
+  color: #475569;
+  margin: 0;
+  line-height: 1.6;
+  font-weight: 500;
+}
+
+.noData {
+  text-align: center;
+  padding: 60px 20px;
+  color: #64748b;
+  font-size: 14px;
+  font-style: italic;
+}
+
+/* Modal Styles */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 23, 42, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease;
+  backdrop-filter: blur(4px);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.confirmModal {
+  background: white;
+  border-radius: 20px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 25px 70px rgba(15, 23, 42, 0.5);
+  animation: slideUp 0.3s ease;
+  overflow: hidden;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modalHeader {
+  padding: 24px;
+  border-bottom: 1px solid #f0f0f0;
+  background: #fafbfc;
+}
+
+.modalHeader h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.modalHeader h3 svg {
+  color: #f59e0b;
+}
+
+.modalBody {
+  padding: 24px;
+}
+
+.modalBody p {
+  margin: 0 0 12px 0;
+  color: #1f2937;
+  line-height: 1.6;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.warningText {
+  padding: 16px;
+  background: #fef3c7;
+  border-left: 4px solid #f59e0b;
+  border-radius: 10px;
+  color: #92400e;
+  font-size: 13px;
+  margin-top: 16px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.modalFooter {
+  padding: 20px 24px;
+  border-top: 1px solid #f0f0f0;
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  background: #fafbfc;
+}
+
+.cancelButton {
+  padding: 12px 24px;
+  border: 1.5px solid #cbd5e1;
+  background: white;
+  color: #475569;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
+}
+
+.cancelButton:hover {
+  border-color: #94a3b8;
+  background: #f8fafc;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.confirmButton {
+  padding: 12px 24px;
+  border: none;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.confirmButton:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .progressContainer {
+    padding: 20px;
+  }
+  
+  .skillsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .progressContainer {
+    padding: 16px;
+  }
+
+  .header {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .headerTitle h1 {
+    font-size: 24px;
+  }
+
+  .completionOverview {
+    flex-direction: column;
+    text-align: center;
+    gap: 24px;
+    padding: 24px;
+  }
+
+  .overviewStats {
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+  }
+
+  .stageHeader {
+    flex-direction: column;
+    gap: 16px;
+    padding: 20px;
+  }
+
+  .stageProgress {
+    width: 100%;
+    align-items: flex-start;
+  }
+
+  .skillsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .tabs {
+    gap: 8px;
+  }
+
+  .tab {
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .progressContainer {
+    padding: 12px;
+  }
+  
+  .headerTitle h1 {
+    font-size: 20px;
+  }
+  
+  .completionOverview {
+    padding: 20px;
+  }
+  
+  .statValue {
+    font-size: 32px;
+  }
+  
+  .skillCard {
+    padding: 20px;
+  }
+  
+  .stageHeader {
+    padding: 16px;
+  }
+  
+  .topicsList {
+    padding: 16px;
+  }
+}

@@ -268,7 +268,8 @@ export default function ChallengesComponent({
       specialization: challenge.specialization || '',
       skill: challenge.skill || '',
       difficulty: challenge.difficulty as 'beginner' | 'intermediate' | 'advanced',
-      xpReward: challenge.xpReward
+      xpReward: challenge.xpReward,
+      isActive: challenge.isActive
     });
     setShowEditModal(true);
   };
@@ -441,10 +442,10 @@ export default function ChallengesComponent({
 
           <div className={styles.challengesGrid}>
             {filteredChallenges.map(challenge => (
-              <div key={challenge.id} className={styles.challengeCard}>
+              <div key={challenge._id} className={styles.challengeCard}>
                 <div className={styles.challengeHeader}>
                   <span className={styles.categoryIcon}>
-                    {getSpecializationIcon(challenge.specialization)}
+                    {getSpecializationIcon(challenge.specialization || '')}
                   </span>
                   <div className={styles.challengeInfo}>
                     <h3 className={styles.challengeTitle}>{challenge.title}</h3>
